@@ -79,8 +79,11 @@ namespace Earl.Crawler
 
                 if( options.MaxRequestCount > 0 )
                 {
+                    var remainingRequestCount = Math.Max( 0, options.MaxRequestCount - context.Results.Count );
+
                     // truncate the batch to cap at the `MaxRequestCount`
-                    batch = batch.Take( Math.Max( 0, options.MaxRequestCount - context.Results.Count ) ).ToList();
+                    // NOTE: `.Take(int)` safely caps at `batch.Count` when `remainingRequestCount > batch.Count`
+                    batch = batch.Take( remainingRequestCount ).ToList();
                 }
 
                 if( batch?.Any() is not true )
