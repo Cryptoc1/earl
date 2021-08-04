@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using AngleSharp;
 using AngleSharp.Html.Dom;
 using Earl.Crawler.Infrastructure.Abstractions;
-using Earl.Crawler.Infrastructure.Http;
+using Earl.Crawler.Infrastructure.Http.Abstractions;
 
 namespace Earl.Crawler.Infrastructure.Html
 {
