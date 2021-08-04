@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0-*" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0-*" />
+        <!--<PackageReference Include="Selenium.Support" Version="4.0.0-*" />
+        <PackageReference Include="Selenium.WebDriver" Version="4.0.0-*" />
+
+        --><!-- TODO: handle transitives better --><!--
+        <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="*" PrivateAssets="none" />-->
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="$(SourceDirectory)\Crawler\Abstractions\Earl.Crawler.Abstractions.csproj" />
+        <ProjectReference Include="$(SourceDirectory)\Crawler\Infrastructure\Http\Earl.Crawler.Infrastructure.Http.csproj" />
+        <ProjectReference Include="$(SourceDirectory)\Crawler\Infrastructure\Html\Earl.Crawler.Infrastructure.Html.csproj" />
+        <ProjectReference Include="$(SourceDirectory)\Crawler\Infrastructure\UrlScraper\Earl.Crawler.Infrastructure.UrlScraper.csproj" />
+    </ItemGroup>
+
+</Project>

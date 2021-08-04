@@ -1,0 +1,20 @@
+<Project>
+
+    <PropertyGroup>
+        <!-- Create a property to easily reference the root of the `src` folder -->
+        <SourceDirectory>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)'))</SourceDirectory>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <LangVersion>preview</LangVersion>
+        <Nullable>enable</Nullable>
+
+        <!-- Disable legacy analyzers, and enable roslyn analyzers with the default ruleset -->
+        <RunCodeAnalysis>false</RunCodeAnalysis>
+        <RunAnalyzers>true</RunAnalyzers>
+
+        <TargetFramework>net6.0</TargetFramework>
+    </PropertyGroup>
+
+</Project>

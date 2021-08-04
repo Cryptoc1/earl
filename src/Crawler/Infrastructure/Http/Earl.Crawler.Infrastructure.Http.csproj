@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0-*" />
+        <PackageReference Include="Microsoft.IO.RecyclableMemoryStream" Version="2.1.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="$(SourceDirectory)\Crawler\Infrastructure\Abstractions\Earl.Crawler.Infrastructure.Abstractions.csproj" />
+    </ItemGroup>
+
+</Project>

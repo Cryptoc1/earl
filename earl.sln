@@ -1,0 +1,85 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31521.260
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Agent.Console", "src\Agent\Console\Earl.Agent.Console.csproj", "{99BE2E1A-4DFC-41D3-8DF4-7CEC5349999E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler", "src\Crawler\Crawler\Earl.Crawler.csproj", "{03881D04-21CD-4C18-9377-A8CC04C0B74E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Crawler", "Crawler", "{BFC493AF-B103-485C-82A3-83483C919824}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Agent", "Agent", "{DFD7E0F5-8528-4882-BE2D-B7FB8EC3EDB3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Abstractions", "src\Crawler\Abstractions\Earl.Crawler.Abstractions.csproj", "{0D6E5A36-45CE-408B-8987-CAFA90974642}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EC588A5B-208D-4427-9528-447A0A09ED88}"
+	ProjectSection(SolutionItems) = preProject
+		src\Directory.Build.props = src\Directory.Build.props
+		src\Directory.Build.targets = src\Directory.Build.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{3B10168F-CB56-409F-9A7A-20AB0CF71AB5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Infrastructure.Abstractions", "src\Crawler\Infrastructure\Abstractions\Earl.Crawler.Infrastructure.Abstractions.csproj", "{6278AAA6-5D29-4F7B-9FC8-F802EC55CC5E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Infrastructure.Html", "src\Crawler\Infrastructure\Html\Earl.Crawler.Infrastructure.Html.csproj", "{F7569B19-0192-42E8-8BC7-E6CBC784D777}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Infrastructure.Http", "src\Crawler\Infrastructure\Http\Earl.Crawler.Infrastructure.Http.csproj", "{192CA967-9499-4D8E-BF64-C9911C26CE5C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Infrastructure.UrlScraper", "src\Crawler\Infrastructure\UrlScraper\Earl.Crawler.Infrastructure.UrlScraper.csproj", "{0643A2C8-2330-4CB5-9BEC-8396AE725A72}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{99BE2E1A-4DFC-41D3-8DF4-7CEC5349999E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99BE2E1A-4DFC-41D3-8DF4-7CEC5349999E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99BE2E1A-4DFC-41D3-8DF4-7CEC5349999E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99BE2E1A-4DFC-41D3-8DF4-7CEC5349999E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03881D04-21CD-4C18-9377-A8CC04C0B74E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03881D04-21CD-4C18-9377-A8CC04C0B74E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03881D04-21CD-4C18-9377-A8CC04C0B74E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03881D04-21CD-4C18-9377-A8CC04C0B74E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D6E5A36-45CE-408B-8987-CAFA90974642}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D6E5A36-45CE-408B-8987-CAFA90974642}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D6E5A36-45CE-408B-8987-CAFA90974642}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D6E5A36-45CE-408B-8987-CAFA90974642}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6278AAA6-5D29-4F7B-9FC8-F802EC55CC5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6278AAA6-5D29-4F7B-9FC8-F802EC55CC5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6278AAA6-5D29-4F7B-9FC8-F802EC55CC5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6278AAA6-5D29-4F7B-9FC8-F802EC55CC5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7569B19-0192-42E8-8BC7-E6CBC784D777}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7569B19-0192-42E8-8BC7-E6CBC784D777}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7569B19-0192-42E8-8BC7-E6CBC784D777}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7569B19-0192-42E8-8BC7-E6CBC784D777}.Release|Any CPU.Build.0 = Release|Any CPU
+		{192CA967-9499-4D8E-BF64-C9911C26CE5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{192CA967-9499-4D8E-BF64-C9911C26CE5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{192CA967-9499-4D8E-BF64-C9911C26CE5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{192CA967-9499-4D8E-BF64-C9911C26CE5C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0643A2C8-2330-4CB5-9BEC-8396AE725A72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0643A2C8-2330-4CB5-9BEC-8396AE725A72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0643A2C8-2330-4CB5-9BEC-8396AE725A72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0643A2C8-2330-4CB5-9BEC-8396AE725A72}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{99BE2E1A-4DFC-41D3-8DF4-7CEC5349999E} = {DFD7E0F5-8528-4882-BE2D-B7FB8EC3EDB3}
+		{03881D04-21CD-4C18-9377-A8CC04C0B74E} = {BFC493AF-B103-485C-82A3-83483C919824}
+		{BFC493AF-B103-485C-82A3-83483C919824} = {EC588A5B-208D-4427-9528-447A0A09ED88}
+		{DFD7E0F5-8528-4882-BE2D-B7FB8EC3EDB3} = {EC588A5B-208D-4427-9528-447A0A09ED88}
+		{0D6E5A36-45CE-408B-8987-CAFA90974642} = {BFC493AF-B103-485C-82A3-83483C919824}
+		{3B10168F-CB56-409F-9A7A-20AB0CF71AB5} = {BFC493AF-B103-485C-82A3-83483C919824}
+		{6278AAA6-5D29-4F7B-9FC8-F802EC55CC5E} = {3B10168F-CB56-409F-9A7A-20AB0CF71AB5}
+		{F7569B19-0192-42E8-8BC7-E6CBC784D777} = {3B10168F-CB56-409F-9A7A-20AB0CF71AB5}
+		{192CA967-9499-4D8E-BF64-C9911C26CE5C} = {3B10168F-CB56-409F-9A7A-20AB0CF71AB5}
+		{0643A2C8-2330-4CB5-9BEC-8396AE725A72} = {3B10168F-CB56-409F-9A7A-20AB0CF71AB5}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {95CB9206-4EC0-41AC-AEBC-C134144867DB}
+	EndGlobalSection
+EndGlobal

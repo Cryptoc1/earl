@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="McMaster.Extensions.Hosting.CommandLine" Version="4.0.0-*" />
+        <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.0-*" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0-*" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="$(SourceDirectory)\Crawler\Crawler\Earl.Crawler.csproj" />
+    </ItemGroup>
+    
+</Project>
