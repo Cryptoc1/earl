@@ -17,7 +17,11 @@ namespace Earl.Crawler.Infrastructure.Http
             => this.client = client;
 
         public async Task<EarlHttpResponseMessage> GetAsync( Uri url, CancellationToken cancellation = default )
-            => ( ( await client.GetAsync( url, cancellation ) ) as EarlHttpResponseMessage )!;
+        {
+            var response = await client.GetAsync( url, cancellation );
+            return ( response as EarlHttpResponseMessage )!;
+        }
+
     }
 
 }

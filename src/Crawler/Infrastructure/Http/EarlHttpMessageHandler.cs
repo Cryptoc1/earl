@@ -9,9 +9,6 @@ namespace Earl.Crawler.Infrastructure.Http
 
     public class EarlHttpMessageHandler : DelegatingHandler
     {
-        #region Properties
-        //public const string StatisticsKey = "earl:statistics";
-        #endregion
 
         protected override async Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellationToken )
         {
@@ -20,9 +17,6 @@ namespace Earl.Crawler.Infrastructure.Http
                 .ConfigureAwait( false );
 
             var elapsed = stopwatch.GetElapsedTime();
-            /* response.RequestMessage!.Options.Set( new HttpRequestOptionsKey<TimeSpan>( StatisticsKey ), elapsed );
-            return response; */
-
             return new EarlHttpResponseMessage
             {
                 Content = response.Content,
