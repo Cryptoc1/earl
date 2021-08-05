@@ -36,7 +36,7 @@ namespace Earl.Crawler.Infrastructure.UrlScraper
             {
                 foreach( var url in urls )
                 {
-                    if( !context.CrawlContext.TouchedUrls.Contains( url ) )
+                    if( !context.CrawlContext.Requests.ContainsKey( url ) )
                     {
                         context.CrawlContext.UrlQueue.Enqueue( url );
                     }

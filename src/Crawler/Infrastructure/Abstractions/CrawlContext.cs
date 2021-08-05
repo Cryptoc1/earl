@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Threading;
-using ConcurrentCollections;
 using Earl.Crawler.Abstractions;
 
 namespace Earl.Crawler.Infrastructure.Abstractions
@@ -12,8 +11,7 @@ namespace Earl.Crawler.Infrastructure.Abstractions
 
         CancellationToken CrawlAborted,
         ICrawlOptions Options,
-        ConcurrentBag<CrawlRequestResult> Results,
-        ConcurrentHashSet<Uri> TouchedUrls,
+        ConcurrentDictionary<Uri, CrawlRequestResult?> Requests,
         ConcurrentQueue<Uri> UrlQueue
     );
 
