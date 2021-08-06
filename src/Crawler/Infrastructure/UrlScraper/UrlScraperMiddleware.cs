@@ -8,7 +8,6 @@ using Earl.Crawler.Infrastructure.UrlScraper.Abstractions;
 namespace Earl.Crawler.Infrastructure.UrlScraper
 {
 
-    //[DependsOnRequestMiddleware( typeof( HtmlDocumentMiddleware ) )]
     public class UrlScraperMiddleware : ICrawlRequestMiddleware
     {
         #region Fields

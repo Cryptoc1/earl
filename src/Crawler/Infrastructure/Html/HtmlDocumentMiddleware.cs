@@ -10,17 +10,12 @@ using Earl.Crawler.Infrastructure.Http.Abstractions;
 namespace Earl.Crawler.Infrastructure.Html
 {
 
-    //[DependsOnRequestMiddleware( typeof( HttpResponseMiddleware ) )]
     public class HtmlDocumentMiddleware : ICrawlRequestMiddleware
     {
 
         public async Task InvokeAsync( CrawlRequestContext context, CrawlRequestDelegate next )
         {
             var responseFeature = context.Features.Get<IHttpResponseFeature>();
-            if( responseFeature is null )
-            {
-                return;
-            }
 
             var document = await GetDocumentAsync( responseFeature!, context.CrawlContext.CrawlAborted );
             if( document is not null )

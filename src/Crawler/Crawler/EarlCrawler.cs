@@ -50,11 +50,25 @@ namespace Earl.Crawler
             );
 
             logger.LogInformation( $"Starting crawl: '{initiator}', {options}." );
+            await ProcessCrawlAsync( context, cancellation );
+
+            var result = new CrawlResult(
+                initiator,
+                context.Requests.Select( entry => entry.Value! )
+                    .ToList()
+                    .AsReadOnly()
+            );
+
+            return result;
+        }
+
+        private async Task ProcessCrawlAsync( CrawlContext context, CancellationToken cancellation = default )
+        {
             while( !context.UrlQueue.IsEmpty )
             {
-                if( options.MaxRequestCount > 0 )
+                if( context.Options.MaxRequestCount > 0 )
                 {
-                    if( context.Requests.Count == options.MaxRequestCount )
+                    if( context.Requests.Count == context.Options.MaxRequestCount )
                     {
                         break;
                     }
@@ -62,7 +76,7 @@ namespace Earl.Crawler
 
                 cancellation.ThrowIfCancellationRequested();
 
-                var batchSize = Math.Max( 1, options.MaxBatchSize );
+                var batchSize = Math.Max( 1, context.Options.MaxBatchSize );
                 var batch = new List<Uri>();
 
                 while( batch.Count < batchSize && context.UrlQueue.TryDequeue( out Uri? url ) )
@@ -75,9 +89,9 @@ namespace Earl.Crawler
                     batch.Add( url );
                 }
 
-                if( options.MaxRequestCount > 0 )
+                if( context.Options.MaxRequestCount > 0 )
                 {
-                    var remainingRequestCount = Math.Max( 0, options.MaxRequestCount - context.Requests.Count );
+                    var remainingRequestCount = Math.Max( 0, context.Options.MaxRequestCount - context.Requests.Count );
 
                     // truncate the batch to cap at the `MaxRequestCount`
                     // NOTE: `.Take(int)` safely caps at `batch.Count` when `remainingRequestCount > batch.Count`
@@ -90,44 +104,38 @@ namespace Earl.Crawler
                 }
 
                 var processor = new ActionBlock<Uri>(
-                    async url => await ProcessUrlAsync( url, context, options ),
+                    async url => await ProcessUrlAsync( url, context ),
                     new()
                     {
                         CancellationToken = cancellation,
                         EnsureOrdered = false,
-                        MaxDegreeOfParallelism = Math.Max( 1, options.MaxDegreeOfParallelism )
+                        MaxDegreeOfParallelism = Math.Max( 1, context.Options.MaxDegreeOfParallelism )
                     }
                 );
 
                 foreach( var url in batch )
                 {
                     await processor.SendAsync( url, cancellation );
-                    await Task.Delay( options.BatchDelay, cancellation );
+                    if( context.Options.BatchDelay.HasValue )
+                    {
+                        await Task.Delay( context.Options.BatchDelay.Value, cancellation );
+                    }
                 }
 
                 processor.Complete();
                 await processor.Completion;
             }
-
-            var result = new CrawlResult(
-                initiator,
-                context.Requests.Select( entry => entry.Value! )
-                    .ToList()
-                    .AsReadOnly()
-            );
-
-            return result;
         }
 
-        private async Task ProcessUrlAsync( Uri url, CrawlContext context, ICrawlOptions options )
+        private async Task ProcessUrlAsync( Uri url, CrawlContext context )
         {
-            logger.LogDebug( $"Processing Url: '{url}'." );
             if( !context.Requests.TryAdd( url, null ) )
             {
                 // key exists, this url is processed
                 return;
             }
-
+            
+            logger.LogDebug( $"Processing Url: '{url}'." );
             using var scope = serviceProvider.CreateScope();
 
             using var features = new CrawlRequestFeatureCollection();
@@ -136,9 +144,10 @@ namespace Earl.Crawler
             var middleware = scope.ServiceProvider.GetRequiredService<ICrawlRequestMiddlewareInvoker>();
             await middleware.InvokeAsync( request );
 
-            if( context.Requests.TryUpdate( url, new CrawlRequestResult( url ), null ) )
+            var result = new CrawlRequestResult( url );
+            if( context.Requests.TryUpdate( url, result, null ) && context.Options.RequestDelay.HasValue )
             {
-                await Task.Delay( options.RequestDelay, context.CrawlAborted );
+                await Task.Delay( context.Options.RequestDelay.Value, context.CrawlAborted );
             }
         }
 

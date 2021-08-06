@@ -4,66 +4,44 @@ using System.Linq;
 using System.Threading.Tasks;
 using Earl.Crawler.Infrastructure.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace Earl.Crawler
 {
 
     public class CrawlRequestMiddlewareInvoker : ICrawlRequestMiddlewareInvoker
     {
-        #region Fields
-        private readonly ILogger logger;
-        #endregion
-
-        public CrawlRequestMiddlewareInvoker( ILogger<CrawlRequestMiddlewareInvoker> logger )
-            => this.logger = logger;
 
         public async Task InvokeAsync( CrawlRequestContext context )
         {
-            var middlewares = GetMiddlewares( context.Services );
-            if( middlewares?.Any() is not true )
+            var middlewares = GetMiddlewareStack( context.Services );
+            if( middlewares is null )
             {
                 return;
             }
 
-            var middleware = middlewares.Pop();
-            await middleware.InvokeAsync(
-                context,
-                CreateCrawlRequestDelegate( middlewares )
-            );
+            var middleware = GetNextMiddleware( middlewares );
+            await middleware( context );
         }
 
-        private CrawlRequestDelegate CreateCrawlRequestDelegate( Stack<ICrawlRequestMiddleware> middlewares )
-        {
-            if( middlewares.TryPop( out var middleware ) )
-            {
-                return context =>
+        private CrawlRequestDelegate GetNextMiddleware( Stack<ICrawlRequestMiddleware> middlewares )
+            => !middlewares.TryPop( out var middleware )
+                ? _ => Task.CompletedTask
+                : async context =>
                 {
-                    logger.LogDebug( $"Invoking Middleware: '{middleware.GetType().Name}'." );
-                    return middleware.InvokeAsync(
-                        context,
-                        CreateCrawlRequestDelegate( middlewares )
-                    );
+                    var next = GetNextMiddleware( middlewares );
+                    await middleware.InvokeAsync( context, next );
                 };
-            }
 
-            return _ => Task.CompletedTask;
-        }
-
-        private Stack<ICrawlRequestMiddleware>? GetMiddlewares( IServiceProvider services )
+        private static Stack<ICrawlRequestMiddleware>? GetMiddlewareStack( IServiceProvider services )
         {
-            var middlewares = services.GetService<IEnumerable<ICrawlRequestMiddleware>>()
-                ?.ToList();
-
+            var middlewares = services.GetService<IEnumerable<ICrawlRequestMiddleware>>();
             if( middlewares?.Any() is not true )
             {
                 return null;
             }
 
             // TODO: sort by annotations
-            middlewares.Reverse();
-
-            return new Stack<ICrawlRequestMiddleware>( middlewares );
+            return new Stack<ICrawlRequestMiddleware>( middlewares.Reverse() );
         }
 
     }

@@ -6,7 +6,7 @@ namespace Earl.Crawler.Abstractions
     public interface ICrawlOptions
     {
 
-        TimeSpan BatchDelay { get; }
+        TimeSpan? BatchDelay { get; }
 
         int MaxBatchSize { get; }
 
@@ -16,7 +16,7 @@ namespace Earl.Crawler.Abstractions
         /// <summary> The maximum number of requests that should be processed. </summary>
         int MaxRequestCount => -1;
 
-        TimeSpan RequestDelay { get; }
+        TimeSpan? RequestDelay { get; }
 
         TimeSpan? Timeout { get; }
 

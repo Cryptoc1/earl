@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Earl.Crawler;
 using Earl.Crawler.Abstractions;
+using Earl.Crawler.Profiles;
 using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -49,7 +50,7 @@ namespace Earl.Agent
         private async Task OnExecuteAsync( IEarlCrawler crawler )
         {
             var url = new Uri( "https://vermeer.com.develop/na" );
-            var result = await crawler.CrawlAsync( url );
+            var result = await crawler.CrawlAsync( url, new AggressiveCrawlOptions { MaxRequestCount = 1000 } );
 
             return;
         }
