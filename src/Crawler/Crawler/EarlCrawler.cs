@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Collections.Concurrent;
 using System.Threading.Tasks.Dataflow;
 using Earl.Crawler.Abstractions;
 using Earl.Crawler.Infrastructure.Abstractions;
@@ -134,7 +129,7 @@ namespace Earl.Crawler
                 // key exists, this url is processed
                 return;
             }
-            
+
             logger.LogDebug( $"Processing Url: '{url}'." );
             using var scope = serviceProvider.CreateScope();
 
@@ -144,7 +139,7 @@ namespace Earl.Crawler
             var middleware = scope.ServiceProvider.GetRequiredService<ICrawlRequestMiddlewareInvoker>();
             await middleware.InvokeAsync( request );
 
-            var result = new CrawlRequestResult( url );
+            var result = new CrawlRequestResult( request.Url, request.Id );
             if( context.Requests.TryUpdate( url, result, null ) && context.Options.RequestDelay.HasValue )
             {
                 await Task.Delay( context.Options.RequestDelay.Value, context.CrawlAborted );

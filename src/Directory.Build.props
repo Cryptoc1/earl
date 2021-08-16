@@ -7,7 +7,7 @@
 
     <PropertyGroup>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <LangVersion>preview</LangVersion>
+        <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
 
         <!-- Disable legacy analyzers, and enable roslyn analyzers with the default ruleset -->

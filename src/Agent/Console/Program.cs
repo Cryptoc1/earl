@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using Earl.Crawler;
 using Earl.Crawler.Abstractions;
 using Earl.Crawler.Profiles;
@@ -17,18 +14,6 @@ namespace Earl.Agent
     [HelpOption]
     public class Program
     {
-        #region Fields
-        private static readonly Dictionary<string, string> hostConfiguration = new()
-        {
-            { HostDefaults.ApplicationKey, "Earl Agent" }
-        };
-        #endregion
-
-        #region Properties
-        //[FileExists]
-        //[Option( Description = "The path to the file to use for configuration of the agent." )]
-        //public string Config { get; set; }
-        #endregion
 
         public static string? GetVersion( )
             => typeof( Program ).Assembly
@@ -49,8 +34,10 @@ namespace Earl.Agent
 
         private async Task OnExecuteAsync( IEarlCrawler crawler )
         {
-            var url = new Uri( "https://vermeer.com.develop/na" );
-            var result = await crawler.CrawlAsync( url, new AggressiveCrawlOptions { MaxRequestCount = 1000 } );
+            var url = new Uri( "https://www.bizstream.com" );
+            var options = new AggressiveCrawlOptions { MaxRequestCount = 1000 };
+
+            var result = await crawler.CrawlAsync( url, options );
 
             return;
         }

@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Infrastructure
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Infrastructure.UrlScraper", "src\Crawler\Infrastructure\UrlScraper\Earl.Crawler.Infrastructure.UrlScraper.csproj", "{0643A2C8-2330-4CB5-9BEC-8396AE725A72}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Infrastructure.Selenium", "src\Crawler\Infrastructure\Selenium\Earl.Crawler.Infrastructure.Selenium.csproj", "{78605FC9-E09D-4DCD-8AAD-53D856D0A86B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{0643A2C8-2330-4CB5-9BEC-8396AE725A72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0643A2C8-2330-4CB5-9BEC-8396AE725A72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0643A2C8-2330-4CB5-9BEC-8396AE725A72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78605FC9-E09D-4DCD-8AAD-53D856D0A86B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78605FC9-E09D-4DCD-8AAD-53D856D0A86B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78605FC9-E09D-4DCD-8AAD-53D856D0A86B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78605FC9-E09D-4DCD-8AAD-53D856D0A86B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +84,7 @@ Global
 		{F7569B19-0192-42E8-8BC7-E6CBC784D777} = {3B10168F-CB56-409F-9A7A-20AB0CF71AB5}
 		{192CA967-9499-4D8E-BF64-C9911C26CE5C} = {3B10168F-CB56-409F-9A7A-20AB0CF71AB5}
 		{0643A2C8-2330-4CB5-9BEC-8396AE725A72} = {3B10168F-CB56-409F-9A7A-20AB0CF71AB5}
+		{78605FC9-E09D-4DCD-8AAD-53D856D0A86B} = {3B10168F-CB56-409F-9A7A-20AB0CF71AB5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95CB9206-4EC0-41AC-AEBC-C134144867DB}
