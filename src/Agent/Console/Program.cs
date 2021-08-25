@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using Earl.Crawler;
 using Earl.Crawler.Abstractions;
-using Earl.Crawler.Profiles;
+using Earl.Crawler.Configurations;
 using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

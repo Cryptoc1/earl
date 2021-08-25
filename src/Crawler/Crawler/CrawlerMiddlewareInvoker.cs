@@ -9,26 +9,26 @@ namespace Earl.Crawler
 
         public async Task InvokeAsync( CrawlUrlContext context )
         {
-            var middlewares = GetMiddlewareStack( context.Services );
+            var middlewares = CreateMiddlewareStack( context.Services );
             if( middlewares is null )
             {
                 return;
             }
 
-            var middleware = GetNextMiddleware( middlewares );
+            var middleware = CreateMiddlewareDelegate( middlewares );
             await middleware( context );
         }
 
-        private CrawlUrlDelegate GetNextMiddleware( Stack<ICrawlUrlMiddleware> middlewares )
+        private CrawlUrlDelegate CreateMiddlewareDelegate( Stack<ICrawlUrlMiddleware> middlewares )
             => !middlewares.TryPop( out var middleware )
                 ? _ => Task.CompletedTask
                 : async context =>
                 {
-                    var next = GetNextMiddleware( middlewares );
+                    var next = CreateMiddlewareDelegate( middlewares );
                     await middleware.InvokeAsync( context, next );
                 };
 
-        private static Stack<ICrawlUrlMiddleware>? GetMiddlewareStack( IServiceProvider services )
+        private static Stack<ICrawlUrlMiddleware>? CreateMiddlewareStack( IServiceProvider services )
         {
             var middlewares = services.GetService<IEnumerable<ICrawlUrlMiddleware>>();
             if( middlewares?.Any() is not true )

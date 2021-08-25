@@ -136,12 +136,18 @@ namespace Earl.Crawler
             using var features = new CrawlerFeatureCollection();
             using var scope = serviceProvider.CreateScope();
 
-            var request = new CrawlUrlContext( context, features, Guid.NewGuid(), scope.ServiceProvider, url );
+            var urlContext = new CrawlUrlContext(
+                context,
+                features,
+                Guid.NewGuid(),
+                scope.ServiceProvider,
+                url
+            );
 
             var middleware = scope.ServiceProvider.GetRequiredService<ICrawlUrlMiddlewareInvoker>();
-            await middleware.InvokeAsync( request );
+            await middleware.InvokeAsync( urlContext );
 
-            var result = new CrawlRequestResult( request.Url, request.Id );
+            var result = new CrawlRequestResult( urlContext.Url, urlContext.Id );
             if( context.Requests.TryUpdate( url, result, null ) && context.Options.RequestDelay.HasValue )
             {
                 await Task.Delay( context.Options.RequestDelay.Value, context.CrawlAborted );

@@ -3,10 +3,9 @@
     <PropertyGroup Condition=" '$(RunAnalyzers)' == 'true' ">
         <CodeAnalysisRuleSet>$(SourceDirectory)\StandardRules.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
-    
+
     <ItemGroup Condition=" '$(RunAnalyzers)' == 'true' ">
-        <AdditionalFiles Include="$(SourceDirectory)\..\.editorconfig" Visible="false" />
         <Compile Include="$(SourceDirectory)\CodeStyleSuppressions.cs" Visible="false" />
     </ItemGroup>
-    
+
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace Earl.Crawler.Profiles
+﻿namespace Earl.Crawler.Configurations
 {
 
     public class AggressiveCrawlOptions : CrawlOptions
