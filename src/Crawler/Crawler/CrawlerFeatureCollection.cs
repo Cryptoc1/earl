@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections;
 using Earl.Crawler.Infrastructure.Abstractions;
 
 namespace Earl.Crawler
 {
 
-    public sealed class CrawlRequestFeatureCollection : ICrawlRequestFeatureCollection, IDisposable, IAsyncDisposable
+    public sealed class CrawlerFeatureCollection : ICrawlerFeatureCollection, IDisposable, IAsyncDisposable
     {
         #region Fields
         private IDictionary<Type, object>? features;
@@ -16,9 +12,12 @@ namespace Earl.Crawler
         #endregion
 
         #region Properties
+
+        /// <inheritdoc/>
         public int Revision => revision;
         #endregion
 
+        /// <inheritdoc/>
         public object? this[ Type key ]
         {
             get
@@ -47,7 +46,7 @@ namespace Earl.Crawler
                     return;
                 }
 
-                if( features == null )
+                if( features is null )
                 {
                     features = new Dictionary<Type, object>();
                     revision = 0;
@@ -58,6 +57,7 @@ namespace Earl.Crawler
             }
         }
 
+        /// <inheritdoc/>
         public void Dispose( )
         {
             if( features is not null )
@@ -67,11 +67,12 @@ namespace Earl.Crawler
 
                 foreach( var feature in disposables )
                 {
-                    feature.Dispose();
+                    feature!.Dispose();
                 }
             }
         }
 
+        /// <inheritdoc/>
         public async ValueTask DisposeAsync( )
         {
             if( features is not null )
@@ -81,17 +82,20 @@ namespace Earl.Crawler
 
                 foreach( var feature in disposables )
                 {
-                    await feature.DisposeAsync();
+                    await feature!.DisposeAsync();
                 }
             }
         }
 
+        /// <inheritdoc/>
         public TFeature? Get<TFeature>( )
             => ( TFeature? )this[ typeof( TFeature ) ];
 
+        /// <inheritdoc/>
         public IEnumerator<KeyValuePair<Type, object>> GetEnumerator( )
             => features?.GetEnumerator();
 
+        /// <inheritdoc/>
         public void Set<TFeature>( TFeature? instance )
             => this[ typeof( TFeature ) ] = instance;
 

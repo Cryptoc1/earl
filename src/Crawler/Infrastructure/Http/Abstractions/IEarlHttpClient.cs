@@ -1,11 +1,7 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace Earl.Crawler.Infrastructure.Http.Abstractions
+﻿namespace Earl.Crawler.Infrastructure.Http.Abstractions
 {
 
+    /// <summary> Describes a typed <see cref="HttpClient"/> that can make HTTP request during a url crawl. </summary>
     public interface IEarlHttpClient
     {
 

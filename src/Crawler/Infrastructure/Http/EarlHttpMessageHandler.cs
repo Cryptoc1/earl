@@ -1,8 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 
 namespace Earl.Crawler.Infrastructure.Http
 {
@@ -10,6 +6,7 @@ namespace Earl.Crawler.Infrastructure.Http
     public class EarlHttpMessageHandler : DelegatingHandler
     {
 
+        /// <inheritdoc/>
         protected override async Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellationToken )
         {
             var stopwatch = ValueStopwatch.StartNew();
@@ -30,18 +27,17 @@ namespace Earl.Crawler.Infrastructure.Http
 
         private struct ValueStopwatch
         {
+            #region Fields
             private static readonly double TimestampToTicks = TimeSpan.TicksPerSecond / ( double )Stopwatch.Frequency;
+            private readonly long startTimestamp;
+            #endregion
 
-            private long _startTimestamp;
-
-            public bool IsActive => _startTimestamp != 0;
+            #region Properties
+            public bool IsActive => startTimestamp is not 0;
+            #endregion
 
             private ValueStopwatch( long startTimestamp )
-            {
-                _startTimestamp = startTimestamp;
-            }
-
-            public static ValueStopwatch StartNew( ) => new( Stopwatch.GetTimestamp() );
+                => this.startTimestamp = startTimestamp;
 
             public TimeSpan GetElapsedTime( )
             {
@@ -52,11 +48,15 @@ namespace Earl.Crawler.Infrastructure.Http
                     throw new InvalidOperationException( "An uninitialized, or 'default', ValueStopwatch cannot be used to get elapsed time." );
                 }
 
-                long end = Stopwatch.GetTimestamp();
-                long timestampDelta = end - _startTimestamp;
-                long ticks = ( long )( TimestampToTicks * timestampDelta );
+                var end = Stopwatch.GetTimestamp();
+                var timestampDelta = end - startTimestamp;
+                var ticks = ( long )( TimestampToTicks * timestampDelta );
                 return new TimeSpan( ticks );
             }
+
+            public static ValueStopwatch StartNew( )
+                => new( Stopwatch.GetTimestamp() );
+
         }
 
     }

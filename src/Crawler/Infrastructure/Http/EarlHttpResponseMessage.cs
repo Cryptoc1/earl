@@ -1,7 +1,4 @@
-﻿using System;
-using System.Net.Http;
-
-namespace Earl.Crawler.Infrastructure.Http
+﻿namespace Earl.Crawler.Infrastructure.Http
 {
 
     public class EarlHttpResponseMessage : HttpResponseMessage

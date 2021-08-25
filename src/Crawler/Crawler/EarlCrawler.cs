@@ -24,6 +24,7 @@ namespace Earl.Crawler
             this.serviceProvider = serviceProvider;
         }
 
+        /// <inheritdoc/>
         public async Task<CrawlResult> CrawlAsync( Uri initiator, ICrawlOptions? options = null, CancellationToken cancellation = default )
         {
             if( options?.Timeout is not null )
@@ -45,7 +46,7 @@ namespace Earl.Crawler
             );
 
             logger.LogInformation( $"Starting crawl: '{initiator}', {options}." );
-            await ProcessCrawlAsync( context, cancellation );
+            await CrawlAsync( context, cancellation );
 
             var result = new CrawlResult(
                 initiator,
@@ -57,7 +58,7 @@ namespace Earl.Crawler
             return result;
         }
 
-        private async Task ProcessCrawlAsync( CrawlContext context, CancellationToken cancellation = default )
+        private async Task CrawlAsync( CrawlContext context, CancellationToken cancellation = default )
         {
             while( !context.UrlQueue.IsEmpty )
             {
@@ -99,7 +100,7 @@ namespace Earl.Crawler
                 }
 
                 var processor = new ActionBlock<Uri>(
-                    async url => await ProcessUrlAsync( url, context ),
+                    async url => await CrawlUrlAsync( url, context ),
                     new()
                     {
                         CancellationToken = cancellation,
@@ -122,7 +123,7 @@ namespace Earl.Crawler
             }
         }
 
-        private async Task ProcessUrlAsync( Uri url, CrawlContext context )
+        private async Task CrawlUrlAsync( Uri url, CrawlContext context )
         {
             if( !context.Requests.TryAdd( url, null ) )
             {
@@ -131,12 +132,13 @@ namespace Earl.Crawler
             }
 
             logger.LogDebug( $"Processing Url: '{url}'." );
+
+            using var features = new CrawlerFeatureCollection();
             using var scope = serviceProvider.CreateScope();
 
-            using var features = new CrawlRequestFeatureCollection();
-            var request = new CrawlRequestContext( context, features, Guid.NewGuid(), scope.ServiceProvider, url );
+            var request = new CrawlUrlContext( context, features, Guid.NewGuid(), scope.ServiceProvider, url );
 
-            var middleware = scope.ServiceProvider.GetRequiredService<ICrawlRequestMiddlewareInvoker>();
+            var middleware = scope.ServiceProvider.GetRequiredService<ICrawlUrlMiddlewareInvoker>();
             await middleware.InvokeAsync( request );
 
             var result = new CrawlRequestResult( request.Url, request.Id );

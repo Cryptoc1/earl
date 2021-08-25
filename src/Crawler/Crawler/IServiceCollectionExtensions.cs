@@ -31,13 +31,13 @@ namespace Earl.Crawler
                 .SetHandlerLifetime( TimeSpan.FromMinutes( 5 ) );
 
             services.AddTransient<IEarlCrawler, EarlCrawler>();
-            services.AddTransient<ICrawlRequestMiddlewareInvoker, CrawlRequestMiddlewareInvoker>();
+            services.AddTransient<ICrawlUrlMiddlewareInvoker, CrawlerMiddlewareInvoker>();
 
-            services.AddScoped<ICrawlRequestMiddleware, HttpResponseMiddleware>();
-            services.AddScoped<ICrawlRequestMiddleware, HtmlDocumentMiddleware>();
-            services.AddScoped<ICrawlRequestMiddleware, SeleniumMiddleware>();
+            services.AddScoped<ICrawlUrlMiddleware, HttpResponseMiddleware>();
+            services.AddScoped<ICrawlUrlMiddleware, HtmlDocumentMiddleware>();
+            services.AddScoped<ICrawlUrlMiddleware, SeleniumMiddleware>();
 
-            services.AddScoped<ICrawlRequestMiddleware, UrlScraperMiddleware>();
+            services.AddScoped<ICrawlUrlMiddleware, UrlScraperMiddleware>();
             services.AddScoped<IUrlScraper, UrlScraper>();
 
             return services;

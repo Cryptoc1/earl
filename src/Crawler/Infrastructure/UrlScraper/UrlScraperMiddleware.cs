@@ -1,14 +1,13 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using Earl.Crawler.Infrastructure.Abstractions;
+﻿using Earl.Crawler.Infrastructure.Abstractions;
 using Earl.Crawler.Infrastructure.Html;
 using Earl.Crawler.Infrastructure.UrlScraper.Abstractions;
 
 namespace Earl.Crawler.Infrastructure.UrlScraper
 {
 
-    public class UrlScraperMiddleware : ICrawlRequestMiddleware
+    /// <summary> Scrapes and queues urls for the current url crawl to be crawled. </summary>
+    /// <remarks> Requires that the <see cref="HtmlDocumentMiddleware"/>, or compatible middleware is registered in before this middleware in the pipeline. </remarks>
+    public class UrlScraperMiddleware : ICrawlUrlMiddleware
     {
         #region Fields
         private readonly IUrlScraper scraper;
@@ -17,7 +16,8 @@ namespace Earl.Crawler.Infrastructure.UrlScraper
         public UrlScraperMiddleware( IUrlScraper scraper )
             => this.scraper = scraper;
 
-        public async Task InvokeAsync( CrawlRequestContext context, CrawlRequestDelegate next )
+        /// <inheritdoc/>
+        public async Task InvokeAsync( CrawlUrlContext context, CrawlUrlDelegate next )
         {
             var documentFeature = context.Features.Get<IHtmlDocumentFeature?>();
             if( documentFeature is null )

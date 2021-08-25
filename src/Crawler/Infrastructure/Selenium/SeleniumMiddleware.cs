@@ -6,10 +6,10 @@ using OpenQA.Selenium.Chrome;
 namespace Earl.Crawler.Infrastructure.Selenium
 {
 
-    public class SeleniumMiddleware : ICrawlRequestMiddleware
+    public class SeleniumMiddleware : ICrawlUrlMiddleware
     {
 
-        public async Task InvokeAsync( CrawlRequestContext context, CrawlRequestDelegate next )
+        public async Task InvokeAsync( CrawlUrlContext context, CrawlUrlDelegate next )
         {
             var options = new ChromeOptions
             {

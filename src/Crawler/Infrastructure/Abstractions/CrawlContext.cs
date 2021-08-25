@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Threading;
+﻿using System.Collections.Concurrent;
 using Earl.Crawler.Abstractions;
 
 namespace Earl.Crawler.Infrastructure.Abstractions

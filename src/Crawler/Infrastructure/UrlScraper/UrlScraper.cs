@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using AngleSharp.Html.Dom;
+﻿using AngleSharp.Html.Dom;
 using Earl.Crawler.Infrastructure.UrlScraper.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +14,7 @@ namespace Earl.Crawler.Infrastructure.UrlScraper
         public UrlScraper( IServiceProvider serviceProvider )
             => this.serviceProvider = serviceProvider;
 
+        /// <inheritdoc/>
         public async Task<IEnumerable<Uri>> ScrapeAsync( IHtmlDocument document, Uri baseUrl, CancellationToken cancellation = default )
         {
             var urls = document.QuerySelectorAll( "a:not([href=\"\"])" )
@@ -41,6 +37,12 @@ namespace Earl.Crawler.Infrastructure.UrlScraper
                 .Where( url => !( !string.IsNullOrEmpty( url.Fragment ) && url.AbsolutePath == "/" ) )
                     ?? Enumerable.Empty<Uri>();
 
+            var filteredUrls = await FilterAsync( urls, cancellation );
+            return filteredUrls;
+        }
+
+        private async Task<IEnumerable<Uri>> FilterAsync( IEnumerable<Uri> urls, CancellationToken cancellation )
+        {
             var filters = serviceProvider.GetService<IEnumerable<IUrlScraperFilter>>();
             if( filters?.Any() is true )
             {
@@ -50,7 +52,7 @@ namespace Earl.Crawler.Infrastructure.UrlScraper
                 }
             }
 
-            return urls;
+            return urls.ToList();
         }
 
     }

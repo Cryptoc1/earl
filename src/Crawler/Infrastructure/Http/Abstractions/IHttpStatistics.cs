@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Earl.Crawler.Infrastructure.Http.Abstractions
+﻿namespace Earl.Crawler.Infrastructure.Http.Abstractions
 {
 
     public interface IHttpStatistics

@@ -1,8 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
-using AngleSharp;
+﻿using AngleSharp;
 using AngleSharp.Html.Dom;
 using Earl.Crawler.Infrastructure.Abstractions;
 using Earl.Crawler.Infrastructure.Http.Abstractions;
@@ -10,10 +6,12 @@ using Earl.Crawler.Infrastructure.Http.Abstractions;
 namespace Earl.Crawler.Infrastructure.Html
 {
 
-    public class HtmlDocumentMiddleware : ICrawlRequestMiddleware
+    /// <summary> Supports the <see cref="IHtmlDocumentFeature"/>. </summary>
+    public class HtmlDocumentMiddleware : ICrawlUrlMiddleware
     {
 
-        public async Task InvokeAsync( CrawlRequestContext context, CrawlRequestDelegate next )
+        /// <inheritdoc/>
+        public async Task InvokeAsync( CrawlUrlContext context, CrawlUrlDelegate next )
         {
             var responseFeature = context.Features.Get<IHttpResponseFeature>();
 

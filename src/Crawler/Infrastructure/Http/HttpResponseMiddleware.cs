@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using Earl.Crawler.Infrastructure.Abstractions;
 using Earl.Crawler.Infrastructure.Http.Abstractions;
 using Microsoft.Extensions.Logging;
@@ -14,7 +9,7 @@ using Microsoft.IO;
 namespace Earl.Crawler.Infrastructure.Http
 {
 
-    public class HttpResponseMiddleware : ICrawlRequestMiddleware
+    public class HttpResponseMiddleware : ICrawlUrlMiddleware
     {
         #region Fields
         private readonly IEarlHttpClient client;
@@ -33,7 +28,7 @@ namespace Earl.Crawler.Infrastructure.Http
             this.streamManager = streamManager;
         }
 
-        public async Task InvokeAsync( CrawlRequestContext context, CrawlRequestDelegate next )
+        public async Task InvokeAsync( CrawlUrlContext context, CrawlUrlDelegate next )
         {
             using var response = await client.GetAsync( context.Url, context.CrawlContext.CrawlAborted );
 
