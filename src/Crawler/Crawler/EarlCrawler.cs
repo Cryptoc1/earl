@@ -1,5 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Threading.Tasks.Dataflow;
+using ConcurrentCollections;
 using Earl.Crawler.Abstractions;
 using Earl.Crawler.Infrastructure.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +26,7 @@ namespace Earl.Crawler
         }
 
         /// <inheritdoc/>
-        public async Task<CrawlResult> CrawlAsync( Uri initiator, ICrawlOptions? options = null, CancellationToken cancellation = default )
+        public async Task CrawlAsync( Uri initiator, ICrawlReporter reporter, ICrawlOptions? options = null, CancellationToken cancellation = default )
         {
             if( options?.Timeout is not null )
             {
@@ -41,44 +42,34 @@ namespace Earl.Crawler
 
                 cancellation,
                 options,
-                new ConcurrentDictionary<Uri, CrawlUrlResult?>( UriComparer.OrdinalIgnoreCase ),
+                new ConcurrentHashSet<Uri>( UriComparer.OrdinalIgnoreCase ),
                 new ConcurrentQueue<Uri>( new[] { initiator } )
             );
 
             logger.LogInformation( $"Starting crawl: '{initiator}', {options}." );
-            await CrawlAsync( context, cancellation );
-
-            var result = new CrawlResult(
-                initiator,
-                new ResultMetadataCollection( Enumerable.Empty<object>() ),
-                context.Requests.Select( entry => entry.Value! )
-                    .ToList()
-                    .AsReadOnly()
-            );
-
-            return result;
+            await CrawlAsync( context, reporter );
         }
 
-        private async Task CrawlAsync( CrawlContext context, CancellationToken cancellation = default )
+        private async Task CrawlAsync( CrawlContext context, ICrawlReporter reporter )
         {
             while( !context.UrlQueue.IsEmpty )
             {
                 if( context.Options.MaxRequestCount > 0 )
                 {
-                    if( context.Requests.Count == context.Options.MaxRequestCount )
+                    if( context.TouchedUrls.Count == context.Options.MaxRequestCount )
                     {
                         break;
                     }
                 }
 
-                cancellation.ThrowIfCancellationRequested();
+                context.CrawlAborted.ThrowIfCancellationRequested();
 
                 var batchSize = Math.Max( 1, context.Options.MaxBatchSize );
                 var batch = new List<Uri>();
 
                 while( batch.Count < batchSize && context.UrlQueue.TryDequeue( out Uri? url ) )
                 {
-                    if( context.Requests.ContainsKey( url ) )
+                    if( context.TouchedUrls.Contains( url ) )
                     {
                         continue;
                     }
@@ -88,7 +79,7 @@ namespace Earl.Crawler
 
                 if( context.Options.MaxRequestCount > 0 )
                 {
-                    var remainingRequestCount = Math.Max( 0, context.Options.MaxRequestCount - context.Requests.Count );
+                    var remainingRequestCount = Math.Max( 0, context.Options.MaxRequestCount - context.TouchedUrls.Count );
 
                     // truncate the batch to cap at the `MaxRequestCount`
                     // NOTE: `.Take(int)` safely caps at `batch.Count` when `remainingRequestCount > batch.Count`
@@ -101,10 +92,10 @@ namespace Earl.Crawler
                 }
 
                 var processor = new ActionBlock<Uri>(
-                    async url => await CrawlUrlAsync( url, context ),
+                    async url => await CrawlUrlAsync( url, context, reporter ),
                     new()
                     {
-                        CancellationToken = cancellation,
+                        CancellationToken = context.CrawlAborted,
                         EnsureOrdered = false,
                         MaxDegreeOfParallelism = Math.Max( 1, context.Options.MaxDegreeOfParallelism )
                     }
@@ -112,10 +103,10 @@ namespace Earl.Crawler
 
                 foreach( var url in batch )
                 {
-                    await processor.SendAsync( url, cancellation );
+                    await processor.SendAsync( url, context.CrawlAborted );
                     if( context.Options.BatchDelay.HasValue )
                     {
-                        await Task.Delay( context.Options.BatchDelay.Value, cancellation );
+                        await Task.Delay( context.Options.BatchDelay.Value, context.CrawlAborted );
                     }
                 }
 
@@ -124,9 +115,9 @@ namespace Earl.Crawler
             }
         }
 
-        private async Task CrawlUrlAsync( Uri url, CrawlContext context )
+        private async Task CrawlUrlAsync( Uri url, CrawlContext context, ICrawlReporter reporter )
         {
-            if( !context.Requests.TryAdd( url, null ) )
+            if( context.TouchedUrls.Contains( url ) )
             {
                 // key exists, this url is processed
                 return;
@@ -150,11 +141,13 @@ namespace Earl.Crawler
             var middleware = scope.ServiceProvider.GetRequiredService<ICrawlerMiddlewareInvoker>();
             await middleware.InvokeAsync( urlContext );
 
-            var result = urlContext.Result.Build();
-            if( context.Requests.TryUpdate( url, result, null ) && context.Options.RequestDelay.HasValue )
+            if( context.Options.RequestDelay.HasValue )
             {
                 await Task.Delay( context.Options.RequestDelay.Value, context.CrawlAborted );
             }
+
+            var result = urlContext.Result.Build();
+            await reporter.OnUrlCrawlComplete( result );
         }
 
     }

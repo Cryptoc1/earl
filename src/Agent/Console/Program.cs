@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Concurrent;
+using System.Reflection;
 using Earl.Crawler;
 using Earl.Crawler.Abstractions;
 using Earl.Crawler.Configurations;
@@ -42,9 +43,16 @@ namespace Earl.Agent
                 options.UseSelenium();
             } */
 
-            var result = await crawler.CrawlAsync( url, options );
+            var results = new ConcurrentBag<CrawlUrlResult>();
+            var reporter = new DelegateCrawlReporter(
+                result =>
+                {
+                    results.Add( result );
+                    return Task.CompletedTask;
+                }
+            );
 
-            return;
+            await crawler.CrawlAsync( url, reporter, options );
         }
 
     }

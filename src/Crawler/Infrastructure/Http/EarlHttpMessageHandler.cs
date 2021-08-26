@@ -28,16 +28,16 @@ namespace Earl.Crawler.Infrastructure.Http
         private struct ValueStopwatch
         {
             #region Fields
-            private static readonly double TimestampToTicks = TimeSpan.TicksPerSecond / ( double )Stopwatch.Frequency;
-            private readonly long startTimestamp;
+            private static readonly long TimestampToTicks = TimeSpan.TicksPerSecond / Stopwatch.Frequency;
+            private readonly long start;
             #endregion
 
             #region Properties
-            public bool IsActive => startTimestamp is not 0;
+            public bool IsActive => start is not 0;
             #endregion
 
-            private ValueStopwatch( long startTimestamp )
-                => this.startTimestamp = startTimestamp;
+            private ValueStopwatch( long start )
+                => this.start = start;
 
             public TimeSpan GetElapsedTime( )
             {
@@ -48,10 +48,9 @@ namespace Earl.Crawler.Infrastructure.Http
                     throw new InvalidOperationException( "An uninitialized, or 'default', ValueStopwatch cannot be used to get elapsed time." );
                 }
 
-                var end = Stopwatch.GetTimestamp();
-                var timestampDelta = end - startTimestamp;
-                var ticks = ( long )( TimestampToTicks * timestampDelta );
-                return new TimeSpan( ticks );
+                var now = Stopwatch.GetTimestamp();
+                var elapsed = now - start;
+                return new TimeSpan( TimestampToTicks * elapsed );
             }
 
             public static ValueStopwatch StartNew( )
