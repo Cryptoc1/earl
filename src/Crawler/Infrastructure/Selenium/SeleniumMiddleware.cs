@@ -6,7 +6,7 @@ using OpenQA.Selenium.Chrome;
 namespace Earl.Crawler.Infrastructure.Selenium
 {
 
-    public class SeleniumMiddleware : ICrawlUrlMiddleware
+    public class SeleniumMiddleware : ICrawlerMiddleware
     {
 
         public async Task InvokeAsync( CrawlUrlContext context, CrawlUrlDelegate next )

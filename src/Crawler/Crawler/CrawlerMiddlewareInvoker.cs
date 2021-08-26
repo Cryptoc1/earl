@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Earl.Crawler
 {
 
-    public class CrawlerMiddlewareInvoker : ICrawlUrlMiddlewareInvoker
+    public class CrawlerMiddlewareInvoker : ICrawlerMiddlewareInvoker
     {
 
         public async Task InvokeAsync( CrawlUrlContext context )
@@ -15,29 +15,29 @@ namespace Earl.Crawler
                 return;
             }
 
-            var middleware = CreateMiddlewareDelegate( middlewares );
-            await middleware( context );
+            var pipeline = CreateMiddlewarePipeline( middlewares );
+            await pipeline( context );
         }
 
-        private CrawlUrlDelegate CreateMiddlewareDelegate( Stack<ICrawlUrlMiddleware> middlewares )
+        private CrawlUrlDelegate CreateMiddlewarePipeline( Stack<ICrawlerMiddleware> middlewares )
             => !middlewares.TryPop( out var middleware )
                 ? _ => Task.CompletedTask
                 : async context =>
                 {
-                    var next = CreateMiddlewareDelegate( middlewares );
+                    var next = CreateMiddlewarePipeline( middlewares );
                     await middleware.InvokeAsync( context, next );
                 };
 
-        private static Stack<ICrawlUrlMiddleware>? CreateMiddlewareStack( IServiceProvider services )
+        private static Stack<ICrawlerMiddleware>? CreateMiddlewareStack( IServiceProvider services )
         {
-            var middlewares = services.GetService<IEnumerable<ICrawlUrlMiddleware>>();
+            var middlewares = services.GetService<IEnumerable<ICrawlerMiddleware>>();
             if( middlewares?.Any() is not true )
             {
                 return null;
             }
 
             // TODO: sort by annotations
-            return new Stack<ICrawlUrlMiddleware>( middlewares.Reverse() );
+            return new Stack<ICrawlerMiddleware>( middlewares.Reverse() );
         }
 
     }

@@ -3,7 +3,7 @@
 
     /// <summary> Describes a service that may be configured in a pipeline that processes the crawl of a url. </summary>
     /// <see cref="CrawlUrlContext"/>
-    public interface ICrawlUrlMiddleware
+    public interface ICrawlerMiddleware
     {
 
         /// <summary> Handle a url crawl for the given <paramref name="context"/>. </summary>

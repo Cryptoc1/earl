@@ -10,8 +10,8 @@ namespace Earl.Agent
 {
 
     [Command( "earl", Description = "Earl Agent: executes request profiles." )]
-    [VersionOptionFromMember( "--version", MemberName = nameof( GetVersion ) )]
     [HelpOption]
+    [VersionOptionFromMember( "--version", MemberName = nameof( GetVersion ) )]
     public class Program
     {
 
@@ -34,8 +34,13 @@ namespace Earl.Agent
 
         private async Task OnExecuteAsync( IEarlCrawler crawler )
         {
-            var url = new Uri( "https://www.bizstream.com" );
+            var url = new Uri( "https://webscraper.io/test-sites/e-commerce/static" );
             var options = new AggressiveCrawlOptions { MaxRequestCount = 1000 };
+
+            /* if( UseSelenium )
+            {
+                options.UseSelenium();
+            } */
 
             var result = await crawler.CrawlAsync( url, options );
 

@@ -7,7 +7,7 @@ namespace Earl.Crawler.Infrastructure.Html
 {
 
     /// <summary> Supports the <see cref="IHtmlDocumentFeature"/>. </summary>
-    public class HtmlDocumentMiddleware : ICrawlUrlMiddleware
+    public class HtmlDocumentMiddleware : ICrawlerMiddleware
     {
 
         /// <inheritdoc/>

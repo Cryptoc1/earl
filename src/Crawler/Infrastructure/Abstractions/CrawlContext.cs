@@ -15,7 +15,7 @@ namespace Earl.Crawler.Infrastructure.Abstractions
 
         CancellationToken CrawlAborted,
         ICrawlOptions Options,
-        ConcurrentDictionary<Uri, CrawlRequestResult?> Requests,
+        ConcurrentDictionary<Uri, CrawlUrlResult?> Requests,
         ConcurrentQueue<Uri> UrlQueue
     );
 

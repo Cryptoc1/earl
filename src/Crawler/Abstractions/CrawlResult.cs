@@ -7,7 +7,8 @@
     public record CrawlResult
     (
         Uri Initiator,
-        IReadOnlyCollection<CrawlRequestResult> Results
+        IResultMetadataCollection Metadata,
+        IReadOnlyCollection<CrawlUrlResult> Results
     );
 
 }

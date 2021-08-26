@@ -41,7 +41,7 @@ namespace Earl.Crawler
 
                 cancellation,
                 options,
-                new ConcurrentDictionary<Uri, CrawlRequestResult?>( UriComparer.OrdinalIgnoreCase ),
+                new ConcurrentDictionary<Uri, CrawlUrlResult?>( UriComparer.OrdinalIgnoreCase ),
                 new ConcurrentQueue<Uri>( new[] { initiator } )
             );
 
@@ -50,6 +50,7 @@ namespace Earl.Crawler
 
             var result = new CrawlResult(
                 initiator,
+                new ResultMetadataCollection( Enumerable.Empty<object>() ),
                 context.Requests.Select( entry => entry.Value! )
                     .ToList()
                     .AsReadOnly()
@@ -136,18 +137,20 @@ namespace Earl.Crawler
             using var features = new CrawlerFeatureCollection();
             using var scope = serviceProvider.CreateScope();
 
+            var id = Guid.NewGuid();
             var urlContext = new CrawlUrlContext(
                 context,
                 features,
-                Guid.NewGuid(),
+                id,
+                new CrawlUrlResultBuilder( id, url ),
                 scope.ServiceProvider,
                 url
             );
 
-            var middleware = scope.ServiceProvider.GetRequiredService<ICrawlUrlMiddlewareInvoker>();
+            var middleware = scope.ServiceProvider.GetRequiredService<ICrawlerMiddlewareInvoker>();
             await middleware.InvokeAsync( urlContext );
 
-            var result = new CrawlRequestResult( urlContext.Url, urlContext.Id );
+            var result = urlContext.Result.Build();
             if( context.Requests.TryUpdate( url, result, null ) && context.Options.RequestDelay.HasValue )
             {
                 await Task.Delay( context.Options.RequestDelay.Value, context.CrawlAborted );
