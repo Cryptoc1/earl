@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <ItemGroup>
         <PackageReference Include="RazorLight" Version="2.0.0-rc.3" />
@@ -6,6 +6,12 @@
 
     <ItemGroup>
         <ProjectReference Include="$(SourceDirectory)\Crawler\Abstractions\Earl.Crawler.Abstractions.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="**\*.cshtml">
+            <CopyToOutputDirectory>false</CopyToOutputDirectory>
+        </EmbeddedResource>
     </ItemGroup>
 
 </Project>

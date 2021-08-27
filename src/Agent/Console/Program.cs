@@ -51,7 +51,7 @@ namespace Earl.Agent
             ); */
 
             var razor = new RazorLightEngineBuilder()
-                .UseEmbeddedResourcesProject( typeof( RazorCrawlReporter ).Assembly )
+                .UseEmbeddedResourcesProject( typeof( RazorCrawlReporter ) )
                 .UseMemoryCachingProvider()
                 .Build();
 

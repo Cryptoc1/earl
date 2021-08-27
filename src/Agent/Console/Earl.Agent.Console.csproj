@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
+        <PreserveCompilationContext>true</PreserveCompilationContext>
     </PropertyGroup>
 
     <ItemGroup>
@@ -13,5 +14,5 @@
     <ItemGroup>
         <ProjectReference Include="$(SourceDirectory)\Crawler\Crawler\Earl.Crawler.csproj" />
     </ItemGroup>
-    
+
 </Project>
