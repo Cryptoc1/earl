@@ -38,11 +38,6 @@ namespace Earl.Agent
             var url = new Uri( "https://webscraper.io/test-sites/e-commerce/static" );
             var options = new AggressiveCrawlOptions { MaxRequestCount = 1000 };
 
-            /* if( UseSelenium )
-            {
-                options.UseSelenium();
-            } */
-
             var results = new ConcurrentBag<CrawlUrlResult>();
             var reporter = new DelegateCrawlReporter(
                 result =>
