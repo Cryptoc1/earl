@@ -11,6 +11,8 @@
         <ProjectReference Include="$(SourceDirectory)\Crawler\Infrastructure\Html\Earl.Crawler.Infrastructure.Html.csproj" />
         <ProjectReference Include="$(SourceDirectory)\Crawler\Infrastructure\Selenium\Earl.Crawler.Infrastructure.Selenium.csproj" />
         <ProjectReference Include="$(SourceDirectory)\Crawler\Infrastructure\UrlScraper\Earl.Crawler.Infrastructure.UrlScraper.csproj" />
+
+        <ProjectReference Include="$(SourceDirectory)\Crawler\Reporting\Razor\Earl.Crawler.Reporting.Razor.csproj" />
     </ItemGroup>
 
 </Project>

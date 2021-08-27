@@ -31,6 +31,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Infrastructure
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Infrastructure.Selenium", "src\Crawler\Infrastructure\Selenium\Earl.Crawler.Infrastructure.Selenium.csproj", "{78605FC9-E09D-4DCD-8AAD-53D856D0A86B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Reporting", "Reporting", "{E425704C-49F7-4C6C-AB31-6309E05D9B82}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Reporting.Razor", "src\Crawler\Reporting\Razor\Earl.Crawler.Reporting.Razor.csproj", "{5910E5FF-80CF-41AC-A0C9-42BB2867E686}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +73,10 @@ Global
 		{78605FC9-E09D-4DCD-8AAD-53D856D0A86B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78605FC9-E09D-4DCD-8AAD-53D856D0A86B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78605FC9-E09D-4DCD-8AAD-53D856D0A86B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5910E5FF-80CF-41AC-A0C9-42BB2867E686}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5910E5FF-80CF-41AC-A0C9-42BB2867E686}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5910E5FF-80CF-41AC-A0C9-42BB2867E686}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5910E5FF-80CF-41AC-A0C9-42BB2867E686}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +93,8 @@ Global
 		{192CA967-9499-4D8E-BF64-C9911C26CE5C} = {3B10168F-CB56-409F-9A7A-20AB0CF71AB5}
 		{0643A2C8-2330-4CB5-9BEC-8396AE725A72} = {3B10168F-CB56-409F-9A7A-20AB0CF71AB5}
 		{78605FC9-E09D-4DCD-8AAD-53D856D0A86B} = {3B10168F-CB56-409F-9A7A-20AB0CF71AB5}
+		{E425704C-49F7-4C6C-AB31-6309E05D9B82} = {BFC493AF-B103-485C-82A3-83483C919824}
+		{5910E5FF-80CF-41AC-A0C9-42BB2867E686} = {E425704C-49F7-4C6C-AB31-6309E05D9B82}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95CB9206-4EC0-41AC-AEBC-C134144867DB}

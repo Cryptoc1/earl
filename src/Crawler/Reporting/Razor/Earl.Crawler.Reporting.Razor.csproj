@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <ItemGroup>
+        <PackageReference Include="RazorLight" Version="2.0.0-rc.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="$(SourceDirectory)\Crawler\Abstractions\Earl.Crawler.Abstractions.csproj" />
+    </ItemGroup>
+
+</Project>

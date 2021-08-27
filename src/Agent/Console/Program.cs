@@ -3,9 +3,12 @@ using System.Reflection;
 using Earl.Crawler;
 using Earl.Crawler.Abstractions;
 using Earl.Crawler.Configurations;
+using Earl.Crawler.Reporting.Razor;
 using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using RazorLight;
 
 namespace Earl.Agent
 {
@@ -39,14 +42,25 @@ namespace Earl.Agent
             var options = new AggressiveCrawlOptions { MaxRequestCount = 1000 };
 
             var results = new ConcurrentBag<CrawlUrlResult>();
-            var reporter = new DelegateCrawlReporter(
+            /* var reporter = new DelegateCrawlReporter(
                 result =>
                 {
                     results.Add( result );
                     return Task.CompletedTask;
                 }
-            );
+            ); */
 
+            var razor = new RazorLightEngineBuilder()
+                .UseEmbeddedResourcesProject( typeof( RazorCrawlReporter ).Assembly )
+                .UseMemoryCachingProvider()
+                .Build();
+
+            var reporterOptions = new RazorCrawlReporterOptions
+            {
+                OutputDirectory = @"C:\Users\cryptoc1\Desktop\crawler-tests"
+            };
+
+            var reporter = new RazorCrawlReporter( Options.Create( reporterOptions ), razor );
             await crawler.CrawlAsync( url, reporter, options );
         }
 
