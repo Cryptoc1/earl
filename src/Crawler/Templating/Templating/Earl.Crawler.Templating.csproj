@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <ProjectReference Include="$(SourceDirectory)\Crawler\Templating\Abstractions\Earl.Crawler.Templating.Abstractions.csproj" />
+    </ItemGroup>
+
+</Project>

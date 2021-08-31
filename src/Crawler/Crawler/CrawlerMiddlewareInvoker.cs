@@ -1,4 +1,4 @@
-﻿using Earl.Crawler.Infrastructure.Abstractions;
+﻿using Earl.Crawler.Middleware.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Earl.Crawler
@@ -9,6 +9,11 @@ namespace Earl.Crawler
 
         public async Task InvokeAsync( CrawlUrlContext context )
         {
+            if( context is null )
+            {
+                throw new ArgumentNullException( nameof( context ) );
+            }
+
             var middlewares = CreateMiddlewareStack( context.Services );
             if( middlewares is null )
             {

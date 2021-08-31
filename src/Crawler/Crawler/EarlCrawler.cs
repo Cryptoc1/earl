@@ -2,7 +2,7 @@
 using System.Threading.Tasks.Dataflow;
 using ConcurrentCollections;
 using Earl.Crawler.Abstractions;
-using Earl.Crawler.Infrastructure.Abstractions;
+using Earl.Crawler.Middleware.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -26,31 +26,41 @@ namespace Earl.Crawler
         }
 
         /// <inheritdoc/>
-        public async Task CrawlAsync( Uri initiator, ICrawlReporter reporter, ICrawlOptions? options = null, CancellationToken cancellation = default )
+        public async Task CrawlAsync( Uri initiator, ICrawlHandler handler, ICrawlOptions? options = null, CancellationToken cancellation = default )
         {
-            if( options?.Timeout is not null )
+            if( initiator is null )
             {
-                cancellation = CancellationTokenSource.CreateLinkedTokenSource(
-                    cancellation,
-                    new CancellationTokenSource( options.Timeout.Value! ).Token
-                ).Token;
+                throw new ArgumentNullException( nameof( initiator ) );
             }
+
+            if( handler is null )
+            {
+                throw new ArgumentNullException( nameof( handler ) );
+            }
+
+            using var timeoutSource = options?.Timeout is not null
+                ? new CancellationTokenSource( options!.Timeout!.Value )
+                : null;
+
+            using var abortSource = timeoutSource is not null
+                ? CancellationTokenSource.CreateLinkedTokenSource( cancellation, timeoutSource.Token )
+                : CancellationTokenSource.CreateLinkedTokenSource( cancellation );
 
             options ??= new CrawlOptions();
             var context = new CrawlContext(
                 initiator,
 
-                cancellation,
+                abortSource.Token,
                 options,
                 new ConcurrentHashSet<Uri>( UriComparer.OrdinalIgnoreCase ),
                 new ConcurrentQueue<Uri>( new[] { initiator } )
             );
 
             logger.LogInformation( $"Starting crawl: '{initiator}', {options}." );
-            await CrawlAsync( context, reporter );
+            await CrawlAsync( context, handler );
         }
 
-        private async Task CrawlAsync( CrawlContext context, ICrawlReporter reporter )
+        private async Task CrawlAsync( CrawlContext context, ICrawlHandler handler )
         {
             while( !context.UrlQueue.IsEmpty )
             {
@@ -92,7 +102,7 @@ namespace Earl.Crawler
                 }
 
                 var processor = new ActionBlock<Uri>(
-                    async url => await CrawlUrlAsync( url, context, reporter ),
+                    async url => await CrawlUrlAsync( url, context, handler ),
                     new()
                     {
                         CancellationToken = context.CrawlAborted,
@@ -115,7 +125,7 @@ namespace Earl.Crawler
             }
         }
 
-        private async Task CrawlUrlAsync( Uri url, CrawlContext context, ICrawlReporter reporter )
+        private async Task CrawlUrlAsync( Uri url, CrawlContext context, ICrawlHandler handler )
         {
             if( context.TouchedUrls.Contains( url ) )
             {
@@ -125,29 +135,32 @@ namespace Earl.Crawler
 
             logger.LogDebug( $"Processing Url: '{url}'." );
 
-            using var features = new CrawlerFeatureCollection();
-            using var scope = serviceProvider.CreateScope();
+            var features = new CrawlerFeatureCollection();
+            var scope = serviceProvider.CreateScope();
 
             var id = Guid.NewGuid();
-            var urlContext = new CrawlUrlContext(
-                context,
-                features,
-                id,
-                new CrawlUrlResultBuilder( id, url ),
-                scope.ServiceProvider,
-                url
-            );
+            var result = new CrawlUrlResultBuilder( id, url );
 
-            var middleware = scope.ServiceProvider.GetRequiredService<ICrawlerMiddlewareInvoker>();
-            await middleware.InvokeAsync( urlContext );
-
-            if( context.Options.RequestDelay.HasValue )
+            try
             {
-                await Task.Delay( context.Options.RequestDelay.Value, context.CrawlAborted );
+                var middleware = scope.ServiceProvider.GetRequiredService<ICrawlerMiddlewareInvoker>();
+
+                var urlContext = new CrawlUrlContext( context, features, id, result, scope.ServiceProvider, url );
+                await middleware.InvokeAsync( urlContext );
+            }
+            finally
+            {
+                await features.DisposeAsync();
+                features.Dispose();
+                scope.Dispose();
+
+                if( context.Options.RequestDelay.HasValue )
+                {
+                    await Task.Delay( context.Options.RequestDelay.Value, context.CrawlAborted );
+                }
             }
 
-            var result = urlContext.Result.Build();
-            await reporter.OnUrlCrawlComplete( result );
+            await handler.OnCrawlUrlResult( result.Build(), context.CrawlAborted );
         }
 
     }

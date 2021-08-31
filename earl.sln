@@ -15,25 +15,31 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Abstractions",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EC588A5B-208D-4427-9528-447A0A09ED88}"
 	ProjectSection(SolutionItems) = preProject
+		src\CodeStyleSuppressions.cs = src\CodeStyleSuppressions.cs
 		src\Directory.Build.props = src\Directory.Build.props
 		src\Directory.Build.targets = src\Directory.Build.targets
+		src\StandardRules.ruleset = src\StandardRules.ruleset
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{3B10168F-CB56-409F-9A7A-20AB0CF71AB5}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Middleware", "Middleware", "{3B10168F-CB56-409F-9A7A-20AB0CF71AB5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Infrastructure.Abstractions", "src\Crawler\Infrastructure\Abstractions\Earl.Crawler.Infrastructure.Abstractions.csproj", "{6278AAA6-5D29-4F7B-9FC8-F802EC55CC5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Middleware.Abstractions", "src\Crawler\Middleware\Abstractions\Earl.Crawler.Middleware.Abstractions.csproj", "{6278AAA6-5D29-4F7B-9FC8-F802EC55CC5E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Infrastructure.Html", "src\Crawler\Infrastructure\Html\Earl.Crawler.Infrastructure.Html.csproj", "{F7569B19-0192-42E8-8BC7-E6CBC784D777}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Middleware.Html", "src\Crawler\Middleware\Html\Earl.Crawler.Middleware.Html.csproj", "{F7569B19-0192-42E8-8BC7-E6CBC784D777}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Infrastructure.Http", "src\Crawler\Infrastructure\Http\Earl.Crawler.Infrastructure.Http.csproj", "{192CA967-9499-4D8E-BF64-C9911C26CE5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Middleware.Http", "src\Crawler\Middleware\Http\Earl.Crawler.Middleware.Http.csproj", "{192CA967-9499-4D8E-BF64-C9911C26CE5C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Infrastructure.UrlScraper", "src\Crawler\Infrastructure\UrlScraper\Earl.Crawler.Infrastructure.UrlScraper.csproj", "{0643A2C8-2330-4CB5-9BEC-8396AE725A72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Middleware.Selenium", "src\Crawler\Middleware\Selenium\Earl.Crawler.Middleware.Selenium.csproj", "{78605FC9-E09D-4DCD-8AAD-53D856D0A86B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Infrastructure.Selenium", "src\Crawler\Infrastructure\Selenium\Earl.Crawler.Infrastructure.Selenium.csproj", "{78605FC9-E09D-4DCD-8AAD-53D856D0A86B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templating", "Templating", "{E425704C-49F7-4C6C-AB31-6309E05D9B82}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Reporting", "Reporting", "{E425704C-49F7-4C6C-AB31-6309E05D9B82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Templating", "src\Crawler\Templating\Templating\Earl.Crawler.Templating.csproj", "{37DE52B4-1E57-4056-BDD6-CD5382D4ADAD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Reporting.Razor", "src\Crawler\Reporting\Razor\Earl.Crawler.Reporting.Razor.csproj", "{5910E5FF-80CF-41AC-A0C9-42BB2867E686}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Templating.Abstractions", "src\Crawler\Templating\Abstractions\Earl.Crawler.Templating.Abstractions.csproj", "{8E11DACB-AF77-4ADA-BE56-575B31FFC0B6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Templating.DefaultTemplate", "src\Crawler\Templating\DefaultTemplate\Earl.Crawler.Templating.DefaultTemplate.csproj", "{D18E5CC9-EE18-4DA8-AE33-288227C5A740}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Middleware.UrlScraping", "src\Crawler\Middleware\UrlScraping\Earl.Crawler.Middleware.UrlScraping.csproj", "{BDA1D0A8-2583-406A-AC36-3295620D4A39}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,18 +71,26 @@ Global
 		{192CA967-9499-4D8E-BF64-C9911C26CE5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{192CA967-9499-4D8E-BF64-C9911C26CE5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{192CA967-9499-4D8E-BF64-C9911C26CE5C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0643A2C8-2330-4CB5-9BEC-8396AE725A72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0643A2C8-2330-4CB5-9BEC-8396AE725A72}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0643A2C8-2330-4CB5-9BEC-8396AE725A72}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0643A2C8-2330-4CB5-9BEC-8396AE725A72}.Release|Any CPU.Build.0 = Release|Any CPU
 		{78605FC9-E09D-4DCD-8AAD-53D856D0A86B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{78605FC9-E09D-4DCD-8AAD-53D856D0A86B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78605FC9-E09D-4DCD-8AAD-53D856D0A86B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78605FC9-E09D-4DCD-8AAD-53D856D0A86B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5910E5FF-80CF-41AC-A0C9-42BB2867E686}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5910E5FF-80CF-41AC-A0C9-42BB2867E686}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5910E5FF-80CF-41AC-A0C9-42BB2867E686}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5910E5FF-80CF-41AC-A0C9-42BB2867E686}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37DE52B4-1E57-4056-BDD6-CD5382D4ADAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37DE52B4-1E57-4056-BDD6-CD5382D4ADAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37DE52B4-1E57-4056-BDD6-CD5382D4ADAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37DE52B4-1E57-4056-BDD6-CD5382D4ADAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E11DACB-AF77-4ADA-BE56-575B31FFC0B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E11DACB-AF77-4ADA-BE56-575B31FFC0B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E11DACB-AF77-4ADA-BE56-575B31FFC0B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E11DACB-AF77-4ADA-BE56-575B31FFC0B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D18E5CC9-EE18-4DA8-AE33-288227C5A740}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D18E5CC9-EE18-4DA8-AE33-288227C5A740}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D18E5CC9-EE18-4DA8-AE33-288227C5A740}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D18E5CC9-EE18-4DA8-AE33-288227C5A740}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDA1D0A8-2583-406A-AC36-3295620D4A39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDA1D0A8-2583-406A-AC36-3295620D4A39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDA1D0A8-2583-406A-AC36-3295620D4A39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDA1D0A8-2583-406A-AC36-3295620D4A39}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,10 +105,12 @@ Global
 		{6278AAA6-5D29-4F7B-9FC8-F802EC55CC5E} = {3B10168F-CB56-409F-9A7A-20AB0CF71AB5}
 		{F7569B19-0192-42E8-8BC7-E6CBC784D777} = {3B10168F-CB56-409F-9A7A-20AB0CF71AB5}
 		{192CA967-9499-4D8E-BF64-C9911C26CE5C} = {3B10168F-CB56-409F-9A7A-20AB0CF71AB5}
-		{0643A2C8-2330-4CB5-9BEC-8396AE725A72} = {3B10168F-CB56-409F-9A7A-20AB0CF71AB5}
 		{78605FC9-E09D-4DCD-8AAD-53D856D0A86B} = {3B10168F-CB56-409F-9A7A-20AB0CF71AB5}
 		{E425704C-49F7-4C6C-AB31-6309E05D9B82} = {BFC493AF-B103-485C-82A3-83483C919824}
-		{5910E5FF-80CF-41AC-A0C9-42BB2867E686} = {E425704C-49F7-4C6C-AB31-6309E05D9B82}
+		{37DE52B4-1E57-4056-BDD6-CD5382D4ADAD} = {E425704C-49F7-4C6C-AB31-6309E05D9B82}
+		{8E11DACB-AF77-4ADA-BE56-575B31FFC0B6} = {E425704C-49F7-4C6C-AB31-6309E05D9B82}
+		{D18E5CC9-EE18-4DA8-AE33-288227C5A740} = {E425704C-49F7-4C6C-AB31-6309E05D9B82}
+		{BDA1D0A8-2583-406A-AC36-3295620D4A39} = {3B10168F-CB56-409F-9A7A-20AB0CF71AB5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95CB9206-4EC0-41AC-AEBC-C134144867DB}

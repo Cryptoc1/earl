@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <PublishChromeDriver>true</PublishChromeDriver>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Selenium.Support" Version="4.0.0-*" />
+        <PackageReference Include="Selenium.WebDriver" Version="4.0.0-*" />
+
+        <!-- TODO: handle transitives better -->
+        <PackageReference Include="Selenium.WebDriver.ChromeDriver" Version="*" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="$(SourceDirectory)\Crawler\Middleware\Abstractions\Earl.Crawler.Middleware.Abstractions.csproj" />
+    </ItemGroup>
+
+</Project>

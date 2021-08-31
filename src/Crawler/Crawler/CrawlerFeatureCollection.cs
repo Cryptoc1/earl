@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using Earl.Crawler.Infrastructure.Abstractions;
+using Earl.Crawler.Middleware.Abstractions;
 
 namespace Earl.Crawler
 {
@@ -93,7 +93,8 @@ namespace Earl.Crawler
 
         /// <inheritdoc/>
         public IEnumerator<KeyValuePair<Type, object>> GetEnumerator( )
-            => features?.GetEnumerator();
+            => ( features ?? Enumerable.Empty<KeyValuePair<Type, object>>() )
+                .GetEnumerator();
 
         /// <inheritdoc/>
         public void Set<TFeature>( TFeature? instance )

@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <ProjectReference Include="$(SourceDirectory)\Crawler\Templating\Abstractions\Earl.Crawler.Templating.Abstractions.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="client-ui\src\" />
+
+        <EmbeddedResource Include="Views\**\*.cshtml" />
+        <EmbeddedResource Include="wwwroot\**\*.css" />
+        <EmbeddedResource Include="wwwroot\**\*.js" />
+    </ItemGroup>
+
+</Project>
