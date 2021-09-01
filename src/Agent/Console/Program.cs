@@ -41,26 +41,17 @@ namespace Earl.Agent
             var url = new Uri( "https://webscraper.io/test-sites/e-commerce/static" );
             var options = new AggressiveCrawlOptions { MaxRequestCount = 1000 };
 
-            /* var results = new ConcurrentBag<CrawlUrlResult>();
-            var reporter = new DelegateCrawlReporter(
-                result =>
-                {
-                    results.Add( result );
-                    return Task.CompletedTask;
-                }
-            ); */
-
             var razor = new RazorLightEngineBuilder()
                 .UseEmbeddedResourcesProject( typeof( DefaultTemplateIdentifier ) )
                 .UseMemoryCachingProvider()
                 .Build();
 
-            var templateOptions = new TemplateCrawlHandlerOptions
+            var handlerOptions = new TemplateCrawlHandlerOptions
             {
                 OutputDirectory = @"C:\Users\cryptoc1\Desktop\crawler-results"
             };
 
-            var handler = new TemplateCrawlHandler( Options.Create( templateOptions ), razor );
+            var handler = new TemplateCrawlHandler( Options.Create( handlerOptions ), razor );
             await crawler.CrawlAsync( url, handler, options );
         }
 

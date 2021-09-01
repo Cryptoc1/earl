@@ -8,8 +8,7 @@
         <Folder Include="client-ui\src\" />
 
         <EmbeddedResource Include="Views\**\*.cshtml" />
-        <EmbeddedResource Include="wwwroot\**\*.css" />
-        <EmbeddedResource Include="wwwroot\**\*.js" />
+        <EmbeddedResource Include="wwwroot\**\*" />
     </ItemGroup>
 
 </Project>

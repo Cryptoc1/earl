@@ -4,7 +4,7 @@
     public static class TemplatingStrings
     {
 
-        public const string ReportViewName = "Views.Report";
+        public const string ReportViewName = "Views.Report.Index";
 
     }
 

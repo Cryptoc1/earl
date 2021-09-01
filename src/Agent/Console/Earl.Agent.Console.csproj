@@ -3,6 +3,7 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <PreserveCompilationContext>true</PreserveCompilationContext>
+        <PreserveCompilationReferences>true</PreserveCompilationReferences>
     </PropertyGroup>
 
     <ItemGroup>
