@@ -41,6 +41,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Templating.Def
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Middleware.UrlScraping", "src\Crawler\Middleware\UrlScraping\Earl.Crawler.Middleware.UrlScraping.csproj", "{BDA1D0A8-2583-406A-AC36-3295620D4A39}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Templating.Razor", "src\Crawler\Templating\Razor\Earl.Crawler.Templating.Razor.csproj", "{B39F6C55-6E36-4CDE-AC21-B8544238D6CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{BDA1D0A8-2583-406A-AC36-3295620D4A39}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDA1D0A8-2583-406A-AC36-3295620D4A39}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDA1D0A8-2583-406A-AC36-3295620D4A39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B39F6C55-6E36-4CDE-AC21-B8544238D6CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B39F6C55-6E36-4CDE-AC21-B8544238D6CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B39F6C55-6E36-4CDE-AC21-B8544238D6CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B39F6C55-6E36-4CDE-AC21-B8544238D6CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -111,6 +117,7 @@ Global
 		{8E11DACB-AF77-4ADA-BE56-575B31FFC0B6} = {E425704C-49F7-4C6C-AB31-6309E05D9B82}
 		{D18E5CC9-EE18-4DA8-AE33-288227C5A740} = {E425704C-49F7-4C6C-AB31-6309E05D9B82}
 		{BDA1D0A8-2583-406A-AC36-3295620D4A39} = {3B10168F-CB56-409F-9A7A-20AB0CF71AB5}
+		{B39F6C55-6E36-4CDE-AC21-B8544238D6CD} = {E425704C-49F7-4C6C-AB31-6309E05D9B82}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95CB9206-4EC0-41AC-AEBC-C134144867DB}

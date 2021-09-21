@@ -1,22 +1,31 @@
-﻿using Earl.Crawler.Abstractions;
+﻿using System.IO.Pipelines;
+using Earl.Crawler.Abstractions;
 using Earl.Crawler.Templating.Abstractions;
 using Microsoft.Extensions.Options;
-using RazorLight;
 
-namespace Earl.Crawler.Reporting.Templating
+namespace Earl.Crawler.Templating
 {
 
     public class TemplateCrawlHandler : ICrawlHandler
     {
         #region Fields
+        private readonly ITemplateController controller;
+        private readonly ITemplateResultExecutor executor;
+        private readonly ITemplateNamePolicy namePolicy;
         private readonly IOptions<TemplateCrawlHandlerOptions> options;
-        private readonly IRazorLightEngine razor;
         #endregion
 
-        public TemplateCrawlHandler( IOptions<TemplateCrawlHandlerOptions> options, IRazorLightEngine razor )
+        public TemplateCrawlHandler(
+            ITemplateController controller,
+            ITemplateResultExecutor executor,
+            ITemplateNamePolicy namePolicy,
+            IOptions<TemplateCrawlHandlerOptions> options
+        )
         {
+            this.controller = controller;
+            this.executor = executor;
+            this.namePolicy = namePolicy;
             this.options = options;
-            this.razor = razor;
         }
 
         /// <inheritdoc/>
@@ -27,17 +36,16 @@ namespace Earl.Crawler.Reporting.Templating
                 throw new ArgumentNullException( nameof( result ) );
             }
 
-            var outputDirectory = options.Value.OutputDirectory;
-            if( string.IsNullOrWhiteSpace( outputDirectory ) )
-            {
-                throw new InvalidOperationException( $"{nameof( TemplateCrawlHandlerOptions.OutputDirectory )} is required." );
-            }
+            var (fileName, fileExtension) = namePolicy.GetNames( result );
+            var filePath = Path.Combine( options.Value.OutputDirectory, $"{fileName}.{fileExtension}" );
 
-            using var output = new StreamWriter( Path.Combine( options.Value.OutputDirectory, $"{result.Id}.html" ), false );
-            var report = await razor.CompileRenderAsync( TemplatingStrings.ReportViewName, result );
+            using var file = new FileStream( filePath, FileMode.Create, FileAccess.Write );
+            var output = PipeWriter.Create( file );
 
-            await output.WriteAsync( report.AsMemory(), cancellation );
-            await output.FlushAsync();
+            var template = await controller.InvokeAsync( result, cancellation );
+            await executor.ExecuteAsync( template, output, cancellation );
+
+            await output.CompleteAsync();
         }
 
     }

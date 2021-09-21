@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Earl.Crawler
+﻿namespace Earl.Crawler
 {
     public class UriComparer : IComparer<Uri>, IEqualityComparer<Uri>
     {
@@ -24,7 +22,7 @@ namespace Earl.Crawler
             => comparer.Equals( uri?.ToString(), anotherUri?.ToString() );
 
         /// <inheritdoc/>
-        public int GetHashCode( [DisallowNull] Uri uri )
+        public int GetHashCode( Uri uri )
         {
             if( uri is null )
             {
