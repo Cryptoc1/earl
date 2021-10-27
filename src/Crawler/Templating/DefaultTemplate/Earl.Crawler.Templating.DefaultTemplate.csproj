@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <ProjectReference Include="$(SourceDirectory)\Crawler\Templating\Razor\Earl.Crawler.Templating.Razor.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="client-ui\src\" />
+
+        <EmbeddedResource Include="Views\**\*.cshtml" />
+        <EmbeddedResource Include="wwwroot\**\*" />
+    </ItemGroup>
+
+</Project>

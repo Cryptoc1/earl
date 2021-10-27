@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <ProjectReference Include="..\Html\Earl.Crawler.Middleware.Html.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -2,6 +2,8 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
+        <PreserveCompilationContext>true</PreserveCompilationContext>
+        <PreserveCompilationReferences>true</PreserveCompilationReferences>
     </PropertyGroup>
 
     <ItemGroup>
@@ -12,6 +14,8 @@
 
     <ItemGroup>
         <ProjectReference Include="$(SourceDirectory)\Crawler\Crawler\Earl.Crawler.csproj" />
+        <ProjectReference Include="$(SourceDirectory)\Crawler\Templating\Templating\Earl.Crawler.Templating.csproj" />
+        <ProjectReference Include="$(SourceDirectory)\Crawler\Templating\DefaultTemplate\Earl.Crawler.Templating.DefaultTemplate.csproj" />
     </ItemGroup>
-    
+
 </Project>

@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+      <PackageReference Include="System.IO.Pipelines" Version="6.0.0-*" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="$(SourceDirectory)\Crawler\Abstractions\Earl.Crawler.Abstractions.csproj" />
+    </ItemGroup>
+
+</Project>
