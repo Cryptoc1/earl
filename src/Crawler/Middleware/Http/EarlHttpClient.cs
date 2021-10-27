@@ -15,7 +15,7 @@ namespace Earl.Crawler.Middleware.Http
         /// <inheritdoc/>
         public async Task<EarlHttpResponseMessage> GetAsync( Uri url, CancellationToken cancellation = default )
         {
-            var response = await client.GetAsync( url, cancellation );
+            var response = await client.GetAsync( url, HttpCompletionOption.ResponseContentRead, cancellation );
             return ( response as EarlHttpResponseMessage )!;
         }
 

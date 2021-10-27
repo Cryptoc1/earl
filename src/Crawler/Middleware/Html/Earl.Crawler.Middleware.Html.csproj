@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <ItemGroup>
-        <PackageReference Include="AngleSharp" Version="0.16.0" />
+        <PackageReference Include="AngleSharp" Version="0.16.1" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="$(SourceDirectory)\Crawler\Middleware\Abstractions\Earl.Crawler.Middleware.Abstractions.csproj" />
-        <ProjectReference Include="..\Http\Earl.Crawler.Middleware.Http.csproj" />
+        <ProjectReference Include="$(SourceDirectory)\Crawler\Middleware\Http\Earl.Crawler.Middleware.Http.csproj" />
     </ItemGroup>
 
 </Project>

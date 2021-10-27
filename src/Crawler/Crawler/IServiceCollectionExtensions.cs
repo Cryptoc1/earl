@@ -7,8 +7,6 @@ using Earl.Crawler.Middleware.Selenium;
 using Earl.Crawler.Middleware.UrlScraping;
 using Earl.Crawler.Middleware.UrlScraping.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.IO;
 
 namespace Earl.Crawler
 {
@@ -22,8 +20,6 @@ namespace Earl.Crawler
             {
                 throw new ArgumentNullException( nameof( services ) );
             }
-
-            services.TryAddSingleton( _ => new RecyclableMemoryStreamManager() );
 
             services.AddTransient<EarlHttpMessageHandler>();
             services.AddHttpClient<IEarlHttpClient, EarlHttpClient>()

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Threading.Tasks.Dataflow;
-using ConcurrentCollections;
+using Axion.Collections.Concurrent;
 using Earl.Crawler.Abstractions;
 using Earl.Crawler.Middleware.Abstractions;
 using Microsoft.Extensions.DependencyInjection;

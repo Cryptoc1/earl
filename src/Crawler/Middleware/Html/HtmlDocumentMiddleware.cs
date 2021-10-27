@@ -1,7 +1,9 @@
-﻿using AngleSharp;
+﻿using System.Net.Http.Headers;
+using AngleSharp;
 using AngleSharp.Html.Dom;
 using Earl.Crawler.Middleware.Abstractions;
 using Earl.Crawler.Middleware.Http.Abstractions;
+using Microsoft.Extensions.Primitives;
 
 namespace Earl.Crawler.Middleware.Html
 {
@@ -28,6 +30,7 @@ namespace Earl.Crawler.Middleware.Html
             var document = await GetDocumentAsync( responseFeature!, context.CrawlContext.CrawlAborted );
             if( document is not null )
             {
+                // NOTE: feature is disposed by the context
                 context.Features.Set<IHtmlDocumentFeature?>( new HtmlDocumentFeature( document ) );
             }
 
@@ -42,15 +45,18 @@ namespace Earl.Crawler.Middleware.Html
                 throw new ArgumentNullException( nameof( feature ) );
             }
 
-            var content = feature.Body;
+            using var content = await feature.Response.Content.ReadAsStreamAsync( cancellation );
             var document = await BrowsingContext.New()
                 .OpenAsync(
                     response =>
                     {
-                        response.Status( feature.StatusCode )
-                            .Address( feature.RequestedUrl );
+                        response.Status( feature.Response.StatusCode )
+                            .Address( feature.Response.RequestMessage!.RequestUri );
 
-                        foreach( var header in feature.Headers )
+                        var headers = MapHeaders( feature.Response.Content.Headers )
+                            .Concat( MapHeaders( feature.Response.Headers ) );
+
+                        foreach( var header in headers )
                         {
                             foreach( var value in header.Value )
                             {
@@ -67,12 +73,16 @@ namespace Earl.Crawler.Middleware.Html
             return document as IHtmlDocument;
         }
 
+        private static IReadOnlyDictionary<string, StringValues> MapHeaders( HttpHeaders headers )
+            => headers.AsEnumerable()
+                .ToDictionary(
+                    entry => entry.Key,
+                    entry => new StringValues( entry.Value.ToArray() )
+                );
+
         private record HtmlDocumentFeature( IHtmlDocument Document ) : IHtmlDocumentFeature, IDisposable
         {
-
-            public void Dispose( )
-                => Document?.Dispose();
-
+            public void Dispose( ) => Document?.Dispose();
         }
     }
 
