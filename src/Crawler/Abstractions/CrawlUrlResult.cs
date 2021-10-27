@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Earl.Crawler.Abstractions
+﻿namespace Earl.Crawler.Abstractions
 {
 
     /// <summary> Represents the result of a crawled url. </summary>

@@ -24,7 +24,7 @@ namespace Earl.Crawler.Templating.DefaultTemplate
             }
 
             var viewModel = new ResultViewModel( result );
-            return Task.FromResult( viewModel as IResultViewModel );
+            return Task.FromResult<IResultViewModel>( viewModel );
         }
 
     }

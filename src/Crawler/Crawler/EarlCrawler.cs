@@ -77,7 +77,7 @@ namespace Earl.Crawler
                 var batchSize = Math.Max( 1, context.Options.MaxBatchSize );
                 var batch = new List<Uri>();
 
-                while( batch.Count < batchSize && context.UrlQueue.TryDequeue( out Uri? url ) )
+                while( batch.Count < batchSize && context.UrlQueue.TryDequeue( out var url ) )
                 {
                     if( context.TouchedUrls.Contains( url ) )
                     {
@@ -101,8 +101,12 @@ namespace Earl.Crawler
                     continue;
                 }
 
-                var processor = new ActionBlock<Uri>(
-                    async url => await CrawlUrlAsync( url, context, handler ),
+                var processor = new ActionBlock<(Uri, CrawlContext)>(
+                    async request =>
+                    {
+                        var (url, context) = request;
+                        await CrawlUrlAsync( url, context, handler ).ConfigureAwait( false );
+                    },
                     new()
                     {
                         CancellationToken = context.CrawlAborted,
@@ -113,15 +117,16 @@ namespace Earl.Crawler
 
                 foreach( var url in batch )
                 {
-                    await processor.SendAsync( url, context.CrawlAborted );
-                    if( context.Options.BatchDelay.HasValue )
-                    {
-                        await Task.Delay( context.Options.BatchDelay.Value, context.CrawlAborted );
-                    }
+                    await processor.SendAsync( (url, context), context.CrawlAborted );
                 }
 
                 processor.Complete();
                 await processor.Completion;
+
+                if( context.Options.BatchDelay.HasValue )
+                {
+                    await Task.Delay( context.Options.BatchDelay.Value, context.CrawlAborted );
+                }
             }
         }
 
@@ -160,7 +165,7 @@ namespace Earl.Crawler
                 }
             }
 
-            await handler.OnCrawlUrlResult( result.Build(), context.CrawlAborted );
+            await handler.OnCrawledUrl( result.Build(), context.CrawlAborted );
         }
 
     }

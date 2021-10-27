@@ -8,7 +8,14 @@ namespace Earl.Crawler.Templating.DefaultTemplate
     {
 
         public (string, string) GetNames( CrawlUrlResult result )
-            => (result.Id.ToString(), "html");
+        {
+            if( result is null )
+            {
+                throw new ArgumentNullException( nameof( result ) );
+            }
+
+            return (result.Id.ToString(), "html");
+        }
 
     }
 

@@ -29,7 +29,7 @@ namespace Earl.Crawler.Templating
         }
 
         /// <inheritdoc/>
-        public async Task OnCrawlUrlResult( CrawlUrlResult result, CancellationToken cancellation = default )
+        public async Task OnCrawledUrl( CrawlUrlResult result, CancellationToken cancellation = default )
         {
             if( result is null )
             {

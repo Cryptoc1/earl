@@ -35,4 +35,5 @@ namespace Earl.Crawler.Templating.Razor
         }
 
     }
+
 }

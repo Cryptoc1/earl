@@ -6,7 +6,7 @@ namespace Earl.Crawler
     public class DelegateCrawlHandler : ICrawlHandler
     {
         #region Fields
-        private readonly Func<CrawlUrlResult, CancellationToken, Task> onCrawlUrlResult;
+        private readonly Func<CrawlUrlResult, CancellationToken, Task> onCrawledUrl;
         #endregion
 
         public DelegateCrawlHandler( Func<CrawlUrlResult, Task> onCrawlUrlResult )
@@ -14,11 +14,11 @@ namespace Earl.Crawler
         {
         }
 
-        public DelegateCrawlHandler( Func<CrawlUrlResult, CancellationToken, Task> onCrawlUrlResult )
-            => this.onCrawlUrlResult = onCrawlUrlResult;
+        public DelegateCrawlHandler( Func<CrawlUrlResult, CancellationToken, Task> onCrawledUrl )
+            => this.onCrawledUrl = onCrawledUrl;
 
-        public Task OnCrawlUrlResult( CrawlUrlResult result, CancellationToken cancellation = default )
-            => onCrawlUrlResult( result, cancellation );
+        public Task OnCrawledUrl( CrawlUrlResult result, CancellationToken cancellation = default )
+            => onCrawledUrl( result, cancellation );
 
     }
 

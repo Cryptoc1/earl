@@ -4,7 +4,7 @@
     public interface ICrawlHandler
     {
 
-        Task OnCrawlUrlResult( CrawlUrlResult result, CancellationToken cancellation = default );
+        Task OnCrawledUrl( CrawlUrlResult result, CancellationToken cancellation = default );
 
     }
 
