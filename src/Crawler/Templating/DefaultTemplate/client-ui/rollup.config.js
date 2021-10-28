@@ -92,7 +92,7 @@ const configureBundle = (name, entryFile) => {
             }
           })
         ],
-        sourceMap: !production
+        sourceMap: true
       }),
       alias({
         entries: {

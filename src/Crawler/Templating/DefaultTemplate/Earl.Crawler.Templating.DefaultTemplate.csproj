@@ -1,14 +1,25 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+    <PropertyGroup>
+        <DefaultItemExcludes>$(DefaultItemExcludes);**\node_modules\**;</DefaultItemExcludes>
+    </PropertyGroup>
+
     <ItemGroup>
         <ProjectReference Include="$(SourceDirectory)\Crawler\Templating\Razor\Earl.Crawler.Templating.Razor.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-
         <EmbeddedResource Include="Views\**\*.cshtml" />
         <EmbeddedResource Include="wwwroot\**\*" />
-        <Folder Include="client-ui\src\styles\" />
+
+        <Compile Remove="client-ui\**\*" />
+        <Content Remove="client-ui\**\*" />
+        <EmbeddedResource Remove="client-ui\**\*" />
     </ItemGroup>
+
+    <Target Name="CompileClientUI" BeforeTargets="Build">
+        <Exec Command="npm ci" WorkingDirectory="$(MSBuildProjectDirectory)\client-ui" Condition=" '$(Configuration)' == 'Release' " />
+        <Exec Command="npm run build" WorkingDirectory="$(MSBuildProjectDirectory)\client-ui" />
+    </Target>
 
 </Project>
