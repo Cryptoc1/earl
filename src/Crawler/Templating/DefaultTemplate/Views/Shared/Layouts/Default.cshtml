@@ -5,6 +5,8 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+	<link href="/dist/master.min.css" rel="stylesheet" />
 	@await RenderSectionAsync("head", false)
 </head>
 
@@ -13,6 +15,7 @@
 		@RenderBody()
 	</main>
 
+	<script src="/dist/master.min.js"></script>
 	@await RenderSectionAsync("scripts", false)
 </body>
 

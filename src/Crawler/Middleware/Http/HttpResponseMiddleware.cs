@@ -1,5 +1,7 @@
-﻿using Earl.Crawler.Middleware.Abstractions;
+﻿using System.Collections.ObjectModel;
+using Earl.Crawler.Middleware.Abstractions;
 using Earl.Crawler.Middleware.Http.Abstractions;
+using Microsoft.Extensions.Primitives;
 
 namespace Earl.Crawler.Middleware.Http
 {
@@ -31,16 +33,26 @@ namespace Earl.Crawler.Middleware.Http
             using var feature = new HttpResponseFeature( response );
             context.Features.Set<IHttpResponseFeature?>( feature );
 
+            var metadata = new HttpResponseMetadata(
+                new ReadOnlyDictionary<string, StringValues>(
+                    response.Content.Headers.ToDictionary(
+                        header => header.Key,
+                        header => new StringValues( header.Value.ToArray() )
+                    )
+                ),
+                response.TotalDuration,
+                new ReadOnlyDictionary<string, StringValues>(
+                    response.Headers.ToDictionary(
+                        header => header.Key,
+                        header => new StringValues( header.Value.ToArray() )
+                    )
+                ),
+                response.ReasonPhrase,
+                ( int )response.StatusCode
+            );
+
+            context.Result.Metadata.Add( metadata );
             await next( context );
-        }
-
-        private record HttpResponseFeature( EarlHttpResponseMessage EarlResponse ) : IHttpResponseFeature, IDisposable
-        {
-            #region Properties
-            public HttpResponseMessage Response => EarlResponse;
-            #endregion
-
-            public void Dispose( ) => EarlResponse?.Dispose();
         }
     }
 

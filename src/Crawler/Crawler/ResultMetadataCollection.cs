@@ -19,25 +19,21 @@ namespace Earl.Crawler
         #endregion
 
         public ResultMetadataCollection( IEnumerable<object> items )
-        {
-            this.items = items.ToArray();
-        }
+            => this.items = items.ToArray();
 
         /// <inheritdoc/>
         public IEnumerator<object> GetEnumerator( )
             => ( ( IEnumerable<object> )items ).GetEnumerator();
 
         /// <inheritdoc/>
-        public T? GetMetadata<T>( ) where T : class
-        {
-            throw new NotImplementedException();
-        }
+        public T? GetMetadata<T>( )
+            where T : class
+            => throw new NotImplementedException();
 
         /// <inheritdoc/>
-        public IReadOnlyList<T> GetOrderedMetadata<T>( ) where T : class
-        {
-            throw new NotImplementedException();
-        }
+        public IReadOnlyList<T> GetOrderedMetadata<T>( )
+            where T : class
+            => throw new NotImplementedException();
 
         IEnumerator IEnumerable.GetEnumerator( )
             => GetEnumerator();

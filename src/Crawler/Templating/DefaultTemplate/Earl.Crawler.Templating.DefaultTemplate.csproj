@@ -5,10 +5,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="client-ui\src\" />
 
         <EmbeddedResource Include="Views\**\*.cshtml" />
         <EmbeddedResource Include="wwwroot\**\*" />
+        <Folder Include="client-ui\src\styles\" />
     </ItemGroup>
 
 </Project>

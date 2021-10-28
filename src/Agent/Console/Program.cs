@@ -9,6 +9,7 @@ using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
+using Microsoft.IO;
 using RazorLight;
 
 namespace Earl.Agent
@@ -25,6 +26,8 @@ namespace Earl.Agent
             services.AddMemoryCache();
             services.AddOptions();
             services.AddSingleton( PhysicalConsole.Singleton );
+
+            services.AddSingleton<RecyclableMemoryStreamManager>( _ => new RecyclableMemoryStreamManager() );
 
             //services.AddRazorLight()
             //    .UseEarlTemplateProject<DefaultTemplateIdentifier>()
@@ -44,7 +47,7 @@ namespace Earl.Agent
                 .ConfigureServices( ( context, services ) => ConfigureServices( services ) )
                 .RunCommandLineApplicationAsync<Program>( args );
 
-        private async Task OnExecuteAsync( IEarlCrawler crawler )
+        private async Task OnExecuteAsync( IEarlCrawler crawler, RecyclableMemoryStreamManager streamManager )
         {
             var options = new TemplateCrawlHandlerOptions
             {
@@ -57,7 +60,7 @@ namespace Earl.Agent
                 .Build();
 
             var controller = new DefaultTemplateController();
-            var executor = new ViewTemplateResultExecutor( razor );
+            var executor = new ViewTemplateResultExecutor( razor, streamManager );
             var namePolicy = new DefaultTemplateNamePolicy();
 
             var handler = new TemplateCrawlHandler(
