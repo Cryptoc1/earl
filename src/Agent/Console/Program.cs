@@ -11,6 +11,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.IO;
 using RazorLight;
+using WebMarkupMin.Core;
+using WebMarkupMin.NUglify;
 
 namespace Earl.Agent
 {
@@ -27,7 +29,22 @@ namespace Earl.Agent
             services.AddOptions();
             services.AddSingleton( PhysicalConsole.Singleton );
 
-            services.AddSingleton<RecyclableMemoryStreamManager>( _ => new RecyclableMemoryStreamManager() );
+            services.AddTransient<ICssMinifierFactory, NUglifyCssMinifierFactory>();
+            services.AddTransient<IJsMinifierFactory, NUglifyJsMinifierFactory>();
+            services.AddTransient<IMarkupMinifier>(
+                serviceProvider =>
+                {
+                    var cssMinifier = serviceProvider.GetService<ICssMinifierFactory>()
+                        ?.CreateMinifier();
+
+                    var jsMinifier = serviceProvider.GetService<IJsMinifierFactory>()
+                        ?.CreateMinifier();
+
+                    return new HtmlMinifier( cssMinifier: cssMinifier, jsMinifier: jsMinifier );
+                }
+            );
+
+            services.AddSingleton( _ => new RecyclableMemoryStreamManager() );
 
             //services.AddRazorLight()
             //    .UseEarlTemplateProject<DefaultTemplateIdentifier>()
@@ -47,7 +64,11 @@ namespace Earl.Agent
                 .ConfigureServices( ( context, services ) => ConfigureServices( services ) )
                 .RunCommandLineApplicationAsync<Program>( args );
 
-        private async Task OnExecuteAsync( IEarlCrawler crawler, RecyclableMemoryStreamManager streamManager )
+        private async Task OnExecuteAsync(
+            IMarkupMinifier markupMinifier,
+            IEarlCrawler crawler,
+            RecyclableMemoryStreamManager streamManager
+        )
         {
             var options = new TemplateCrawlHandlerOptions
             {
@@ -60,7 +81,7 @@ namespace Earl.Agent
                 .Build();
 
             var controller = new DefaultTemplateController();
-            var executor = new ViewTemplateResultExecutor( razor, streamManager );
+            var executor = new ViewTemplateResultExecutor( markupMinifier, razor, streamManager );
             var namePolicy = new DefaultTemplateNamePolicy();
 
             var handler = new TemplateCrawlHandler(

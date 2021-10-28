@@ -3,7 +3,6 @@ using Earl.Crawler.Templating.Abstractions;
 using Microsoft.IO;
 using RazorLight;
 using WebMarkupMin.Core;
-using WebMarkupMin.NUglify;
 
 namespace Earl.Crawler.Templating.Razor
 {
@@ -11,15 +10,18 @@ namespace Earl.Crawler.Templating.Razor
     public class ViewTemplateResultExecutor : TemplateResultExecutor<ViewTemplateResult>
     {
         #region Fields
+        private readonly IMarkupMinifier markupMinifier;
         private readonly IRazorLightEngine razor;
         private readonly RecyclableMemoryStreamManager streamManager;
         #endregion
 
         public ViewTemplateResultExecutor(
+            IMarkupMinifier markupMinifier,
             IRazorLightEngine razor,
             RecyclableMemoryStreamManager streamManager
         )
         {
+            this.markupMinifier = markupMinifier;
             this.razor = razor;
             this.streamManager = streamManager;
         }
@@ -50,21 +52,8 @@ namespace Earl.Crawler.Templating.Razor
             var content = await reader.ReadToEndAsync();
 
             using var writer = new StreamWriter( output.AsStream(), leaveOpen: true );
-            var minifier = new HtmlMinifier(
-                new()
-                {
-                    MinifyInlineCssCode = true,
-                    MinifyInlineJsCode = true,
-                    RemoveHtmlComments = true,
-                    RemoveHtmlCommentsFromScriptsAndStyles = true,
-                    RemoveOptionalEndTags = false,
-                    RemoveTagsWithoutContent = true
-                },
-                cssMinifier: new NUglifyCssMinifier(),
-                jsMinifier: new NUglifyJsMinifier()
-            );
 
-            var minification = minifier.Minify( content );
+            var minification = markupMinifier.Minify( content );
             await writer.WriteAsync( minification.MinifiedContent );
 
             await output.FlushAsync( cancellation );
