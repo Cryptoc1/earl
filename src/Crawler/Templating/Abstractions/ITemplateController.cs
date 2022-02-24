@@ -1,13 +1,8 @@
 ﻿using Earl.Crawler.Abstractions;
 
-namespace Earl.Crawler.Templating.Abstractions
+namespace Earl.Crawler.Templating.Abstractions;
+
+public interface ITemplateController
 {
-
-    public interface ITemplateController
-    {
-
-        Task<ITemplateResult> InvokeAsync( CrawlUrlResult result, CancellationToken cancellation = default );
-
-    }
-
+    Task<ITemplateResult> InvokeAsync( CrawlUrlResult result, CancellationToken cancellation = default );
 }

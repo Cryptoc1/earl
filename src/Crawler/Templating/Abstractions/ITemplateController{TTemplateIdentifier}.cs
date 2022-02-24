@@ -1,9 +1,6 @@
-﻿namespace Earl.Crawler.Templating.Abstractions
+﻿namespace Earl.Crawler.Templating.Abstractions;
+
+public interface ITemplateController<TTemplateIdentifier> : ITemplateController
+    where TTemplateIdentifier : TemplateIdentifier, new()
 {
-
-    public interface ITemplateController<TTemplateIdentifier> : ITemplateController
-        where TTemplateIdentifier : TemplateIdentifier, new()
-    {
-    }
-
 }

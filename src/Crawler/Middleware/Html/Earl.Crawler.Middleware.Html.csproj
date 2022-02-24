@@ -5,8 +5,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="$(SourceDirectory)\Crawler\Middleware\Abstractions\Earl.Crawler.Middleware.Abstractions.csproj" />
-        <ProjectReference Include="$(SourceDirectory)\Crawler\Middleware\Http\Earl.Crawler.Middleware.Http.csproj" />
+        <ProjectReference Include="$(SrcDirectory)\Crawler\Middleware\Abstractions\Earl.Crawler.Middleware.Abstractions.csproj" />
+        <ProjectReference Include="$(SrcDirectory)\Crawler\Middleware\Http\Earl.Crawler.Middleware.Http.csproj" />
     </ItemGroup>
 
 </Project>

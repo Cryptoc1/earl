@@ -1,11 +1,6 @@
-﻿namespace Earl.Crawler.Abstractions
+﻿namespace Earl.Crawler.Abstractions;
+
+public interface ICrawlHandler
 {
-
-    public interface ICrawlHandler
-    {
-
-        Task OnCrawledUrl( CrawlUrlResult result, CancellationToken cancellation = default );
-
-    }
-
+    Task OnCrawledUrl( CrawlUrlResult result, CancellationToken cancellation = default );
 }

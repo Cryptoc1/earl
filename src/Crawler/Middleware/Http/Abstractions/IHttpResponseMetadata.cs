@@ -1,21 +1,16 @@
 ﻿using Microsoft.Extensions.Primitives;
 
-namespace Earl.Crawler.Middleware.Http.Abstractions
+namespace Earl.Crawler.Middleware.Http.Abstractions;
+
+public interface IHttpResponseMetadata
 {
+    IReadOnlyDictionary<string, StringValues> ContentHeaders { get; }
 
-    public interface IHttpResponseMetadata
-    {
+    TimeSpan Duration { get; }
 
-        IReadOnlyDictionary<string, StringValues> ContentHeaders { get; }
+    IReadOnlyDictionary<string, StringValues> Headers { get; }
 
-        TimeSpan Duration { get; }
+    string? ReasonPhrase { get; }
 
-        IReadOnlyDictionary<string, StringValues> Headers { get; }
-
-        string? ReasonPhrase { get; }
-
-        int StatusCode { get; }
-
-    }
-
+    int StatusCode { get; }
 }

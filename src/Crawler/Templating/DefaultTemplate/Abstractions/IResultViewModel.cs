@@ -1,15 +1,10 @@
 ﻿using Earl.Crawler.Abstractions;
 
-namespace Earl.Crawler.Templating.DefaultTemplate.Abstractions
+namespace Earl.Crawler.Templating.DefaultTemplate.Abstractions;
+
+public interface IResultViewModel
 {
+    string Heading { get; }
 
-    public interface IResultViewModel
-    {
-
-        string Heading { get; }
-
-        CrawlUrlResult Result { get; }
-
-    }
-
+    CrawlUrlResult Result { get; }
 }

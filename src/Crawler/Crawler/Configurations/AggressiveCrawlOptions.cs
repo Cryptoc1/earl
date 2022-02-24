@@ -1,17 +1,12 @@
-﻿namespace Earl.Crawler.Configurations
+﻿namespace Earl.Crawler.Configurations;
+
+public class AggressiveCrawlOptions : CrawlOptions
 {
+    public override TimeSpan? BatchDelay { get; set; } = null;
 
-    public class AggressiveCrawlOptions : CrawlOptions
-    {
+    public override int MaxBatchSize { get; set; } = 500;
 
-        public override TimeSpan? BatchDelay { get; set; }
+    public override int MaxDegreeOfParallelism { get; set; } = Environment.ProcessorCount;
 
-        public override int MaxBatchSize { get; set; } = 500;
-
-        public override int MaxDegreeOfParallelism { get; set; } = Environment.ProcessorCount;
-
-        public override TimeSpan? RequestDelay { get; set; } = TimeSpan.FromMilliseconds( 250 );
-
-    }
-
+    public override TimeSpan? RequestDelay { get; set; } = TimeSpan.FromMilliseconds( 250 );
 }

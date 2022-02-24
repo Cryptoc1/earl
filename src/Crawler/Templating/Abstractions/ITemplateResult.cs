@@ -1,8 +1,5 @@
-﻿namespace Earl.Crawler.Templating.Abstractions
+﻿namespace Earl.Crawler.Templating.Abstractions;
+
+public interface ITemplateResult
 {
-
-    public interface ITemplateResult
-    {
-    }
-
 }

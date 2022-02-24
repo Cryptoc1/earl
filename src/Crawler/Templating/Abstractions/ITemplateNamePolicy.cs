@@ -1,13 +1,8 @@
 ﻿using Earl.Crawler.Abstractions;
 
-namespace Earl.Crawler.Templating.Abstractions
+namespace Earl.Crawler.Templating.Abstractions;
+
+public interface ITemplateNamePolicy
 {
-
-    public interface ITemplateNamePolicy
-    {
-
-        (string, string) GetNames( CrawlUrlResult result );
-
-    }
-
+    (string, string) GetNames( CrawlUrlResult result );
 }

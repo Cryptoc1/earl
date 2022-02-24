@@ -1,11 +1,6 @@
-﻿namespace Earl.Crawler.Middleware.Http
+﻿namespace Earl.Crawler.Middleware.Http;
+
+public class EarlHttpResponseMessage : HttpResponseMessage
 {
-
-    public class EarlHttpResponseMessage : HttpResponseMessage
-    {
-
-        public TimeSpan TotalDuration { get; set; }
-
-    }
-
+    public TimeSpan TotalDuration { get; set; }
 }

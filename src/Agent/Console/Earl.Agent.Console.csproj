@@ -13,9 +13,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="$(SourceDirectory)\Crawler\Crawler\Earl.Crawler.csproj" />
-        <ProjectReference Include="$(SourceDirectory)\Crawler\Templating\Templating\Earl.Crawler.Templating.csproj" />
-        <ProjectReference Include="$(SourceDirectory)\Crawler\Templating\DefaultTemplate\Earl.Crawler.Templating.DefaultTemplate.csproj" />
+        <ProjectReference Include="$(SrcDirectory)\Crawler\Crawler\Earl.Crawler.csproj" />
+        <ProjectReference Include="$(SrcDirectory)\Crawler\Templating\Templating\Earl.Crawler.Templating.csproj" />
+        <ProjectReference Include="$(SrcDirectory)\Crawler\Templating\DefaultTemplate\Earl.Crawler.Templating.DefaultTemplate.csproj" />
     </ItemGroup>
 
 </Project>

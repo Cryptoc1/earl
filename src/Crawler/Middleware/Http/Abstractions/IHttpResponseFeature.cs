@@ -1,11 +1,6 @@
-﻿namespace Earl.Crawler.Middleware.Http.Abstractions
+﻿namespace Earl.Crawler.Middleware.Http.Abstractions;
+
+public interface IHttpResponseFeature
 {
-
-    public interface IHttpResponseFeature
-    {
-
-        HttpResponseMessage Response { get; }
-
-    }
-
+    HttpResponseMessage Response { get; }
 }

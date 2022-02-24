@@ -6,11 +6,11 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="$(SourceDirectory)\Crawler\Abstractions\Earl.Crawler.Abstractions.csproj" />
-        <ProjectReference Include="$(SourceDirectory)\Crawler\Middleware\Html\Earl.Crawler.Middleware.Html.csproj" />
-        <ProjectReference Include="$(SourceDirectory)\Crawler\Middleware\Http\Earl.Crawler.Middleware.Http.csproj" />
-        <ProjectReference Include="$(SourceDirectory)\Crawler\Middleware\Selenium\Earl.Crawler.Middleware.Selenium.csproj" />
-        <ProjectReference Include="$(SourceDirectory)\Crawler\Middleware\UrlScraping\Earl.Crawler.Middleware.UrlScraping.csproj" />
+        <ProjectReference Include="$(SrcDirectory)\Crawler\Abstractions\Earl.Crawler.Abstractions.csproj" />
+        <ProjectReference Include="$(SrcDirectory)\Crawler\Middleware\Html\Earl.Crawler.Middleware.Html.csproj" />
+        <ProjectReference Include="$(SrcDirectory)\Crawler\Middleware\Http\Earl.Crawler.Middleware.Http.csproj" />
+        <ProjectReference Include="$(SrcDirectory)\Crawler\Middleware\Selenium\Earl.Crawler.Middleware.Selenium.csproj" />
+        <ProjectReference Include="$(SrcDirectory)\Crawler\Middleware\UrlScraping\Earl.Crawler.Middleware.UrlScraping.csproj" />
     </ItemGroup>
 
 </Project>

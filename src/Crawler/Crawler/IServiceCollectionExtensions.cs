@@ -8,37 +8,32 @@ using Earl.Crawler.Middleware.UrlScraping;
 using Earl.Crawler.Middleware.UrlScraping.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Earl.Crawler
+namespace Earl.Crawler;
+
+public static class IServiceCollectionExtensions
 {
-
-    public static class IServiceCollectionExtensions
+    public static IServiceCollection AddEarlCrawler( this IServiceCollection services )
     {
-
-        public static IServiceCollection AddEarlCrawler( this IServiceCollection services )
+        if( services is null )
         {
-            if( services is null )
-            {
-                throw new ArgumentNullException( nameof( services ) );
-            }
-
-            services.AddTransient<EarlHttpMessageHandler>();
-            services.AddHttpClient<IEarlHttpClient, EarlHttpClient>()
-                .AddHttpMessageHandler<EarlHttpMessageHandler>()
-                .SetHandlerLifetime( TimeSpan.FromMinutes( 5 ) );
-
-            services.AddTransient<IEarlCrawler, EarlCrawler>();
-            services.AddTransient<ICrawlerMiddlewareInvoker, CrawlerMiddlewareInvoker>();
-
-            services.AddScoped<ICrawlerMiddleware, HttpResponseMiddleware>();
-            services.AddScoped<ICrawlerMiddleware, HtmlDocumentMiddleware>();
-            services.AddScoped<ICrawlerMiddleware, SeleniumMiddleware>();
-
-            services.AddScoped<ICrawlerMiddleware, UrlScraperMiddleware>();
-            services.AddScoped<IUrlScraper, UrlScraper>();
-
-            return services;
+            throw new ArgumentNullException( nameof( services ) );
         }
 
-    }
+        services.AddTransient<EarlHttpMessageHandler>();
+        services.AddHttpClient<IEarlHttpClient, EarlHttpClient>()
+            .AddHttpMessageHandler<EarlHttpMessageHandler>()
+            .SetHandlerLifetime( TimeSpan.FromMinutes( 5 ) );
 
+        services.AddTransient<IEarlCrawler, EarlCrawler>();
+        services.AddTransient<ICrawlerMiddlewareInvoker, CrawlerMiddlewareInvoker>();
+
+        services.AddScoped<ICrawlerMiddleware, HttpResponseMiddleware>();
+        services.AddScoped<ICrawlerMiddleware, HtmlDocumentMiddleware>();
+        services.AddScoped<ICrawlerMiddleware, SeleniumMiddleware>();
+
+        services.AddScoped<ICrawlerMiddleware, UrlScraperMiddleware>();
+        services.AddScoped<IUrlScraper, UrlScraper>();
+
+        return services;
+    }
 }

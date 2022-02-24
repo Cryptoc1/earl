@@ -1,13 +1,8 @@
 ﻿using OpenQA.Selenium;
 
-namespace Earl.Crawler.Middleware.Selenium.Abstractions
+namespace Earl.Crawler.Middleware.Selenium.Abstractions;
+
+public interface ISeleniumFeature
 {
-
-    public interface ISeleniumFeature
-    {
-
-        IWebDriver Driver { get; }
-
-    }
-
+    IWebDriver Driver { get; }
 }
