@@ -7,7 +7,7 @@ public class UriComparer : IComparer<Uri>, IEqualityComparer<Uri>
     #endregion
 
     #region Properties
-    public static UriComparer OrdinalIgnoreCase = new( StringComparer.OrdinalIgnoreCase );
+    public static UriComparer OrdinalIgnoreCase { get; } = new( StringComparer.OrdinalIgnoreCase );
     #endregion
 
     public UriComparer( StringComparer comparer )

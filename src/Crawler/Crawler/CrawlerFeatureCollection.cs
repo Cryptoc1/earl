@@ -19,7 +19,7 @@ public sealed class CrawlerFeatureCollection : ICrawlerFeatureCollection, IDispo
     /// <inheritdoc/>
     public object? this[ Type key ]
     {
-        get => key is not null
+        get => key is null
             ? throw new ArgumentNullException( nameof( key ) )
             : features?.TryGetValue( key!, out object? value ) is true
                 ? value : null;

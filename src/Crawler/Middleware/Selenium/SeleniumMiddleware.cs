@@ -1,7 +1,7 @@
 ﻿using Earl.Crawler.Middleware.Abstractions;
 using Earl.Crawler.Middleware.Selenium.Abstractions;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Edge;
 
 namespace Earl.Crawler.Middleware.Selenium;
 
@@ -9,17 +9,10 @@ public class SeleniumMiddleware : ICrawlerMiddleware
 {
     public async Task InvokeAsync( CrawlUrlContext context, CrawlUrlDelegate next )
     {
-        if( context is null )
-        {
-            throw new ArgumentNullException( nameof( context ) );
-        }
+        ArgumentNullException.ThrowIfNull( context );
+        ArgumentNullException.ThrowIfNull( next );
 
-        if( next is null )
-        {
-            throw new ArgumentNullException( nameof( next ) );
-        }
-
-        var options = new ChromeOptions
+        var options = new EdgeOptions
         {
             AcceptInsecureCertificates = true
         };
@@ -31,7 +24,7 @@ public class SeleniumMiddleware : ICrawlerMiddleware
             "headless"
         );
 
-        var driver = new ChromeDriver( ".", options );
+        var driver = new EdgeDriver( ".", options );
         driver.Navigate()
             .GoToUrl( context.Url );
 

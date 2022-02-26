@@ -5,9 +5,9 @@ namespace Earl.Crawler.Middleware.Abstractions;
 public interface ICrawlUrlResultBuilder
 {
     #region Properties
-    public string? DisplayName { get; set; }
-
-    public IList<object> Metadata { get; }
+    string? DisplayName { get; set; }
+    Guid Id { get; }
+    IList<object> Metadata { get; }
     #endregion
 
     CrawlUrlResult Build( );

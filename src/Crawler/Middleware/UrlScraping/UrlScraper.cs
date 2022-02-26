@@ -16,27 +16,19 @@ public class UrlScraper : IUrlScraper
     /// <inheritdoc/>
     public async Task<IEnumerable<Uri>> ScrapeAsync( IHtmlDocument document, Uri baseUrl, CancellationToken cancellation = default )
     {
-        if( document is null )
-        {
-            throw new ArgumentNullException( nameof( document ) );
-        }
-
-        if( baseUrl is null )
-        {
-            throw new ArgumentNullException( nameof( baseUrl ) );
-        }
+        ArgumentNullException.ThrowIfNull( document );
+        ArgumentNullException.ThrowIfNull( baseUrl );
 
         var urls = document.QuerySelectorAll( "a:not([href=\"\"])" )
             ?.Select( anchor => anchor.GetAttribute( "href" ) )
-            .Where( href => !string.IsNullOrWhiteSpace( href ) )
 
             // only urls on the same domain
-            .Where( href => href.StartsWith( baseUrl.AbsoluteUri ) || href.StartsWith( '/' ) )
+            .Where( href => href?.StartsWith( baseUrl.AbsoluteUri ) is true || href?.StartsWith( '/' ) is true )
 
             .Distinct( StringComparer.OrdinalIgnoreCase )
             .Select(
                 href => Uri.TryCreate( href, UriKind.Absolute, out var url )
-                    || Uri.TryCreate( baseUrl.AbsoluteUri + href.TrimStart( '/' ), UriKind.Absolute, out url )
+                    || Uri.TryCreate( baseUrl.AbsoluteUri + href!.TrimStart( '/' ), UriKind.Absolute, out url )
                         ? url : null
             )
             .Where( url => url is not null )

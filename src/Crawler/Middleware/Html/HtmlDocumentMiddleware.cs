@@ -13,19 +13,12 @@ public class HtmlDocumentMiddleware : ICrawlerMiddleware
     /// <inheritdoc/>
     public async Task InvokeAsync( CrawlUrlContext context, CrawlUrlDelegate next )
     {
-        if( context is null )
-        {
-            throw new ArgumentNullException( nameof( context ) );
-        }
-
-        if( next is null )
-        {
-            throw new ArgumentNullException( nameof( next ) );
-        }
+        ArgumentNullException.ThrowIfNull( context );
+        ArgumentNullException.ThrowIfNull( next );
 
         var responseFeature = context.Features.Get<IHttpResponseFeature>();
 
-        var document = await GetDocumentAsync( responseFeature!, context.CrawlContext.CrawlAborted );
+        var document = await GetDocumentAsync( responseFeature!, context.CrawlContext.CrawlCancelled );
         if( document is not null )
         {
             // NOTE: feature is disposed by the context
@@ -38,10 +31,7 @@ public class HtmlDocumentMiddleware : ICrawlerMiddleware
 
     private static async Task<IHtmlDocument?> GetDocumentAsync( IHttpResponseFeature feature, CancellationToken cancellation = default )
     {
-        if( feature is null )
-        {
-            throw new ArgumentNullException( nameof( feature ) );
-        }
+        ArgumentNullException.ThrowIfNull( feature );
 
         using var content = await feature.Response.Content.ReadAsStreamAsync( cancellation );
         var document = await BrowsingContext.New()

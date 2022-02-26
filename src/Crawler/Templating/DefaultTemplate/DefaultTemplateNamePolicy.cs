@@ -5,7 +5,7 @@ namespace Earl.Crawler.Templating.DefaultTemplate;
 
 public class DefaultTemplateNamePolicy : ITemplateNamePolicy<DefaultTemplateIdentifier>
 {
-    public (string, string) GetNames( CrawlUrlResult result )
+    public (string Name, string Extension) GetNames( CrawlUrlResult result )
     {
         if( result is null )
         {

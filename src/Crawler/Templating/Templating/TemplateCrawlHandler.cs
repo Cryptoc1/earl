@@ -1,4 +1,4 @@
-﻿using System.IO.Pipelines;
+﻿/* using System.IO.Pipelines;
 using Earl.Crawler.Abstractions;
 using Earl.Crawler.Templating.Abstractions;
 using Microsoft.Extensions.Options;
@@ -46,4 +46,4 @@ public class TemplateCrawlHandler : ICrawlHandler
 
         await output.CompleteAsync();
     }
-}
+} */

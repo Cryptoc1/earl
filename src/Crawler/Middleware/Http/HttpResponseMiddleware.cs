@@ -27,7 +27,7 @@ public class HttpResponseMiddleware : ICrawlerMiddleware
             throw new ArgumentNullException( nameof( next ) );
         }
 
-        using var response = await client.GetAsync( context.Url, context.CrawlContext.CrawlAborted );
+        using var response = await client.GetAsync( context.Url, context.CrawlContext.CrawlCancelled );
 
         using var feature = new HttpResponseFeature( response );
         context.Features.Set<IHttpResponseFeature?>( feature );

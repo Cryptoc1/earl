@@ -4,5 +4,5 @@ namespace Earl.Crawler.Templating.Abstractions;
 
 public interface ITemplateNamePolicy
 {
-    (string, string) GetNames( CrawlUrlResult result );
+    (string Name, string Extension) GetNames( CrawlUrlResult result );
 }

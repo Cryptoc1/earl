@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Earl.Agent.Console": {
+      "commandName": "Project",
+      "jsWebView2Debugging": false,
+      "nativeDebugging": true
+    }
+  }
+}

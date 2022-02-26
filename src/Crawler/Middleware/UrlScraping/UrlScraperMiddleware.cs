@@ -18,15 +18,8 @@ public class UrlScraperMiddleware : ICrawlerMiddleware
     /// <inheritdoc/>
     public async Task InvokeAsync( CrawlUrlContext context, CrawlUrlDelegate next )
     {
-        if( context is null )
-        {
-            throw new ArgumentNullException( nameof( context ) );
-        }
-
-        if( next is null )
-        {
-            throw new ArgumentNullException( nameof( next ) );
-        }
+        ArgumentNullException.ThrowIfNull( context );
+        ArgumentNullException.ThrowIfNull( next );
 
         var documentFeature = context.Features.Get<IHtmlDocumentFeature?>();
         if( documentFeature is null )
@@ -37,17 +30,14 @@ public class UrlScraperMiddleware : ICrawlerMiddleware
         var urls = await scraper.ScrapeAsync(
             documentFeature.Document,
             new Uri( context.CrawlContext.Initiator.GetLeftPart( UriPartial.Authority ) ),
-            context.CrawlContext.CrawlAborted
+            context.CrawlContext.CrawlCancelled
         );
 
         if( urls?.Any() is true )
         {
             foreach( var url in urls )
             {
-                if( !context.CrawlContext.TouchedUrls.Contains( url ) )
-                {
-                    context.CrawlContext.UrlQueue.Enqueue( url );
-                }
+                context.CrawlContext.UrlQueue.Enqueue( url );
             }
         }
 

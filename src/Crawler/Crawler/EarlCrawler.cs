@@ -15,155 +15,130 @@ public class EarlCrawler : IEarlCrawler
     private readonly IServiceProvider serviceProvider;
     #endregion
 
-    public EarlCrawler(
-        ILogger<EarlCrawler> logger,
-        IServiceProvider serviceProvider
-    )
+    public EarlCrawler( ILogger<EarlCrawler> logger, IServiceProvider serviceProvider )
     {
         this.logger = logger;
         this.serviceProvider = serviceProvider;
     }
 
     /// <inheritdoc/>
-    public async Task CrawlAsync( Uri initiator, ICrawlHandler handler, ICrawlOptions? options = null, CancellationToken cancellation = default )
+    public async Task CrawlAsync( Uri initiator, ICrawlerOptions options, CancellationToken cancellation = default )
     {
-        if( initiator is null )
-        {
-            throw new ArgumentNullException( nameof( initiator ) );
-        }
-
-        if( handler is null )
-        {
-            throw new ArgumentNullException( nameof( handler ) );
-        }
+        ArgumentNullException.ThrowIfNull( initiator );
 
         using var timeoutSource = options?.Timeout is not null
             ? new CancellationTokenSource( options!.Timeout!.Value )
             : null;
 
-        using var abortSource = timeoutSource is not null
+        using var cancellationSource = timeoutSource is not null
             ? CancellationTokenSource.CreateLinkedTokenSource( cancellation, timeoutSource.Token )
             : CancellationTokenSource.CreateLinkedTokenSource( cancellation );
 
-        options ??= new CrawlOptions();
         var context = new CrawlContext(
             initiator,
-
-            abortSource.Token,
+            cancellationSource.Token,
             options,
             new ConcurrentHashSet<Uri>( UriComparer.OrdinalIgnoreCase ),
             new ConcurrentQueue<Uri>( new[] { initiator } )
         );
 
-        logger.LogInformation( $"Starting crawl: '{initiator}', {options}." );
-        await CrawlAsync( context, handler );
+        logger.LogDebug( "Starting crawl: '{initiator}', {options}.", initiator, options );
+
+        await CrawlAsync( context );
+
+        logger.LogDebug( "Completed crawl" );
     }
 
-    private async Task CrawlAsync( CrawlContext context, ICrawlHandler handler )
+    private async Task CrawlAsync( CrawlContext context )
     {
         while( !context.UrlQueue.IsEmpty )
         {
-            if( context.Options.MaxRequestCount > 0 )
+            context.CrawlCancelled.ThrowIfCancellationRequested();
+            if( context.HasExceededRequests() )
             {
-                if( context.TouchedUrls.Count == context.Options.MaxRequestCount )
-                {
-                    break;
-                }
+                break;
             }
 
-            context.CrawlAborted.ThrowIfCancellationRequested();
+            await CrawlBatchedAsync( context );
+        }
+    }
 
-            int batchSize = Math.Max( 1, context.Options.MaxBatchSize );
-            var batch = new List<Uri>();
-
-            while( batch.Count < batchSize && context.UrlQueue.TryDequeue( out var url ) )
+    private async Task CrawlBatchedAsync( CrawlContext context )
+    {
+        var processor = new ActionBlock<BatchProcessorContext>(
+            async context => await context.Crawler( context.Url, context.Context ),
+            new()
             {
-                if( context.TouchedUrls.Contains( url ) )
-                {
-                    continue;
-                }
-
-                batch.Add( url );
+                CancellationToken = context.CrawlCancelled,
+                EnsureOrdered = false,
+                MaxDegreeOfParallelism = Math.Max( 1, context.Options.MaxDegreeOfParallelism )
             }
+        );
 
-            if( context.Options.MaxRequestCount > 0 )
+        var batch = new List<Task>( context.GetEffectiveBatchSize() );
+        while( batch.Count < batch.Capacity && context.UrlQueue.TryDequeue( out var url ) )
+        {
+            context.CrawlCancelled.ThrowIfCancellationRequested();
+            if( context.TouchedUrls.Contains( url ) )
             {
-                int remainingRequestCount = Math.Max( 0, context.Options.MaxRequestCount - context.TouchedUrls.Count );
-
-                // truncate the batch to cap at the `MaxRequestCount`
-                // NOTE: `.Take(int)` safely caps at `batch.Count` when `remainingRequestCount > batch.Count`
-                batch = batch.Take( remainingRequestCount ).ToList();
-            }
-
-            if( batch?.Any() is not true )
-            {
+                // NOTE: url already crawled, skip
                 continue;
             }
 
-            var processor = new ActionBlock<(Uri, CrawlContext)>(
-                async request =>
-                {
-                    var (url, context) = request;
-                    await CrawlUrlAsync( url, context, handler ).ConfigureAwait( false );
-                },
-                new()
-                {
-                    CancellationToken = context.CrawlAborted,
-                    EnsureOrdered = false,
-                    MaxDegreeOfParallelism = Math.Max( 1, context.Options.MaxDegreeOfParallelism )
-                }
-            );
+            var send = processor.SendAsync( new( CrawlUrlAsync, url, context ), context.CrawlCancelled );
+            logger.LogDebug( "Sent '{url}' to crawl processor.", url );
 
-            foreach( var url in batch )
-            {
-                await processor.SendAsync( (url, context), context.CrawlAborted );
-            }
+            batch.Add( send );
+        }
 
-            processor.Complete();
-            await processor.Completion;
+        await Task.WhenAll( batch ).ConfigureAwait( false );
 
-            if( context.Options.BatchDelay.HasValue )
-            {
-                await Task.Delay( context.Options.BatchDelay.Value, context.CrawlAborted );
-            }
+        processor.Complete();
+        await processor.Completion.ConfigureAwait( false );
+
+        logger.LogDebug( "Processed a batch of {count} urls.", batch.Count );
+        if( context.Options.BatchDelay.HasValue )
+        {
+            await Task.Delay( context.Options.BatchDelay.Value, context.CrawlCancelled );
         }
     }
 
-    private async Task CrawlUrlAsync( Uri url, CrawlContext context, ICrawlHandler handler )
+    private async Task CrawlUrlAsync( Uri url, CrawlContext context )
     {
         if( context.TouchedUrls.Contains( url ) )
         {
-            // key exists, this url is processed
             return;
         }
 
-        logger.LogDebug( $"Processing Url: '{url}'." );
+        var result = new CrawlUrlResultBuilder( url );
 
-        var features = new CrawlerFeatureCollection();
-        var scope = serviceProvider.CreateScope();
+        using var scope = serviceProvider.CreateScope();
+        var middleware = scope.ServiceProvider.GetRequiredService<ICrawlerMiddlewareInvoker>();
 
-        var id = Guid.NewGuid();
-        var result = new CrawlUrlResultBuilder( id, url );
+        using var features = new CrawlerFeatureCollection();
+        var urlContext = new CrawlUrlContext( context, features, result, scope.ServiceProvider, url );
+
+        logger.LogDebug( "Invoking middleware for crawl of '{url}', {id}.", result.Id, url );
+        await context.Options.Events.OnStartedAsync( url, context.CrawlCancelled );
 
         try
         {
-            var middleware = scope.ServiceProvider.GetRequiredService<ICrawlerMiddlewareInvoker>();
-
-            var urlContext = new CrawlUrlContext( context, features, id, result, scope.ServiceProvider, url );
             await middleware.InvokeAsync( urlContext );
         }
-        finally
+        catch( Exception exception )
         {
-            await features.DisposeAsync();
-            features.Dispose();
-            scope.Dispose();
+            logger.LogError( exception, "Exception encountered during invocation of middleware." );
+            await context.Options.Events.OnErrorAsync( url, exception, context.CrawlCancelled );
 
-            if( context.Options.RequestDelay.HasValue )
-            {
-                await Task.Delay( context.Options.RequestDelay.Value, context.CrawlAborted );
-            }
+            return;
         }
 
-        await handler.OnCrawledUrl( result.Build(), context.CrawlAborted );
+        if( context.TouchedUrls.Add( url ) )
+        {
+            logger.LogDebug( "Touched url '{url}'.", url );
+            await context.Options.Events.OnResultAsync( result.Build(), context.CrawlCancelled );
+        }
     }
+
+    private record BatchProcessorContext( Func<Uri, CrawlContext, Task> Crawler, Uri Url, CrawlContext Context );
 }
