@@ -3,6 +3,7 @@ using Earl.Crawler.Abstractions;
 
 namespace Earl.Crawler;
 
+/// <summary> Default implementation of <see cref="IResultMetadataCollection"/>. </summary>
 public class ResultMetadataCollection : IResultMetadataCollection
 {
     #region Fields

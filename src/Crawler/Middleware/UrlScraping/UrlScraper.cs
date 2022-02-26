@@ -1,9 +1,11 @@
-﻿using AngleSharp.Html.Dom;
+﻿using System.Runtime.CompilerServices;
+using AngleSharp.Html.Dom;
 using Earl.Crawler.Middleware.UrlScraping.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Earl.Crawler.Middleware.UrlScraping;
 
+/// <summary> Default implementation of <see cref="IUrlScraper"/>. </summary>
 public class UrlScraper : IUrlScraper
 {
     #region Fields
@@ -14,13 +16,15 @@ public class UrlScraper : IUrlScraper
         => this.serviceProvider = serviceProvider;
 
     /// <inheritdoc/>
-    public async Task<IEnumerable<Uri>> ScrapeAsync( IHtmlDocument document, Uri baseUrl, CancellationToken cancellation = default )
+    public async IAsyncEnumerable<Uri> ScrapeAsync( IHtmlDocument document, Uri baseUrl, [EnumeratorCancellation] CancellationToken cancellation = default )
     {
         ArgumentNullException.ThrowIfNull( document );
         ArgumentNullException.ThrowIfNull( baseUrl );
 
         var urls = document.QuerySelectorAll( "a:not([href=\"\"])" )
-            ?.Select( anchor => anchor.GetAttribute( "href" ) )
+            .ToAsyncEnumerable()
+            .Where( element => element is IHtmlAnchorElement )
+            .Select( anchor => anchor.GetAttribute( "href" ) )
 
             // only urls on the same domain
             .Where( href => href?.StartsWith( baseUrl.AbsoluteUri ) is true || href?.StartsWith( '/' ) is true )
@@ -35,24 +39,25 @@ public class UrlScraper : IUrlScraper
             .Select( url => url! )
 
             // ignore '{baseUrl}/#'
-            .Where( url => !( !string.IsNullOrEmpty( url.Fragment ) && url.AbsolutePath == "/" ) )
-                ?? Enumerable.Empty<Uri>();
+            .Where( url => !( !string.IsNullOrEmpty( url.Fragment ) && url.AbsolutePath is "/" ) );
 
-        var filteredUrls = await FilterAsync( urls, cancellation );
-        return filteredUrls;
+        await foreach( var url in FilterAsync( urls, cancellation ) )
+        {
+            yield return url;
+        }
     }
 
-    private async Task<IEnumerable<Uri>> FilterAsync( IEnumerable<Uri> urls, CancellationToken cancellation )
+    private IAsyncEnumerable<Uri> FilterAsync( IAsyncEnumerable<Uri> urls, CancellationToken cancellation )
     {
         var filters = serviceProvider.GetService<IEnumerable<IUrlScraperFilter>>();
         if( filters?.Any() is true )
         {
             foreach( var filter in filters )
             {
-                urls = await filter.FilterAsync( urls, cancellation );
+                urls = filter.FilterAsync( urls, cancellation );
             }
         }
 
-        return urls.ToList();
+        return urls;
     }
 }

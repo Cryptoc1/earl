@@ -17,15 +17,8 @@ public class HttpResponseMiddleware : ICrawlerMiddleware
     /// <inheritdoc/>
     public async Task InvokeAsync( CrawlUrlContext context, CrawlUrlDelegate next )
     {
-        if( context is null )
-        {
-            throw new ArgumentNullException( nameof( context ) );
-        }
-
-        if( next is null )
-        {
-            throw new ArgumentNullException( nameof( next ) );
-        }
+        ArgumentNullException.ThrowIfNull( context );
+        ArgumentNullException.ThrowIfNull( next );
 
         using var response = await client.GetAsync( context.Url, context.CrawlContext.CrawlCancelled );
 

@@ -2,6 +2,8 @@
 
 namespace Earl.Crawler.Middleware.Http;
 
+/// <summary> Default implementation of <see cref="IHttpResponseFeature"/>. </summary>
+/// <param name="EarlResponse"> <see cref="IHttpResponseFeature.Response"/>. </param>
 public record HttpResponseFeature( EarlHttpResponseMessage EarlResponse ) : IHttpResponseFeature, IDisposable
 {
     #region Field

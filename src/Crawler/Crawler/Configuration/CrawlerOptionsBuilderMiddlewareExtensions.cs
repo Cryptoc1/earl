@@ -4,11 +4,11 @@ using Earl.Crawler.Middleware.Abstractions;
 
 namespace Earl.Crawler.Configuration;
 
-/// <summary> Extensions to <see cref="ICrawlerOptionsBuilder"/> for registering <see cref="ICrawlerMiddlewareDefinition"/>s. </summary>
+/// <summary> Extensions to <see cref="ICrawlerOptionsBuilder"/> for registering <see cref="ICrawlerMiddlewareDescriptor"/>s. </summary>
 public static class CrawlerOptionsBuilderMiddlewareExtensions
 {
     #region Fields
-    private static readonly string MiddlewareKey = nameof( MiddlewareKey );
+    private static readonly string MiddlewareDescriptorsKey = nameof( MiddlewareDescriptorsKey );
     #endregion
 
     private static void BuildMiddleware( ICrawlerOptionsBuilder builder, ICrawlerOptions options )
@@ -16,14 +16,14 @@ public static class CrawlerOptionsBuilderMiddlewareExtensions
         ArgumentNullException.ThrowIfNull( builder );
         ArgumentNullException.ThrowIfNull( options );
 
-        foreach( var middleware in MiddlewareProperty( builder ) )
+        foreach( var descriptor in MiddlewareDescriptorsProperty( builder ) )
         {
-            options.Middleware.Add( middleware );
+            options.Middleware.Add( descriptor );
         }
     }
 
-    private static IList<ICrawlerMiddlewareDefinition> MiddlewareProperty( ICrawlerOptionsBuilder builder )
-        => builder.GetOrAddProperty( MiddlewareKey, ( ) => new List<ICrawlerMiddlewareDefinition>() );
+    private static IList<ICrawlerMiddlewareDescriptor> MiddlewareDescriptorsProperty( ICrawlerOptionsBuilder builder )
+        => builder.GetOrAddProperty( MiddlewareDescriptorsKey, ( ) => new List<ICrawlerMiddlewareDescriptor>() );
 
     /// <summary> Register the middleware of type <typeparamref name="TMiddleware"/>. </summary>
     /// <typeparam name="TMiddleware"> The type of middleware to be registered. </typeparam>
@@ -33,8 +33,8 @@ public static class CrawlerOptionsBuilderMiddlewareExtensions
     {
         ArgumentNullException.ThrowIfNull( builder );
 
-        MiddlewareProperty( builder )
-            .Add( new ServiceCrawlerMiddlewareDefinition( typeof( TMiddleware ) ) );
+        MiddlewareDescriptorsProperty( builder )
+            .Add( new ServiceCrawlerMiddlewareDescriptor( typeof( TMiddleware ) ) );
 
         return CrawlerOptionsBuilder.Decorate( builder, BuildMiddleware );
     }
@@ -46,8 +46,8 @@ public static class CrawlerOptionsBuilderMiddlewareExtensions
     {
         ArgumentNullException.ThrowIfNull( builder );
 
-        MiddlewareProperty( builder )
-            .Add( new DelegateCrawlerMiddlewareDefinition( middleware ) );
+        MiddlewareDescriptorsProperty( builder )
+            .Add( new DelegateCrawlerMiddlewareDescriptor( middleware ) );
 
         return CrawlerOptionsBuilder.Decorate( builder, BuildMiddleware );
     }

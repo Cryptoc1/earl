@@ -31,15 +31,6 @@ public class DefaultCommand : CancellableAsyncCommand
                     var options = CrawlerOptionsBuilder.CreateDefault()
                         .WithHandler<CrawlErrorEvent>( onCrawlError )
                         .WithHandler<CrawlResultEvent>( onCrawlResult )
-
-                        /* .UseMiddleware(
-                            ( context, next ) =>
-                            {
-                                AnsiConsole.WriteLine( $"Executing middleware while crawling '{context.Url}'." );
-                                return next( context );
-                            }
-                        ) */
-
                         .Build();
 
                     var crawl = crawler.CrawlAsync( url, options, cancellation );

@@ -3,38 +3,35 @@ using Earl.Crawler.Middleware.Abstractions;
 
 namespace Earl.Crawler;
 
+/// <summary> Default implementation of <see cref="ICrawlerFeatureCollection"/>. </summary>
 public sealed class CrawlerFeatureCollection : ICrawlerFeatureCollection, IDisposable, IAsyncDisposable
 {
     #region Fields
     private IDictionary<Type, object>? features;
-    private int revision = -1;
     #endregion
 
     #region Properties
 
     /// <inheritdoc/>
-    public int Revision => revision;
+    public int Revision { get; private set; } = -1;
     #endregion
 
     /// <inheritdoc/>
     public object? this[ Type key ]
     {
-        get => key is null
-            ? throw new ArgumentNullException( nameof( key ) )
-            : features?.TryGetValue( key!, out object? value ) is true
-                ? value : null;
+        get
+        {
+            ArgumentNullException.ThrowIfNull( key );
+            return features?.TryGetValue( key!, out object? value ) is true ? value : null;
+        }
         set
         {
-            if( key is null )
-            {
-                throw new ArgumentNullException( nameof( key ) );
-            }
-
+            ArgumentNullException.ThrowIfNull( key );
             if( value is null )
             {
                 if( features is not null && features.Remove( key ) )
                 {
-                    revision++;
+                    Revision++;
                 }
 
                 return;
@@ -43,11 +40,11 @@ public sealed class CrawlerFeatureCollection : ICrawlerFeatureCollection, IDispo
             if( features is null )
             {
                 features = new Dictionary<Type, object>();
-                revision = 0;
+                Revision = 0;
             }
 
             features[ key ] = value;
-            revision++;
+            Revision++;
         }
     }
 

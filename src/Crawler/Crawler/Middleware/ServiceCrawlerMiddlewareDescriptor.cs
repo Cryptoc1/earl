@@ -4,8 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Earl.Crawler.Middleware;
 
-/// <summary> Represents an <see cref="ICrawlerMiddlewareDefinition"/> for a <see cref="Type"/> that can be activated via <see cref="ActivatorUtilities.GetServiceOrCreateInstance(IServiceProvider, Type)"/>. </summary>
-public class ServiceCrawlerMiddlewareDefinition : ICrawlerMiddlewareDefinition
+/// <summary> Represents an <see cref="ICrawlerMiddlewareDescriptor"/> for a <see cref="Type"/> that can be activated via <see cref="ActivatorUtilities"/>. </summary>
+public class ServiceCrawlerMiddlewareDescriptor : ICrawlerMiddlewareDescriptor
 {
     #region Fields
     private static readonly Type ICrawlerMiddlewareType = typeof( ICrawlerMiddleware );
@@ -17,7 +17,7 @@ public class ServiceCrawlerMiddlewareDefinition : ICrawlerMiddlewareDefinition
     public Type MiddlewareType { get; }
     #endregion
 
-    public ServiceCrawlerMiddlewareDefinition( Type type )
+    public ServiceCrawlerMiddlewareDescriptor( Type type )
     {
         ArgumentNullException.ThrowIfNull( type );
         if( !type.IsAssignableTo( ICrawlerMiddlewareType ) )
@@ -29,7 +29,8 @@ public class ServiceCrawlerMiddlewareDefinition : ICrawlerMiddlewareDefinition
     }
 }
 
-public class ServiceCrawlerMiddlewareFactory : CrawlerMiddlewareFactory<ServiceCrawlerMiddlewareDefinition>
+/// <summary> An <see cref="ICrawlerMiddlewareFactory"/> for handling the <see cref="ServiceCrawlerMiddlewareDescriptor"/>. </summary>
+public class ServiceCrawlerMiddlewareFactory : CrawlerMiddlewareFactory<ServiceCrawlerMiddlewareDescriptor>
 {
     #region Fields
     private readonly IServiceProvider serviceProvider;
@@ -38,6 +39,7 @@ public class ServiceCrawlerMiddlewareFactory : CrawlerMiddlewareFactory<ServiceC
     public ServiceCrawlerMiddlewareFactory( IServiceProvider serviceProvider )
         => this.serviceProvider = serviceProvider;
 
-    public override ICrawlerMiddleware Create( ServiceCrawlerMiddlewareDefinition definition )
-        => ( ICrawlerMiddleware )ActivatorUtilities.GetServiceOrCreateInstance( serviceProvider, definition.MiddlewareType );
+    /// <inheritdoc/>
+    public override ICrawlerMiddleware Create( ServiceCrawlerMiddlewareDescriptor descriptor )
+        => ( ICrawlerMiddleware )ActivatorUtilities.GetServiceOrCreateInstance( serviceProvider, descriptor.MiddlewareType );
 }

@@ -5,6 +5,7 @@ public interface IUrlScraperFilter
 {
     /// <summary> Filters the given <paramref name="urls"/>. </summary>
     /// <param name="urls"> The urls to filter. </param>
+    /// <param name="cancellation"> A token that cancels filtering. </param>
     /// <returns> The filtered urls. </returns>
-    Task<IEnumerable<Uri>> FilterAsync( IEnumerable<Uri> urls, CancellationToken cancellation = default );
+    IAsyncEnumerable<Uri> FilterAsync( IAsyncEnumerable<Uri> urls, CancellationToken cancellation = default );
 }

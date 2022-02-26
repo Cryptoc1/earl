@@ -18,14 +18,14 @@ public interface ICrawlerOptions
     /// <summary> The maximum number of requests that should be processed. </summary>
     int MaxRequestCount => -1;
 
-    /// <summary> A list of middleware definitions.  </summary>
-    IList<ICrawlerMiddlewareDefinition> Middleware { get; }
+    /// <summary> A collection of <see cref="ICrawlerMiddlewareDescriptor"/>s representing the middleware to be executed while crawling a url.  </summary>
+    IList<ICrawlerMiddlewareDescriptor> Middleware { get; }
 
     /// <summary> A timeout after which the crawl should abort. </summary>
     TimeSpan? Timeout { get; }
 }
 
-/// <summary> Describes the definition of a crawler middleware. </summary>
-public interface ICrawlerMiddlewareDefinition
+/// <summary> Describes a type that describes a crawler middleware. </summary>
+public interface ICrawlerMiddlewareDescriptor
 {
 }

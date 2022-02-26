@@ -27,20 +27,21 @@ public class UrlScraperMiddleware : ICrawlerMiddleware
             return;
         }
 
-        var urls = await scraper.ScrapeAsync(
+        var urls = scraper.ScrapeAsync(
             documentFeature.Document,
             new Uri( context.CrawlContext.Initiator.GetLeftPart( UriPartial.Authority ) ),
             context.CrawlContext.CrawlCancelled
         );
 
-        if( urls?.Any() is true )
-        {
-            foreach( var url in urls )
-            {
-                context.CrawlContext.UrlQueue.Enqueue( url );
-            }
-        }
+        // NOTE: don't initially await the enqueue task, we can keep processing the middleware pipeline
+        var enqueue = urls.ForEachAsync(
+            url => context.CrawlContext.UrlQueue.Enqueue( url ),
+            context.CrawlContext.CrawlCancelled
+        );
 
         await next( context );
+
+        // ensure enqueue task is awaited to prevent uncancellable work
+        await enqueue;
     }
 }

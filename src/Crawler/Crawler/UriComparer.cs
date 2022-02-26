@@ -1,5 +1,6 @@
 ﻿namespace Earl.Crawler;
 
+/// <summary> An type that can determine the equality of <see cref="Uri"/>s' via their string value. </summary>
 public class UriComparer : IComparer<Uri>, IEqualityComparer<Uri>
 {
     #region Fields
@@ -7,6 +8,8 @@ public class UriComparer : IComparer<Uri>, IEqualityComparer<Uri>
     #endregion
 
     #region Properties
+
+    /// <summary> An <see cref="UriComparer"/> derived from <see cref="StringComparer.OrdinalIgnoreCase"/>. </summary>
     public static UriComparer OrdinalIgnoreCase { get; } = new( StringComparer.OrdinalIgnoreCase );
     #endregion
 
@@ -24,11 +27,7 @@ public class UriComparer : IComparer<Uri>, IEqualityComparer<Uri>
     /// <inheritdoc/>
     public int GetHashCode( Uri uri )
     {
-        if( uri is null )
-        {
-            throw new ArgumentNullException( nameof( uri ) );
-        }
-
+        ArgumentNullException.ThrowIfNull( uri );
         return comparer.GetHashCode( uri.ToString() );
     }
 }

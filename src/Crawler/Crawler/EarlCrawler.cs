@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Earl.Crawler;
 
+/// <summary> Default implementation of <see cref="IEarlCrawler"/>. </summary>
 public class EarlCrawler : IEarlCrawler
 {
     #region Fields
@@ -26,8 +27,8 @@ public class EarlCrawler : IEarlCrawler
     {
         ArgumentNullException.ThrowIfNull( initiator );
 
-        using var timeoutSource = options?.Timeout is not null
-            ? new CancellationTokenSource( options!.Timeout!.Value )
+        using var timeoutSource = options.Timeout.HasValue
+            ? new CancellationTokenSource( options.Timeout.Value )
             : null;
 
         using var cancellationSource = timeoutSource is not null

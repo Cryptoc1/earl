@@ -3,13 +3,13 @@
 /// <summary> Describes collections of delegates used to broadcast crawl events. </summary>
 public interface ICrawlerEvents
 {
-    /// <summary> A list of <see cref="CrawlErrorEvent"/> handlers. </summary>
+    /// <summary> <see cref="CrawlErrorEvent"/> handlers. </summary>
     IList<CrawlErrorEvent> OnError { get; }
 
-    /// <summary> A list of <see cref="CrawlResultEvent"/> handlers. </summary>
+    /// <summary> <see cref="CrawlResultEvent"/> handlers. </summary>
     IList<CrawlResultEvent> OnResult { get; }
 
-    /// <summary> A list of <see cref="CrawlStartedEvent"/> handlers. </summary>
+    /// <summary> <see cref="CrawlStartedEvent"/> handlers. </summary>
     IList<CrawlStartedEvent> OnStarted { get; }
 }
 

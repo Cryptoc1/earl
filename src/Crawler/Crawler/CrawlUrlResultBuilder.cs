@@ -3,6 +3,7 @@ using Earl.Crawler.Middleware.Abstractions;
 
 namespace Earl.Crawler;
 
+/// <summary> Default implementation of <see cref="ICrawlUrlResultBuilder"/>. </summary>
 public class CrawlUrlResultBuilder : ICrawlUrlResultBuilder
 {
     #region Fields

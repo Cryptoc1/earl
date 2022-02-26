@@ -23,7 +23,7 @@ public class DefaultCrawlerOptions : ICrawlerOptions
     public virtual int MaxRequestCount { get; set; } = -1;
 
     /// <inheritdoc/>
-    public virtual IList<ICrawlerMiddlewareDefinition> Middleware { get; set; } = new List<ICrawlerMiddlewareDefinition>();
+    public virtual IList<ICrawlerMiddlewareDescriptor> Middleware { get; set; } = new List<ICrawlerMiddlewareDescriptor>();
 
     /// <inheritdoc/>
     public virtual TimeSpan? Timeout { get; set; }

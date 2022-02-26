@@ -1,15 +1,16 @@
 ﻿using System.Diagnostics;
+using Earl.Crawler.Middleware.Http.Abstractions;
 
 namespace Earl.Crawler.Middleware.Http;
 
+/// <summary> An <see cref="DelegatingHandler"/> that supports the features of the <see cref="EarlHttpResponseMessage"/>. </summary>
 public class EarlHttpMessageHandler : DelegatingHandler
 {
     /// <inheritdoc/>
-    protected override async Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellationToken )
+    protected override async Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellation )
     {
         var stopwatch = ValueStopwatch.StartNew();
-        var response = await base.SendAsync( request, cancellationToken )
-            .ConfigureAwait( false );
+        var response = await base.SendAsync( request, cancellation );
 
         var elapsed = stopwatch.GetElapsedTime();
         return new EarlHttpResponseMessage

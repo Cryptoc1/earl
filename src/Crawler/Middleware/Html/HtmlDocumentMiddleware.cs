@@ -8,6 +8,7 @@ using Microsoft.Extensions.Primitives;
 namespace Earl.Crawler.Middleware.Html;
 
 /// <summary> Supports the <see cref="IHtmlDocumentFeature"/>. </summary>
+/// <remarks> The implementation of this middleware relies on the <see cref="IHttpResponseFeature.Response"/> to produce an <see cref="IHtmlDocument"/>. </remarks>
 public class HtmlDocumentMiddleware : ICrawlerMiddleware
 {
     /// <inheritdoc/>
@@ -33,7 +34,9 @@ public class HtmlDocumentMiddleware : ICrawlerMiddleware
     {
         ArgumentNullException.ThrowIfNull( feature );
 
-        using var content = await feature.Response.Content.ReadAsStreamAsync( cancellation );
+        using var content = await feature.Response.Content.ReadAsStreamAsync( cancellation )
+            .ConfigureAwait( false );
+
         var document = await BrowsingContext.New()
             .OpenAsync(
                 response =>

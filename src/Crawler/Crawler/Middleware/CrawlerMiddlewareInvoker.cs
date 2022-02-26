@@ -7,6 +7,11 @@ namespace Earl.Crawler.Middleware;
 /// <summary> Default implementation of <see cref="ICrawlerMiddlewareInvoker"/>. </summary>
 public class CrawlerMiddlewareInvoker : ICrawlerMiddlewareInvoker
 {
+    #region Fields
+    private static readonly Type ICrawlerMiddlewareFactoryOfTType = typeof( ICrawlerMiddlewareFactory<> );
+    #endregion
+
+    /// <inheritdoc/>
     public async Task InvokeAsync( CrawlUrlContext context )
     {
         ArgumentNullException.ThrowIfNull( context );
@@ -21,13 +26,11 @@ public class CrawlerMiddlewareInvoker : ICrawlerMiddlewareInvoker
         await pipeline( context );
     }
 
-    private static ICrawlerMiddleware CreateMiddleware( CrawlUrlContext context, ICrawlerMiddlewareDefinition defintion )
+    private static ICrawlerMiddleware CreateMiddleware( CrawlUrlContext context, ICrawlerMiddlewareDescriptor descriptor )
     {
-        var factoryType = typeof( ICrawlerMiddlewareFactory<> )
-            .MakeGenericType( defintion.GetType() );
-
+        var factoryType = ICrawlerMiddlewareFactoryOfTType.MakeGenericType( descriptor.GetType() );
         var factory = ( ICrawlerMiddlewareFactory )context.Services.GetRequiredService( factoryType );
-        return factory.Create( defintion );
+        return factory.Create( descriptor );
     }
 
     private CrawlUrlDelegate CreateMiddlewarePipeline( Stack<ICrawlerMiddleware> middlewares )
@@ -43,9 +46,8 @@ public class CrawlerMiddlewareInvoker : ICrawlerMiddlewareInvoker
 
     private static Stack<ICrawlerMiddleware>? CreateMiddlewareStack( CrawlUrlContext context )
     {
-        var middlewares = context.CrawlContext.Options.Middleware.Select(
-            definition => CreateMiddleware( context, definition )
-        );
+        var middlewares = context.CrawlContext.Options.Middleware
+            .Select( descriptor => CreateMiddleware( context, descriptor ) );
 
         if( middlewares?.Any() is not true )
         {

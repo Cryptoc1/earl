@@ -2,6 +2,7 @@
 
 namespace Earl.Crawler.Middleware.Abstractions;
 
+/// <summary> Describes a builder of <see cref="CrawlUrlResult"/>. </summary>
 public interface ICrawlUrlResultBuilder
 {
     #region Properties
@@ -10,5 +11,6 @@ public interface ICrawlUrlResultBuilder
     IList<object> Metadata { get; }
     #endregion
 
+    /// <summary> Build the <see cref="CrawlUrlResult"/> for the current state of the builder. </summary>
     CrawlUrlResult Build( );
 }
