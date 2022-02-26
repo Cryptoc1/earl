@@ -23,7 +23,7 @@ public class EarlCrawler : IEarlCrawler
     }
 
     /// <inheritdoc/>
-    public async Task CrawlAsync( Uri initiator, ICrawlerOptions options, CancellationToken cancellation = default )
+    public async Task CrawlAsync( Uri initiator, CrawlerOptions options, CancellationToken cancellation = default )
     {
         ArgumentNullException.ThrowIfNull( initiator );
 

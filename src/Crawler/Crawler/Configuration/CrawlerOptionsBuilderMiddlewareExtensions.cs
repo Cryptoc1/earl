@@ -11,7 +11,7 @@ public static class CrawlerOptionsBuilderMiddlewareExtensions
     private static readonly string MiddlewareDescriptorsKey = nameof( MiddlewareDescriptorsKey );
     #endregion
 
-    private static void BuildMiddleware( ICrawlerOptionsBuilder builder, ICrawlerOptions options )
+    private static CrawlerOptions BuildMiddleware( ICrawlerOptionsBuilder builder, CrawlerOptions options )
     {
         ArgumentNullException.ThrowIfNull( builder );
         ArgumentNullException.ThrowIfNull( options );
@@ -20,6 +20,8 @@ public static class CrawlerOptionsBuilderMiddlewareExtensions
         {
             options.Middleware.Add( descriptor );
         }
+
+        return options;
     }
 
     private static IList<ICrawlerMiddlewareDescriptor> MiddlewareDescriptorsProperty( ICrawlerOptionsBuilder builder )
@@ -28,7 +30,7 @@ public static class CrawlerOptionsBuilderMiddlewareExtensions
     /// <summary> Register the middleware of type <typeparamref name="TMiddleware"/>. </summary>
     /// <typeparam name="TMiddleware"> The type of middleware to be registered. </typeparam>
     /// <param name="builder"> The options builder to register the handler with. </param>
-    public static ICrawlerOptionsBuilder UseMiddleware<TMiddleware>( this ICrawlerOptionsBuilder builder )
+    public static ICrawlerOptionsBuilder Use<TMiddleware>( this ICrawlerOptionsBuilder builder )
         where TMiddleware : ICrawlerMiddleware
     {
         ArgumentNullException.ThrowIfNull( builder );
@@ -42,7 +44,7 @@ public static class CrawlerOptionsBuilderMiddlewareExtensions
     /// <summary> Register the given delegate as middleware. </summary>
     /// <param name="builder"> The options builder to register the handler with. </param>
     /// <param name="middleware"> The delegate to register as middleware. </param>
-    public static ICrawlerOptionsBuilder UseMiddleware( this ICrawlerOptionsBuilder builder, Func<CrawlUrlContext, CrawlUrlDelegate, Task> middleware )
+    public static ICrawlerOptionsBuilder Use( this ICrawlerOptionsBuilder builder, Func<CrawlUrlContext, CrawlUrlDelegate, Task> middleware )
     {
         ArgumentNullException.ThrowIfNull( builder );
 

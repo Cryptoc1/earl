@@ -7,5 +7,5 @@ public interface IEarlCrawler
     /// <param name="initiator"> The url to begin the crawl at. </param>
     /// <param name="options"> An object the represents the desired configuration of the crawl. </param>
     /// <param name="cancellation"> A token that cancels the crawl. </param>
-    Task CrawlAsync( Uri initiator, ICrawlerOptions options, CancellationToken cancellation = default );
+    Task CrawlAsync( Uri initiator, CrawlerOptions options, CancellationToken cancellation = default );
 }

@@ -9,7 +9,7 @@ public static class CrawlerOptionsBuilderEventExtensions
     private static readonly string HandlersKey = nameof( HandlersKey );
     #endregion
 
-    private static void BuildHandlers( ICrawlerOptionsBuilder builder, ICrawlerOptions options )
+    private static CrawlerOptions BuildHandlers( ICrawlerOptionsBuilder builder, CrawlerOptions options )
     {
         ArgumentNullException.ThrowIfNull( builder );
         ArgumentNullException.ThrowIfNull( options );
@@ -27,6 +27,8 @@ public static class CrawlerOptionsBuilderEventExtensions
                 handlers.Add( handler );
             }
         }
+
+        return options;
     }
 
     private static IList<Delegate> HandlersProperty( ICrawlerOptionsBuilder builder )
