@@ -5,8 +5,6 @@ using Spectre.Console.Cli;
 
 var services = new ServiceCollection()
     .AddLogging()
-    .AddMemoryCache()
-    .AddOptions()
     .AddEarlCrawler();
 
 var registrar = new TypeRegistrar( services );

@@ -6,36 +6,31 @@ Earl loves URLs, _crawling them_...
 
 ```csharp
 var services = new ServiceCollection()
+    .AddLogging()
     .AddEarlCrawler()
-    .BuilderServiceProvider();
+    .BuildServiceProvider();
 
 var crawler = services.GetService<IEarlCrawler>();
 var options = CrawlerOptionsBuilder.CreateDefault()
-    .WithHandler<CrawlResultEvent>( OnResult )
-    
     .BatchSize( 50 )
     .MaxRequestCount( 500 )
     .Timeout( TimeSpan.FromMinutes( 30 ) )
-
     .Use(
-        ( context, next ) =>
+        ( CrawlUrlContext context, CrawlUrlDelegate next ) =>
         {
             Console.WriteLine( $"Executing delegate middleware while crawling {context.Url}" );
             return next( context );
         }
     )
-
-    .Build();
+    .WithHandler<CrawlResultEvent>( 
+        ( CrawlResultEvent e, CancellationToken cancellation ) =>
+        {
+            Console.WriteLine( $"Crawled {e.Result.Url}" );
+            return Task.CompletedTask;
+        }
+    )
 
 await crawler.CrawlAsync( new Uri( "..." ), options );
-
-// ...
-
-static Task OnResult( CrawlResultEvent e, CancellationToken cancellation )
-{
-    Console.WriteLine( $"Crawled {e.Result.Url}" );
-    return Task.CompletedTask;
-}
 ```
 
 ## Design
