@@ -12,7 +12,7 @@ public class CrawlEvents : ICrawlEvents
     public IList<CrawlEventHandler<CrawlProgressEvent>> OnProgress { get; } = new List<CrawlEventHandler<CrawlProgressEvent>>();
 
     /// <inheritdoc/>
-    public IList<CrawlEventHandler<CrawlResultEvent>> OnResult { get; } = new List<CrawlEventHandler<CrawlResultEvent>>();
+    public IList<CrawlEventHandler<CrawlUrlResultEvent>> OnUrlResult { get; } = new List<CrawlEventHandler<CrawlUrlResultEvent>>();
 
     /// <inheritdoc/>
     public IList<CrawlEventHandler<CrawlUrlStartedEvent>> OnUrlStarted { get; } = new List<CrawlEventHandler<CrawlUrlStartedEvent>>();

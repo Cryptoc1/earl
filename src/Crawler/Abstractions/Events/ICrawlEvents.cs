@@ -10,8 +10,8 @@ public interface ICrawlEvents
     /// <summary> <see cref="CrawlProgressEvent"/> handlers. </summary>
     IList<CrawlEventHandler<CrawlProgressEvent>> OnProgress { get; }
 
-    /// <summary> <see cref="CrawlResultEvent"/> handlers. </summary>
-    IList<CrawlEventHandler<CrawlResultEvent>> OnResult { get; }
+    /// <summary> <see cref="CrawlUrlResultEvent"/> handlers. </summary>
+    IList<CrawlEventHandler<CrawlUrlResultEvent>> OnUrlResult { get; }
 
     /// <summary> <see cref="CrawlUrlStartedEvent"/> handlers. </summary>
     IList<CrawlEventHandler<CrawlUrlStartedEvent>> OnUrlStarted { get; }
@@ -23,7 +23,7 @@ public interface ICrawlEvents
 /// <param name="cancellation"> A token that cancels the event. </param>
 /// <seealso cref="ICrawlEvents"/>
 /// <seealso cref="CrawlEvent"/>
-public delegate Task CrawlEventHandler<TEvent>( TEvent e, CancellationToken cancellation = default )
+public delegate Task CrawlEventHandler<TEvent>( TEvent e, CancellationToken cancellation )
     where TEvent : CrawlEvent;
 
 /// <summary> Represents an event broadcasted during a crawl. </summary>
@@ -40,9 +40,9 @@ public record CrawlErrorEvent( Exception Exception, Uri? Url = null ) : CrawlEve
 /// <param name="CurrentQueueLength"> The number of urls enqueued at the time the event was broadcasted. </param>
 public record CrawlProgressEvent( int CrawledCount, int CurrentQueueLength ) : CrawlEvent;
 
-/// <summary> Represents an event broadcasted to expose the result of crawling a url. </summary>
+/// <summary> Represents an event broadcasted when a crawl has completed for a url. </summary>
 /// <param name="Result"> The result of crawling a url. </param>
-public record CrawlResultEvent( CrawlUrlResult Result ) : CrawlEvent;
+public record CrawlUrlResultEvent( CrawlUrlResult Result ) : CrawlEvent;
 
 /// <summary> Represents an event broadcasted when the crawler starts crawling a url. </summary>
 /// <param name="Url"> The url in which crawling has started. </param>

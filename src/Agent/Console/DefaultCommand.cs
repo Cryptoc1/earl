@@ -30,8 +30,8 @@ public class DefaultCommand : CancellableAsyncCommand
 
                     var url = new Uri( "https://webscraper.io/test-sites/e-commerce/static" );
                     var options = CrawlerOptionsBuilder.CreateDefault()
-                        .On<CrawlErrorEvent>( onCrawlError )
-                        .On<CrawlResultEvent>( onCrawlResult )
+                        .On<CrawlErrorEvent>( onError )
+                        .On<CrawlUrlResultEvent>( onUrlResult )
                         .Build();
 
                     var crawl = crawler.CrawlAsync( url, options, cancellation );
@@ -43,7 +43,7 @@ public class DefaultCommand : CancellableAsyncCommand
                     await Task.Delay( 1500 );
                     await crawl;
 
-                    static Task onCrawlError( CrawlErrorEvent e, CancellationToken cancellation )
+                    static Task onError( CrawlErrorEvent e, CancellationToken cancellation )
                     {
                         if( e.Url is not null )
                         {
@@ -53,7 +53,7 @@ public class DefaultCommand : CancellableAsyncCommand
                         return Task.CompletedTask;
                     }
 
-                    static Task onCrawlResult( CrawlResultEvent e, CancellationToken cancellation )
+                    static Task onUrlResult( CrawlUrlResultEvent e, CancellationToken cancellation )
                     {
                         AnsiConsole.MarkupLine( $"[green]✔[/] {e.Result.Url}" );
                         return Task.CompletedTask;

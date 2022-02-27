@@ -14,8 +14,8 @@ var crawler = services.GetService<IEarlCrawler>();
 var options = CrawlerOptionsBuilder.CreateDefault()
     .BatchSize( 50 )
     .MaxRequestCount( 500 )
-    .On<CrawlResultEvent>( 
-        ( CrawlResultEvent e, CancellationToken cancellation ) =>
+    .On<CrawlUrlResultEvent>( 
+        ( CrawlUrlResultEvent e, CancellationToken cancellation ) =>
         {
             Console.WriteLine( $"Crawled {e.Result.Url}" );
             return Task.CompletedTask;

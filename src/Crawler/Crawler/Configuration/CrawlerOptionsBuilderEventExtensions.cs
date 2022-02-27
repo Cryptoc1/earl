@@ -13,7 +13,7 @@ public static class CrawlerOptionsBuilderEventExtensions
 
         var handlers = EventsProperty( builder );
         mapHandlers( handlers, options.Events.OnError );
-        mapHandlers( handlers, options.Events.OnResult );
+        mapHandlers( handlers, options.Events.OnUrlResult );
         mapHandlers( handlers, options.Events.OnUrlStarted );
 
         static void mapHandlers<TEvent>( IEnumerable<Delegate> source, IList<CrawlEventHandler<TEvent>> handlers )

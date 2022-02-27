@@ -1,4 +1,5 @@
-﻿using Earl.Crawler.Middleware.Abstractions;
+﻿using Earl.Crawler.Events;
+using Earl.Crawler.Middleware.Abstractions;
 
 namespace Earl.Crawler.Middleware;
 
@@ -24,19 +25,24 @@ public class CrawlerMiddlewareInvoker : ICrawlerMiddlewareInvoker
     private CrawlUrlDelegate PopMiddlewareDelegate( Stack<ICrawlerMiddleware> middlewares )
         => !middlewares.TryPop( out var middleware )
             ? _ => Task.CompletedTask
-            : context =>
+            : async context =>
             {
                 context.CrawlContext.CrawlCancelled.ThrowIfCancellationRequested();
 
-                var next = PopMiddlewareDelegate( middlewares );
-                return middleware.InvokeAsync( context, next );
+                var progress = context.CrawlContext.EmitProgressAsync();
+                await middleware.InvokeAsync(
+                    context,
+                    PopMiddlewareDelegate( middlewares )
+                );
+
+                await progress;
             };
 
     private Stack<ICrawlerMiddleware> CreateMiddlewareStack( CrawlUrlContext context )
     {
         var middlewares = context.CrawlContext.Options.Middleware
-            .Select( descriptor => middlewareFactory.Create( descriptor ) )
-            .Reverse();
+            .Reverse()
+            .Select( descriptor => middlewareFactory.Create( descriptor ) );
 
         return new Stack<ICrawlerMiddleware>( middlewares );
     }

@@ -31,13 +31,13 @@ public static class ICrawlEventsExtensions
     public static Task OnProgressAsync( this ICrawlEvents events, CrawlProgressEvent e, CancellationToken cancellation = default )
         => InvokeAsync( events.OnProgress, e, cancellation );
 
-    /// <summary> Invokes the <see cref="ICrawlEvents.OnResult"/> event handlers. </summary>
+    /// <summary> Invokes the <see cref="ICrawlEvents.OnUrlResult"/> event handlers. </summary>
     /// <param name="events"> The <see cref="ICrawlEvents"/> instance containing the handlers to invoke. </param>
     /// <param name="e"> The event to broadcast. </param>
     /// <param name="cancellation"> A token that cancels the event. </param>
-    /// <seealso cref="CrawlResultEvent"/>
-    public static Task OnResultAsync( this ICrawlEvents events, CrawlResultEvent e, CancellationToken cancellation = default )
-        => InvokeAsync( events.OnResult, e, cancellation );
+    /// <seealso cref="CrawlUrlResultEvent"/>
+    public static Task OnUrlResultAsync( this ICrawlEvents events, CrawlUrlResultEvent e, CancellationToken cancellation = default )
+        => InvokeAsync( events.OnUrlResult, e, cancellation );
 
     /// <summary> Invokes the <see cref="ICrawlEvents.OnUrlStarted"/> event handlers. </summary>
     /// <param name="events"> The <see cref="ICrawlEvents"/> instance containing the handlers to invoke. </param>

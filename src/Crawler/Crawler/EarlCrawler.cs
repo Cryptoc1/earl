@@ -63,8 +63,7 @@ public class EarlCrawler : IEarlCrawler
             }
 
             await CrawlBatchedAsync( context );
-
-            await context.Options.Events.OnProgressAsync( new( context.TouchedUrls.Count, context.UrlQueue.Count ), context.CrawlCancelled );
+            await context.EmitProgressAsync();
         }
     }
 
@@ -141,7 +140,7 @@ public class EarlCrawler : IEarlCrawler
         if( context.TouchedUrls.Add( url ) )
         {
             logger.LogDebug( "Touched url '{url}'.", url );
-            await context.Options.Events.OnResultAsync( new( result.Build() ), context.CrawlCancelled );
+            await context.Options.Events.OnUrlResultAsync( new( result.Build() ), context.CrawlCancelled );
         }
     }
 
