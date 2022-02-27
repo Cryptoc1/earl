@@ -1,4 +1,4 @@
-﻿using Earl.Crawler.Abstractions;
+﻿using Earl.Crawler.Abstractions.Configuration;
 
 namespace Earl.Crawler.Configuration;
 

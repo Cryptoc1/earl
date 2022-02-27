@@ -1,5 +1,6 @@
 ﻿using Earl.Agent.Console.Abstractions;
 using Earl.Crawler.Abstractions;
+using Earl.Crawler.Abstractions.Events;
 using Earl.Crawler.Configuration;
 using Spectre.Console;
 using Spectre.Console.Cli;
@@ -42,15 +43,19 @@ public class DefaultCommand : CancellableAsyncCommand
                     await Task.Delay( 1500 );
                     await crawl;
 
-                    static Task onCrawlError( Uri url, Exception exception, CancellationToken cancellation )
+                    static Task onCrawlError( CrawlErrorEvent e, CancellationToken cancellation )
                     {
-                        AnsiConsole.MarkupLine( $"[red]![/] {url}" );
+                        if( e.Url is not null )
+                        {
+                            AnsiConsole.MarkupLine( $"[red]![/] {e.Url}" );
+                        }
+
                         return Task.CompletedTask;
                     }
 
-                    static Task onCrawlResult( CrawlUrlResult result, CancellationToken cancellation )
+                    static Task onCrawlResult( CrawlResultEvent e, CancellationToken cancellation )
                     {
-                        AnsiConsole.MarkupLine( $"[green]✔[/] {result.Url}" );
+                        AnsiConsole.MarkupLine( $"[green]✔[/] {e.Result.Url}" );
                         return Task.CompletedTask;
                     }
                 }

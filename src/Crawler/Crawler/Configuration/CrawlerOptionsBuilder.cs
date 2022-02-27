@@ -1,4 +1,5 @@
-﻿using Earl.Crawler.Abstractions;
+﻿using Earl.Crawler.Abstractions.Configuration;
+using Earl.Crawler.Events;
 using Earl.Crawler.Middleware.Html;
 using Earl.Crawler.Middleware.Http;
 using Earl.Crawler.Middleware.UrlScraping;
@@ -19,7 +20,7 @@ public class CrawlerOptionsBuilder : ICrawlerOptionsBuilder
         => new(
             BatchDelay: null,
             BatchSize: Environment.ProcessorCount * 4,
-            Events: new CrawlerEvents(),
+            Events: new CrawlEvents(),
             MaxDegreeOfParallelism: Environment.ProcessorCount,
             MaxRequestCount: -1,
             Middleware: new List<ICrawlerMiddlewareDescriptor>(),

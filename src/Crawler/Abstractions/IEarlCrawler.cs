@@ -1,4 +1,6 @@
-﻿namespace Earl.Crawler.Abstractions;
+﻿using Earl.Crawler.Abstractions.Configuration;
+
+namespace Earl.Crawler.Abstractions;
 
 /// <summary> Describes a crawler, something that crawls urls. </summary>
 public interface IEarlCrawler

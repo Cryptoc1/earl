@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using Axion.Collections.Concurrent;
-using Earl.Crawler.Abstractions;
+using Earl.Crawler.Abstractions.Configuration;
 
 namespace Earl.Crawler.Middleware.Abstractions;
 

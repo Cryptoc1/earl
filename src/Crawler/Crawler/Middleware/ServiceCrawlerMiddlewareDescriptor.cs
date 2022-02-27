@@ -1,4 +1,4 @@
-﻿using Earl.Crawler.Abstractions;
+﻿using Earl.Crawler.Abstractions.Configuration;
 using Earl.Crawler.Middleware.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 

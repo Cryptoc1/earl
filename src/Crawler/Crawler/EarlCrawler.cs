@@ -1,7 +1,9 @@
-﻿using System.Collections.Concurrent;
+using System.Collections.Concurrent;
 using System.Threading.Tasks.Dataflow;
 using Axion.Collections.Concurrent;
 using Earl.Crawler.Abstractions;
+using Earl.Crawler.Abstractions.Configuration;
+using Earl.Crawler.Events;
 using Earl.Crawler.Middleware.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -61,6 +63,8 @@ public class EarlCrawler : IEarlCrawler
             }
 
             await CrawlBatchedAsync( context );
+
+            await context.Options.Events.OnProgressAsync( new( context.TouchedUrls.Count, context.UrlQueue.Count ), context.CrawlCancelled );
         }
     }
 
@@ -120,7 +124,7 @@ public class EarlCrawler : IEarlCrawler
         var urlContext = new CrawlUrlContext( context, features, result, scope.ServiceProvider, url );
 
         logger.LogDebug( "Invoking middleware for crawl of '{url}', {id}.", result.Id, url );
-        await context.Options.Events.OnStartedAsync( url, context.CrawlCancelled );
+        await context.Options.Events.OnUrlStartedAsync( new( url ), context.CrawlCancelled );
 
         try
         {
@@ -129,7 +133,7 @@ public class EarlCrawler : IEarlCrawler
         catch( Exception exception )
         {
             logger.LogError( exception, "Exception encountered during invocation of middleware." );
-            await context.Options.Events.OnErrorAsync( url, exception, context.CrawlCancelled );
+            await context.Options.Events.OnErrorAsync( new( exception, url ), context.CrawlCancelled );
 
             return;
         }
@@ -137,7 +141,7 @@ public class EarlCrawler : IEarlCrawler
         if( context.TouchedUrls.Add( url ) )
         {
             logger.LogDebug( "Touched url '{url}'.", url );
-            await context.Options.Events.OnResultAsync( result.Build(), context.CrawlCancelled );
+            await context.Options.Events.OnResultAsync( new( result.Build() ), context.CrawlCancelled );
         }
     }
 

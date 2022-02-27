@@ -1,4 +1,4 @@
-﻿using Earl.Crawler.Abstractions;
+﻿using Earl.Crawler.Abstractions.Configuration;
 using Earl.Crawler.Middleware.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -47,14 +47,10 @@ public class CrawlerMiddlewareInvoker : ICrawlerMiddlewareInvoker
     private static Stack<ICrawlerMiddleware>? CreateMiddlewareStack( CrawlUrlContext context )
     {
         var middlewares = context.CrawlContext.Options.Middleware
-            .Select( descriptor => CreateMiddleware( context, descriptor ) );
+            .Select( descriptor => CreateMiddleware( context, descriptor ) )
+            .Reverse();
 
-        if( middlewares?.Any() is not true )
-        {
-            return null;
-        }
-
-        // TODO: sort by annotations
-        return new Stack<ICrawlerMiddleware>( middlewares.Reverse() );
+        return middlewares.Any() is true
+            ? new Stack<ICrawlerMiddleware>( middlewares ) : null;
     }
 }
