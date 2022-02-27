@@ -14,6 +14,13 @@ var crawler = services.GetService<IEarlCrawler>();
 var options = CrawlerOptionsBuilder.CreateDefault()
     .BatchSize( 50 )
     .MaxRequestCount( 500 )
+    .On<CrawlResultEvent>( 
+        ( CrawlResultEvent e, CancellationToken cancellation ) =>
+        {
+            Console.WriteLine( $"Crawled {e.Result.Url}" );
+            return Task.CompletedTask;
+        }
+    )
     .Timeout( TimeSpan.FromMinutes( 30 ) )
     .Use(
         ( CrawlUrlContext context, CrawlUrlDelegate next ) =>
@@ -21,14 +28,7 @@ var options = CrawlerOptionsBuilder.CreateDefault()
             Console.WriteLine( $"Executing delegate middleware while crawling {context.Url}" );
             return next( context );
         }
-    )
-    .WithHandler<CrawlResultEvent>( 
-        ( CrawlResultEvent e, CancellationToken cancellation ) =>
-        {
-            Console.WriteLine( $"Crawled {e.Result.Url}" );
-            return Task.CompletedTask;
-        }
-    )
+    );
 
 await crawler.CrawlAsync( new Uri( "..." ), options );
 ```

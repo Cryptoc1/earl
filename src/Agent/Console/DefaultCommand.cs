@@ -30,8 +30,8 @@ public class DefaultCommand : CancellableAsyncCommand
 
                     var url = new Uri( "https://webscraper.io/test-sites/e-commerce/static" );
                     var options = CrawlerOptionsBuilder.CreateDefault()
-                        .WithHandler<CrawlErrorEvent>( onCrawlError )
-                        .WithHandler<CrawlResultEvent>( onCrawlResult )
+                        .On<CrawlErrorEvent>( onCrawlError )
+                        .On<CrawlResultEvent>( onCrawlResult )
                         .Build();
 
                     var crawl = crawler.CrawlAsync( url, options, cancellation );
