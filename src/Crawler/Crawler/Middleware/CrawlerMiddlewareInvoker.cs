@@ -1,6 +1,4 @@
-﻿using Earl.Crawler.Abstractions.Configuration;
-using Earl.Crawler.Middleware.Abstractions;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Earl.Crawler.Middleware.Abstractions;
 
 namespace Earl.Crawler.Middleware;
 
@@ -8,49 +6,38 @@ namespace Earl.Crawler.Middleware;
 public class CrawlerMiddlewareInvoker : ICrawlerMiddlewareInvoker
 {
     #region Fields
-    private static readonly Type ICrawlerMiddlewareFactoryOfTType = typeof( ICrawlerMiddlewareFactory<> );
+    private readonly ICrawlerMiddlewareFactory middlewareFactory;
     #endregion
 
+    public CrawlerMiddlewareInvoker( ICrawlerMiddlewareFactory middlewareFactory )
+        => this.middlewareFactory = middlewareFactory;
+
     /// <inheritdoc/>
-    public async Task InvokeAsync( CrawlUrlContext context )
+    public Task InvokeAsync( CrawlUrlContext context )
     {
         ArgumentNullException.ThrowIfNull( context );
 
         var middlewares = CreateMiddlewareStack( context );
-        if( middlewares is null )
-        {
-            return;
-        }
-
-        var pipeline = CreateMiddlewarePipeline( middlewares );
-        await pipeline( context );
+        return PopMiddlewareDelegate( middlewares )( context );
     }
 
-    private static ICrawlerMiddleware CreateMiddleware( CrawlUrlContext context, ICrawlerMiddlewareDescriptor descriptor )
-    {
-        var factoryType = ICrawlerMiddlewareFactoryOfTType.MakeGenericType( descriptor.GetType() );
-        var factory = ( ICrawlerMiddlewareFactory )context.Services.GetRequiredService( factoryType );
-        return factory.Create( descriptor );
-    }
-
-    private CrawlUrlDelegate CreateMiddlewarePipeline( Stack<ICrawlerMiddleware> middlewares )
+    private CrawlUrlDelegate PopMiddlewareDelegate( Stack<ICrawlerMiddleware> middlewares )
         => !middlewares.TryPop( out var middleware )
             ? _ => Task.CompletedTask
-            : async context =>
+            : context =>
             {
                 context.CrawlContext.CrawlCancelled.ThrowIfCancellationRequested();
 
-                var next = CreateMiddlewarePipeline( middlewares );
-                await middleware.InvokeAsync( context, next );
+                var next = PopMiddlewareDelegate( middlewares );
+                return middleware.InvokeAsync( context, next );
             };
 
-    private static Stack<ICrawlerMiddleware>? CreateMiddlewareStack( CrawlUrlContext context )
+    private Stack<ICrawlerMiddleware> CreateMiddlewareStack( CrawlUrlContext context )
     {
         var middlewares = context.CrawlContext.Options.Middleware
-            .Select( descriptor => CreateMiddleware( context, descriptor ) )
+            .Select( descriptor => middlewareFactory.Create( descriptor ) )
             .Reverse();
 
-        return middlewares.Any() is true
-            ? new Stack<ICrawlerMiddleware>( middlewares ) : null;
+        return new Stack<ICrawlerMiddleware>( middlewares );
     }
 }

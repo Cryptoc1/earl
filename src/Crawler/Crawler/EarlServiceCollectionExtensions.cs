@@ -2,14 +2,12 @@
 using Earl.Crawler.Middleware;
 using Earl.Crawler.Middleware.Abstractions;
 using Earl.Crawler.Middleware.Http;
-using Earl.Crawler.Middleware.Http.Abstractions;
 using Earl.Crawler.Middleware.UrlScraping;
-using Earl.Crawler.Middleware.UrlScraping.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Earl.Crawler;
 
-/// <summary> Extensions to <see cref="IServiceCollection"/> for registering an <see cref="IEarlCrawler"/>. </summary>
+/// <summary> Extensions to <see cref="IServiceCollection"/>. </summary>
 public static class EarlServiceCollectionExtensions
 {
     /// <summary> Adds service dependencies for <see cref="IEarlCrawler"/>. </summary>
@@ -18,19 +16,22 @@ public static class EarlServiceCollectionExtensions
     {
         ArgumentNullException.ThrowIfNull( services );
 
-        services.AddTransient<EarlHttpMessageHandler>();
-        services.AddHttpClient<IEarlHttpClient, EarlHttpClient>()
-            .AddHttpMessageHandler<EarlHttpMessageHandler>()
-            .SetHandlerLifetime( TimeSpan.FromMinutes( 5 ) );
+        AddMiddlewareServices( services );
 
         services.AddTransient<IEarlCrawler, EarlCrawler>();
 
-        services.AddTransient<ICrawlerMiddlewareFactory<DelegateCrawlerMiddlewareDescriptor>, DelegateCrawlerMiddlewareFactory>();
-        services.AddTransient<ICrawlerMiddlewareFactory<ServiceCrawlerMiddlewareDescriptor>, ServiceCrawlerMiddlewareFactory>();
-        services.AddTransient<ICrawlerMiddlewareInvoker, CrawlerMiddlewareInvoker>();
-
-        services.AddScoped<IUrlScraper, UrlScraper>();
+        services.AddEarlHttpResponse();
+        services.AddEarlUrlScraping();
 
         return services;
+    }
+
+    private static void AddMiddlewareServices( IServiceCollection services )
+    {
+        services.AddTransient<ICrawlerMiddlewareInvoker, CrawlerMiddlewareInvoker>();
+
+        services.AddTransient<ICrawlerMiddlewareFactory, CrawlerMiddlewareFactory>();
+        services.AddTransient<CrawlerMiddlewareFactory<DelegateCrawlerMiddlewareDescriptor>, DelegateCrawlerMiddlewareFactory>();
+        services.AddTransient<CrawlerMiddlewareFactory<ServiceCrawlerMiddlewareDescriptor>, ServiceCrawlerMiddlewareFactory>();
     }
 }

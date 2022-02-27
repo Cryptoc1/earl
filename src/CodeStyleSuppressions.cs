@@ -23,6 +23,7 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage( "StyleCop.CSharp.OrderingRules", "SA1204:Static elements should appear before instance elements", Justification = "Elements should be ordered alphabetically." )]
 [assembly: SuppressMessage( "StyleCop.CSharp.SpacingRules", "SA1300", Justification = "Local function declarations can be camelCase." )]
 [assembly: SuppressMessage( "StyleCop.CSharp.NamingRules", "SA1313", Justification = "Members may begin with an underscore, specifically 'discards'." )]
+[assembly: SuppressMessage( "StyleCop.CSharp.NamingRules", "SA1402", Justification = "In certain cases, it is okay to define multiple types in a single file." )]
 [assembly: SuppressMessage( "StyleCop.CSharp.LayoutRules", "SA1513:Closing brace should be followed by blank line", Justification = "Formatting is configured via .editorconfig." )]
 [assembly: SuppressMessage( "StyleCop.CSharp.SpacingRules", "SA1623:The property's documentation summary text should begin with: 'Gets or sets'", Justification = "Getting/Setting is assumed, prefer to describe the properties usage." )]
-[assembly: SuppressMessage( "StyleCop.CSharp.SpacingRules", "SA1627:The documentation text within the 'exception' tag should not be empty", Justification = "It is recommended to document exception reasons, but not required. Documenting exceptions, such as ArgumentNullException, is redundant." )]
+[assembly: SuppressMessage( "StyleCop.CSharp.SpacingRules", "SA1627:The documentation text within the 'exception' tag should not be empty", Justification = "It is recommended to document exception reasons, but not required. Documenting exceptions, such as ArgumentNullException, is redundant." )] 
