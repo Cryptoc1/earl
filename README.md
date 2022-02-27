@@ -2,7 +2,43 @@
 
 Earl loves URLs, _crawling them_...
 
-### Design
+## Basic Usage
+
+```csharp
+var services = new ServiceCollection()
+    .AddEarlCrawler()
+    .BuilderServiceProvider();
+
+var crawler = services.GetService<IEarlCrawler>();
+var options = CrawlerOptionsBuilder.CreateDefault()
+    .WithHandler<CrawlResultEvent>( OnResult )
+    
+    .BatchSize( 50 )
+    .MaxRequestCount( 500 )
+    .Timeout( TimeSpan.FromMinutes( 30 ) )
+
+    .Use(
+        ( context, next ) =>
+        {
+            Console.WriteLine( $"Executing delegate middleware while crawling {context.Url}" );
+            return next( context );
+        }
+    )
+
+    .Build();
+
+await crawler.CrawlAsync( new Uri( "..." ), options );
+
+// ...
+
+static Task OnResult( CrawlResultEvent e, CancellationToken cancellation )
+{
+    Console.WriteLine( $"Crawled {e.Result.Url}" );
+    return Task.CompletedTask;
+}
+```
+
+## Design
 
 Earl's implementation is based on _Middleware_. For each url crawled, a pipeline (internally a `Stack<ICrawlerMiddleware>`, see `CrawlerMiddlewareInvoker`) is instantiated and invoked.
 
