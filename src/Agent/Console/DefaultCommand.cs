@@ -1,5 +1,7 @@
-﻿using Earl.Agent.Console.Abstractions;
+﻿using System.ComponentModel;
+using Earl.Agent.Console.Abstractions;
 using Earl.Crawler.Abstractions;
+using Earl.Crawler.Abstractions.Configuration;
 using Earl.Crawler.Abstractions.Events;
 using Earl.Crawler.Configuration;
 using Spectre.Console;
@@ -7,7 +9,7 @@ using Spectre.Console.Cli;
 
 namespace Earl.Agent.Console;
 
-public class DefaultCommand : CancellableAsyncCommand
+public class DefaultCommand : CancellableAsyncCommand<DefaultCommandSettings>
 {
     #region Fields
     private readonly IEarlCrawler crawler;
@@ -17,7 +19,7 @@ public class DefaultCommand : CancellableAsyncCommand
         => this.crawler = crawler;
 
     /// <inheritdoc/>
-    public override async Task<int> ExecuteAsync( CommandContext context, CancellationToken cancellation )
+    public override async Task<int> ExecuteAsync( CommandContext context, DefaultCommandSettings settings, CancellationToken cancellation )
     {
         ArgumentNullException.ThrowIfNull( context );
 
@@ -31,13 +33,23 @@ public class DefaultCommand : CancellableAsyncCommand
                     int count = 0;
 
                     var url = new Uri( "https://webscraper.io/" );
-                    var options = CrawlerOptionsBuilder.CreateDefault()
+                    var builder = CrawlerOptionsBuilder.CreateDefault()
                         .On<CrawlErrorEvent>( onError )
                         .On<CrawlUrlResultEvent>( onUrlResult )
-                        .On<CrawlUrlStartedEvent>( onUrlStarted )
-                        .Build();
+                        .On<CrawlUrlStartedEvent>( onUrlStarted );
+                    /* .OutputWriter(
+                        output => output.AddJson()
+                            .ToDirectory("./out")
+                    ) */
 
-                    var crawl = crawler.CrawlAsync( url, options, cancellation );
+                    if( settings.BatchDelay.HasValue )
+                    {
+                        builder.BatchDelay( settings.BatchDelay.Value );
+                    }
+
+                    var options = builder.Build();
+
+                    var crawl = crawler.CrawlAsync( settings.Url ?? url, options, cancellation );
 
                     context.SpinnerStyle( Style.Parse( "green bold" ) );
                     context.Spinner( Spinner.Known.Triangle );
@@ -76,4 +88,23 @@ public class DefaultCommand : CancellableAsyncCommand
 
         return 0;
     }
+}
+
+public class DefaultCommandSettings : CommandSettings
+{
+    /// <seealso cref="CrawlerOptions.BatchDelay"/>
+    [CommandOption( "--batch-delay" )]
+    public TimeSpan? BatchDelay { get; init; }
+
+    /// <seealso cref="CrawlerOptions.BatchSize"/>
+    [CommandOption( "--batch-size" )]
+    public int? BatchSize { get; init; }
+
+    /// <seealso cref="CrawlerOptions.MaxDegreeOfParallelism"/>
+    [CommandOption( "--max-parallelism" )]
+    public int? MaxParallelism { get; init; }
+
+    [Description( "The url with which to initiate a crawl." )]
+    [CommandArgument( 0, "[url]" )]
+    public Uri Url { get; init; }
 }

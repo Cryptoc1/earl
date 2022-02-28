@@ -7,22 +7,6 @@ namespace Earl.Crawler.Configuration;
 /// <summary> Extensions to <see cref="ICrawlerOptionsBuilder"/> for registering <see cref="ICrawlerMiddlewareDescriptor"/>s. </summary>
 public static class CrawlerOptionsBuilderMiddlewareExtensions
 {
-    private static CrawlerOptions BuildMiddleware( ICrawlerOptionsBuilder builder, CrawlerOptions options )
-    {
-        ArgumentNullException.ThrowIfNull( builder );
-        ArgumentNullException.ThrowIfNull( options );
-
-        foreach( var descriptor in MiddlewareDescriptorsProperty( builder ) )
-        {
-            options.Middleware.Add( descriptor );
-        }
-
-        return options;
-    }
-
-    private static IList<ICrawlerMiddlewareDescriptor> MiddlewareDescriptorsProperty( ICrawlerOptionsBuilder builder )
-        => builder.GetOrAddProperty( nameof( CrawlerOptions.Middleware ), ( ) => new List<ICrawlerMiddlewareDescriptor>() );
-
     /// <summary> Register the middleware of type <typeparamref name="TMiddleware"/>. </summary>
     /// <typeparam name="TMiddleware"> The type of middleware to be registered. </typeparam>
     /// <param name="builder"> The options builder to register the handler with. </param>
@@ -47,9 +31,12 @@ public static class CrawlerOptionsBuilderMiddlewareExtensions
         ArgumentNullException.ThrowIfNull( builder );
         ArgumentNullException.ThrowIfNull( descriptor );
 
-        MiddlewareDescriptorsProperty( builder )
-            .Add( descriptor );
-
-        return CrawlerOptionsBuilder.Decorate( builder, BuildMiddleware );
+        return builder.Configure(
+            ( _, options ) =>
+            {
+                options.Middleware.Add( descriptor );
+                return options;
+            }
+        );
     }
 }

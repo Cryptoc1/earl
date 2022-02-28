@@ -4,17 +4,18 @@
 /// <seealso cref="CrawlEvent"/>
 public interface ICrawlEvents
 {
-    /// <summary> <see cref="CrawlErrorEvent"/> handlers. </summary>
-    IList<CrawlEventHandler<CrawlErrorEvent>> OnError { get; }
+    /// <summary> Emit the <typeparamref name="TEvent"/> event. </summary>
+    /// <typeparam name="TEvent"> The type of <see cref="CrawlEvent"/> to emit. </typeparam>
+    /// <param name="e"> The event. </param>
+    /// <param name="cancellation"> A token that cancels the event. </param>
+    ValueTask EmitAsync<TEvent>( TEvent e, CancellationToken cancellation = default )
+        where TEvent : CrawlEvent;
 
-    /// <summary> <see cref="CrawlProgressEvent"/> handlers. </summary>
-    IList<CrawlEventHandler<CrawlProgressEvent>> OnProgress { get; }
-
-    /// <summary> <see cref="CrawlUrlResultEvent"/> handlers. </summary>
-    IList<CrawlEventHandler<CrawlUrlResultEvent>> OnUrlResult { get; }
-
-    /// <summary> <see cref="CrawlUrlStartedEvent"/> handlers. </summary>
-    IList<CrawlEventHandler<CrawlUrlStartedEvent>> OnUrlStarted { get; }
+    /// <summary> Register the given <paramref name="handler"/>. </summary>
+    /// <typeparam name="TEvent"> The type of <see cref="CrawlEvent"/> to register a handler for. </typeparam>
+    /// <param name="handler"> The <see cref="CrawlEventHandler{TEvent}"/> to register. </param>
+    void On<TEvent>( CrawlEventHandler<TEvent> handler )
+        where TEvent : CrawlEvent;
 }
 
 /// <summary> Describes a method that handles a <see cref="CrawlEvent"/> of type <typeparamref name="TEvent"/>. </summary>
@@ -23,7 +24,7 @@ public interface ICrawlEvents
 /// <param name="cancellation"> A token that cancels the event. </param>
 /// <seealso cref="ICrawlEvents"/>
 /// <seealso cref="CrawlEvent"/>
-public delegate ValueTask CrawlEventHandler<TEvent>( TEvent e, CancellationToken cancellation )
+public delegate ValueTask CrawlEventHandler<in TEvent>( TEvent e, CancellationToken cancellation )
     where TEvent : CrawlEvent;
 
 /// <summary> Represents an event broadcasted during a crawl. </summary>
