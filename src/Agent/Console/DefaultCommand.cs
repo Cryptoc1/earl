@@ -28,7 +28,9 @@ public class DefaultCommand : CancellableAsyncCommand
                 {
                     await Task.Delay( 1000 );
 
-                    var url = new Uri( "https://webscraper.io/test-sites/e-commerce/static" );
+                    int count = 0;
+
+                    var url = new Uri( "https://webscraper.io/" );
                     var options = CrawlerOptionsBuilder.CreateDefault()
                         .On<CrawlErrorEvent>( onError )
                         .On<CrawlUrlResultEvent>( onUrlResult )
@@ -44,26 +46,30 @@ public class DefaultCommand : CancellableAsyncCommand
                     await Task.Delay( 1500 );
                     await crawl;
 
-                    Task onError( CrawlErrorEvent e, CancellationToken cancellation )
+                    return;
+
+                    ValueTask onError( CrawlErrorEvent e, CancellationToken cancellation )
                     {
                         if( e.Url is not null )
                         {
                             AnsiConsole.MarkupLine( $"[red]![/] {e.Url}" );
                         }
 
-                        return Task.CompletedTask;
+                        return ValueTask.CompletedTask;
                     }
 
-                    Task onUrlStarted( CrawlUrlStartedEvent e, CancellationToken cancellation )
+                    ValueTask onUrlStarted( CrawlUrlStartedEvent e, CancellationToken cancellation )
                     {
                         context.Status( $"Crawling '{e.Url}'" );
-                        return Task.CompletedTask;
+                        return ValueTask.CompletedTask;
                     }
 
-                    Task onUrlResult( CrawlUrlResultEvent e, CancellationToken cancellation )
+                    ValueTask onUrlResult( CrawlUrlResultEvent e, CancellationToken cancellation )
                     {
                         AnsiConsole.MarkupLine( $"[green]✔[/] {e.Result.Url}" );
-                        return Task.CompletedTask;
+                        Interlocked.Increment( ref count );
+
+                        return ValueTask.CompletedTask;
                     }
                 }
            );

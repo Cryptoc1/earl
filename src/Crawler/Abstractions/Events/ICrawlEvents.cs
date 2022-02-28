@@ -23,7 +23,7 @@ public interface ICrawlEvents
 /// <param name="cancellation"> A token that cancels the event. </param>
 /// <seealso cref="ICrawlEvents"/>
 /// <seealso cref="CrawlEvent"/>
-public delegate Task CrawlEventHandler<TEvent>( TEvent e, CancellationToken cancellation )
+public delegate ValueTask CrawlEventHandler<TEvent>( TEvent e, CancellationToken cancellation )
     where TEvent : CrawlEvent;
 
 /// <summary> Represents an event broadcasted during a crawl. </summary>

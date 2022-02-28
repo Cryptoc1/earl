@@ -29,13 +29,10 @@ public class CrawlerMiddlewareInvoker : ICrawlerMiddlewareInvoker
             {
                 context.CrawlContext.CrawlCancelled.ThrowIfCancellationRequested();
 
-                var progress = context.CrawlContext.EmitProgressAsync();
-                await middleware.InvokeAsync(
-                    context,
-                    PopMiddlewareDelegate( middlewares )
-                );
+                var next = PopMiddlewareDelegate( middlewares );
+                await middleware.InvokeAsync( context, next );
 
-                await progress;
+                await context.CrawlContext.EmitProgressAsync();
             };
 
     private Stack<ICrawlerMiddleware> CreateMiddlewareStack( CrawlUrlContext context )

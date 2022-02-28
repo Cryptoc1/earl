@@ -43,12 +43,13 @@ public class CrawlerMiddlewareFactory : ICrawlerMiddlewareFactory
     }
 }
 
-/// <summary> A base implementation of an <see cref="ICrawlerMiddlewareFactory{TDescriptor}"/>. </summary>
+/// <summary> A base implementation of an <see cref="CrawlerMiddlewareFactory{TDescriptor}"/>. </summary>
 /// <typeparam name="TDescriptor"> The type of <see cref="ICrawlerMiddlewareDescriptor"/> handled by the implementing factory. </typeparam>
 public abstract class CrawlerMiddlewareFactory<TDescriptor> : ICrawlerMiddlewareFactory
     where TDescriptor : ICrawlerMiddlewareDescriptor
 {
-    /// <inheritdoc/>
+    /// <summary> Create an <see cref="ICrawlerMiddleware"/> for the given <paramref name="descriptor"/>. </summary>
+    /// <param name="descriptor"> The descriptor to be used to create an instance of an <see cref="ICrawlerMiddleware"/>. </param>
     public abstract ICrawlerMiddleware Create( TDescriptor descriptor );
 
     /// <inheritdoc/>

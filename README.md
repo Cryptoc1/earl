@@ -18,7 +18,7 @@ var options = CrawlerOptionsBuilder.CreateDefault()
         ( CrawlUrlResultEvent e, CancellationToken cancellation ) =>
         {
             Console.WriteLine( $"Crawled {e.Result.Url}" );
-            return Task.CompletedTask;
+            return ValueTask.CompletedTask;
         }
     )
     .Timeout( TimeSpan.FromMinutes( 30 ) )
