@@ -2,9 +2,9 @@
 
 internal static class ValueTaskExtensions
 {
-    public static async ValueTask WhenAll( IEnumerable<ValueTask> tasks )
+    public static async ValueTask WhenAll( params ValueTask[] tasks )
     {
-        int count = tasks.Count();
+        int count = tasks.Length;
         List<Exception>? exceptions = null;
 
         foreach( var task in tasks )

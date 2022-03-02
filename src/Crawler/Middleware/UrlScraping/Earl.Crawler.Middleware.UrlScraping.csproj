@@ -5,6 +5,7 @@
     </ItemGroup>
     
     <ItemGroup>
+        <ProjectReference Include="$(SrcDirectory)\Crawler\Middleware\Middleware\Earl.Crawler.Middleware.csproj" />
         <ProjectReference Include="$(SrcDirectory)\Crawler\Middleware\Html\Earl.Crawler.Middleware.Html.csproj" />
     </ItemGroup>
 

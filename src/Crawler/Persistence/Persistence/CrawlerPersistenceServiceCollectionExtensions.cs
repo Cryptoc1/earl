@@ -1,5 +1,6 @@
 ﻿using Earl.Crawler.Persistence.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Earl.Crawler.Persistence;
 
@@ -8,12 +9,12 @@ public static class CrawlerPersistenceServiceCollectionExtensions
 {
     /// <summary> Add dependencies that support <see cref="ICrawlerPersistence"/>. </summary>
     /// <param name="services"> The <see cref="IServiceCollection"/> to add dependencies to. </param>
-    public static IServiceCollection AddCrawlerPersistence( this IServiceCollection services )
+    public static IServiceCollection AddEarlPersistence( this IServiceCollection services )
     {
         ArgumentNullException.ThrowIfNull( services );
 
-        services.AddTransient<ICrawlerPersistenceFactory, CrawlerPersistenceFactory>();
-        services.AddTransient<ICrawlerPersistenceInvoker, CrawlerPersistenceInvoker>();
+        services.TryAddTransient<ICrawlerPersistenceFactory, CrawlerPersistenceFactory>();
+        services.TryAddTransient<ICrawlerPersistenceInvoker, CrawlerPersistenceInvoker>();
 
         return services;
     }

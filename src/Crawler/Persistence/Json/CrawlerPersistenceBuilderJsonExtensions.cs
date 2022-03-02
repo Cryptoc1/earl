@@ -1,5 +1,4 @@
 ﻿using Earl.Crawler.Persistence.Abstractions.Configuration;
-using Earl.Crawler.Persistence.Configuration;
 using Earl.Crawler.Persistence.Json.Configuration;
 
 namespace Earl.Crawler.Persistence.Json;

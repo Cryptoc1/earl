@@ -1,6 +1,6 @@
 ﻿namespace Earl.Crawler;
 
-/// <summary> An type that can determine the equality of <see cref="Uri"/>s' via their string value. </summary>
+/// <summary> A type that can determine the equality of <see cref="Uri"/>s' via their string value. </summary>
 public class UriComparer : IComparer<Uri>, IEqualityComparer<Uri>
 {
     #region Fields

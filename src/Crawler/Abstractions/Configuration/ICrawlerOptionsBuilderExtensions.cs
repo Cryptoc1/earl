@@ -1,9 +1,7 @@
-﻿using Earl.Crawler.Abstractions.Configuration;
-
-namespace Earl.Crawler.Configuration;
+﻿namespace Earl.Crawler.Abstractions.Configuration;
 
 /// <summary> Extensions to <see cref="ICrawlerOptionsBuilder"/>. </summary>
-public static class CrawlerOptionsBuilderExtensions
+public static class ICrawlerOptionsBuilderExtensions
 {
     /// <summary> Configure the <see cref="CrawlerOptions.BatchDelay"/>. </summary>
     /// <param name="builder"> The builder to configure. </param>

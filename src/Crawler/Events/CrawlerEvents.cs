@@ -33,6 +33,7 @@ public class CrawlerEvents : ICrawlerEvents
             await ValueTaskExtensions.WhenAll(
                 handlers.Cast<CrawlEventHandler<TEvent>>()
                     .Select( handler => handler( e, cancellation ) )
+                    .ToArray()
             );
         }
     }

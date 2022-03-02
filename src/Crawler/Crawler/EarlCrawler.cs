@@ -62,7 +62,7 @@ public class EarlCrawler : IEarlCrawler
     private static async Task CrawlBatchedAsync( CrawlContext context )
     {
         var processor = new ActionBlock<BatchProcessorContext>(
-            async context => await context.Crawler( context.Url, context.Context ),
+            context => context.Crawler( context.Url, context.Context ),
             new()
             {
                 CancellationToken = context.CrawlCancelled,
@@ -71,24 +71,25 @@ public class EarlCrawler : IEarlCrawler
             }
         );
 
-        var batch = new List<Task>( context.GetEffectiveBatchSize() );
-        while( batch.Count < batch.Capacity && context.UrlQueue.TryDequeue( out var url ) )
+        int capacity = context.GetEffectiveBatchSize();
+        var batch = new Dictionary<Uri, Task>( capacity, UriComparer.OrdinalIgnoreCase );
+        while( batch.Count < capacity && context.UrlQueue.TryDequeue( out var url ) )
         {
             context.CrawlCancelled.ThrowIfCancellationRequested();
-            if( context.TouchedUrls.Contains( url ) )
+            if( batch.ContainsKey( url ) || context.TouchedUrls.Contains( url ) )
             {
                 // NOTE: url already crawled, skip
                 continue;
             }
 
-            var send = processor.SendAsync( new( CrawlUrlAsync, url, context ), context.CrawlCancelled );
-            batch.Add( send );
+            batch[ url ] = processor.SendAsync( new( CrawlUrlAsync, url, context ), context.CrawlCancelled );
+            await Task.Delay( 0 );
         }
 
-        await Task.WhenAll( batch ).ConfigureAwait( false );
+        await Task.WhenAll( batch.Values );
 
         processor.Complete();
-        await processor.Completion.ConfigureAwait( false );
+        await processor.Completion;
 
         if( context.Options.BatchDelay.HasValue )
         {

@@ -39,8 +39,7 @@ await crawler.CrawlAsync( new Uri( "..." ), options );
 var services = new ServiceCollection()
     .AddLogging()
     .AddEarlCrawler()
-    .AddCrawlerPersistence()
-    .AddCrawlerJsonPersistence()
+    .AddEarlJsonPersistence()
 
     // ...
     .BuildServiceProvider();

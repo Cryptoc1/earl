@@ -8,8 +8,8 @@ using Spectre.Console.Cli;
 var services = new ServiceCollection()
     .AddLogging()
     .AddEarlCrawler()
-    .AddCrawlerPersistence()
-    .AddCrawlerJsonPersistence();
+    .AddEarlPersistence()
+    .AddEarlJsonPersistence();
 
 var registrar = new TypeRegistrar( services );
 var app = new CommandApp<DefaultCommand>( registrar );

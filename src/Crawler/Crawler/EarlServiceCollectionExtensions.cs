@@ -16,12 +16,11 @@ public static class EarlServiceCollectionExtensions
     {
         ArgumentNullException.ThrowIfNull( services );
 
-        AddMiddlewareServices( services );
-
         services.AddTransient<IEarlCrawler, EarlCrawler>();
 
+        AddMiddlewareServices( services );
         services.AddEarlHttpResponse();
-        services.AddEarlUrlScraping();
+        services.AddEarlUrlScraper();
 
         return services;
     }

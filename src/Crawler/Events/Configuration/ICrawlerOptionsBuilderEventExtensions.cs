@@ -1,11 +1,10 @@
 ﻿using Earl.Crawler.Abstractions.Configuration;
 using Earl.Crawler.Abstractions.Events;
-using Earl.Crawler.Events;
 
-namespace Earl.Crawler.Configuration;
+namespace Earl.Crawler.Events.Configuration;
 
 /// <summary> Extensions to <see cref="ICrawlerOptionsBuilder"/> for registering <see cref="ICrawlerEvents"/> handlers. </summary>
-public static class CrawlerOptionsBuilderEventExtensions
+public static class ICrawlerOptionsBuilderEventExtensions
 {
     /// <summary> Register the given handler. </summary>
     /// <typeparam name="TEvent"> The type of event handler to be registered. </typeparam>

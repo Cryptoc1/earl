@@ -10,3 +10,9 @@ public interface ICrawlerMiddleware
     /// <remarks> Implementers are required to <c>await</c> the <paramref name="next"/> delegate to continue the pipeline. Failure to do so may result in deadlocks or hanging crawls. </remarks>
     Task InvokeAsync( CrawlUrlContext context, CrawlUrlDelegate next );
 }
+
+/// <summary> Describes a service that may be configured with options in a pipeline that processes the crawl of a url. </summary>
+/// <see cref="ICrawlerMiddleware"/>
+public interface ICrawlerMiddleware<TOptions> : ICrawlerMiddleware
+{
+}

@@ -1,7 +1,7 @@
 ﻿using Earl.Crawler.Abstractions.Configuration;
 using Earl.Crawler.Abstractions.Events;
-using Earl.Crawler.Configuration;
 using Earl.Crawler.Events;
+using Earl.Crawler.Events.Configuration;
 using Earl.Crawler.Persistence.Abstractions;
 using Earl.Crawler.Persistence.Abstractions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

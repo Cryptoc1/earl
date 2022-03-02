@@ -9,15 +9,19 @@ public class ServiceCrawlerMiddlewareDescriptor : ICrawlerMiddlewareDescriptor
 {
     #region Fields
     private static readonly Type ICrawlerMiddlewareType = typeof( ICrawlerMiddleware );
+    private static readonly Type ICrawlerMiddlewareOfTType = typeof( ICrawlerMiddleware<> );
     #endregion
 
     #region Properties
 
     /// <summary> The <see cref="Type"/> of <see cref="ICrawlerMiddleware"/> being defined. </summary>
     public Type MiddlewareType { get; }
+
+    /// <summary> The middleware options. </summary>
+    public object? Options { get; }
     #endregion
 
-    public ServiceCrawlerMiddlewareDescriptor( Type type )
+    public ServiceCrawlerMiddlewareDescriptor( Type type, object? options = null )
     {
         ArgumentNullException.ThrowIfNull( type );
         if( !type.IsAssignableTo( ICrawlerMiddlewareType ) )
@@ -25,7 +29,13 @@ public class ServiceCrawlerMiddlewareDescriptor : ICrawlerMiddlewareDescriptor
             throw new ArgumentException( $"Given type '{type.Name}' does not implement '{nameof( ICrawlerMiddleware )}'.", nameof( type ) );
         }
 
+        if( type.IsAssignableTo( ICrawlerMiddlewareOfTType ) )
+        {
+            ArgumentNullException.ThrowIfNull( options );
+        }
+
         MiddlewareType = type;
+        Options = options;
     }
 }
 
@@ -41,5 +51,12 @@ public class ServiceCrawlerMiddlewareFactory : CrawlerMiddlewareFactory<ServiceC
 
     /// <inheritdoc/>
     public override ICrawlerMiddleware Create( ServiceCrawlerMiddlewareDescriptor descriptor )
-        => ( ICrawlerMiddleware )ActivatorUtilities.GetServiceOrCreateInstance( serviceProvider, descriptor.MiddlewareType );
+    {
+        if( descriptor.Options is not null )
+        {
+            return ( ICrawlerMiddleware )ActivatorUtilities.CreateInstance( serviceProvider, descriptor.MiddlewareType, descriptor.Options );
+        }
+
+        return ( ICrawlerMiddleware )ActivatorUtilities.CreateInstance( serviceProvider, descriptor.MiddlewareType );
+    }
 }

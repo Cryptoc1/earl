@@ -1,7 +1,6 @@
-﻿using System.Runtime.CompilerServices;
-using AngleSharp.Html.Dom;
+﻿using AngleSharp.Html.Dom;
 using Earl.Crawler.Middleware.UrlScraping.Abstractions;
-using Microsoft.Extensions.DependencyInjection;
+using Earl.Crawler.Middleware.UrlScraping.Abstractions.Configuration;
 
 namespace Earl.Crawler.Middleware.UrlScraping;
 
@@ -9,55 +8,38 @@ namespace Earl.Crawler.Middleware.UrlScraping;
 public class UrlScraper : IUrlScraper
 {
     #region Fields
-    private readonly IServiceProvider serviceProvider;
+    private readonly IUrlFilterInvoker filterInvoker;
     #endregion
 
-    public UrlScraper( IServiceProvider serviceProvider )
-        => this.serviceProvider = serviceProvider;
+    public UrlScraper( IUrlFilterInvoker filterInvoker )
+        => this.filterInvoker = filterInvoker;
 
     /// <inheritdoc/>
-    public async IAsyncEnumerable<Uri> ScrapeAsync( IHtmlDocument document, Uri baseUrl, [EnumeratorCancellation] CancellationToken cancellation = default )
+    public IAsyncEnumerable<Uri> ScrapeAsync( IHtmlDocument document, UrlScraperOptions options, CancellationToken cancellation = default )
     {
         ArgumentNullException.ThrowIfNull( document );
-        ArgumentNullException.ThrowIfNull( baseUrl );
 
         var urls = document.QuerySelectorAll( "a:not([href=\"\"])" )
-            .ToAsyncEnumerable()
             .Where( element => element is IHtmlAnchorElement )
             .Select( anchor => anchor.GetAttribute( "href" ) )
 
-            // only urls on the same domain
-            .Where( href => href?.StartsWith( baseUrl.AbsoluteUri ) is true || href?.StartsWith( '/' ) is true )
+            // ignore fragments
+            .Where( href => !string.IsNullOrWhiteSpace( href ) && href?.StartsWith( '#' ) is false )
 
+            // Force protocol
+            .Select( href => href!.StartsWith( "//" ) ? document.Location.Protocol + href : href )
             .Distinct( StringComparer.OrdinalIgnoreCase )
+
+            // try parse as Uri
             .Select(
                 href => Uri.TryCreate( href, UriKind.Absolute, out var url )
-                    || Uri.TryCreate( baseUrl.AbsoluteUri + href!.TrimStart( '/' ), UriKind.Absolute, out url )
-                        ? url : null
+                    || Uri.TryCreate( $"{document.Origin?.TrimEnd( '/' )}/{href.TrimStart( '/' )}", UriKind.Absolute, out url )
+                    || Uri.TryCreate( href, UriKind.RelativeOrAbsolute, out url ) ? url : null
             )
             .Where( url => url is not null )
             .Select( url => url! )
+            .ToAsyncEnumerable();
 
-            // ignore '{baseUrl}/#'
-            .Where( url => !( !string.IsNullOrEmpty( url.Fragment ) && url.AbsolutePath is "/" ) );
-
-        await foreach( var url in FilterAsync( urls, cancellation ) )
-        {
-            yield return url;
-        }
-    }
-
-    private IAsyncEnumerable<Uri> FilterAsync( IAsyncEnumerable<Uri> urls, CancellationToken cancellation )
-    {
-        var filters = serviceProvider.GetService<IEnumerable<IUrlScraperFilter>>();
-        if( filters?.Any() is true )
-        {
-            foreach( var filter in filters )
-            {
-                urls = filter.FilterAsync( urls, cancellation );
-            }
-        }
-
-        return urls;
+        return filterInvoker.InvokeAsync( urls, document, options, cancellation );
     }
 }

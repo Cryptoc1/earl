@@ -1,8 +1,9 @@
 ﻿using Earl.Crawler.Abstractions.Configuration;
 using Earl.Crawler.Events;
+using Earl.Crawler.Middleware.Configuration;
 using Earl.Crawler.Middleware.Html;
 using Earl.Crawler.Middleware.Http;
-using Earl.Crawler.Middleware.UrlScraping;
+using Earl.Crawler.Middleware.UrlScraping.Configuration;
 
 namespace Earl.Crawler.Configuration;
 
@@ -41,5 +42,5 @@ public class CrawlerOptionsBuilder : ICrawlerOptionsBuilder
         => new CrawlerOptionsBuilder()
             .Use<HttpResponseMiddleware>()
             .Use<HtmlDocumentMiddleware>()
-            .Use<UrlScraperMiddleware>();
+            .UseUrlScraper();
 }
