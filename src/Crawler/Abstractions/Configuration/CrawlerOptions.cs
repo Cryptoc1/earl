@@ -2,13 +2,13 @@
 
 namespace Earl.Crawler.Abstractions.Configuration;
 
-/// <summary> Describes the configuration of a crawl's execution. </summary>
+/// <summary> Represents the configuration of a crawl's execution. </summary>
 public record CrawlerOptions(
     TimeSpan? BatchDelay,
     int BatchSize,
-    ICrawlEvents Events,
+    ICrawlerEvents Events,
     int MaxDegreeOfParallelism,
     int MaxRequestCount,
-    IList<ICrawlerMiddlewareDescriptor> Middleware,
+    IReadOnlyList<ICrawlerMiddlewareDescriptor> Middleware,
     TimeSpan? Timeout
 );

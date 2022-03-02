@@ -8,6 +8,7 @@ namespace Earl.Crawler.Middleware.Abstractions;
 /// <param name="Initiator"> The url that initiated the crawl. </param>
 /// <param name="CrawlCancelled"> A <see cref="CancellationToken"/> that triggers when the crawl is cancelled. </param>
 /// <param name="Options"> The <see cref="CrawlerOptions"/> that initiated the crawl. </param>
+/// <param name="Services"> An <see cref="IServiceProvider"/> that exposes services available to the context. </param>
 /// <param name="TouchedUrls"> Collection of processing requests. </param>
 /// <param name="UrlQueue"> Collection of urls to be crawled. </param>
 public record CrawlContext(
@@ -15,6 +16,7 @@ public record CrawlContext(
 
     CancellationToken CrawlCancelled,
     CrawlerOptions Options,
+    IServiceProvider Services,
     ConcurrentHashSet<Uri> TouchedUrls,
     ConcurrentQueue<Uri> UrlQueue
 );

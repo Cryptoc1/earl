@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.*-*" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <ProjectReference Include="$(SrcDirectory)\Crawler\Abstractions\Earl.Crawler.Abstractions.csproj" />
+        <ProjectReference Include="$(SrcDirectory)\Crawler\Events\Earl.Crawler.Events.csproj" />
+        <ProjectReference Include="$(SrcDirectory)\Crawler\Middleware\Abstractions\Earl.Crawler.Middleware.Abstractions.csproj" />
+    </ItemGroup>
+
+</Project>

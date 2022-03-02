@@ -1,0 +1,7 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <ProjectReference Include="$(SrcDirectory)\Crawler\Abstractions\Earl.Crawler.Abstractions.csproj" />
+    </ItemGroup>
+
+</Project>

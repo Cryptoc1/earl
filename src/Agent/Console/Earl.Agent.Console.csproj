@@ -15,8 +15,8 @@
 
     <ItemGroup>
         <ProjectReference Include="$(SrcDirectory)\Crawler\Crawler\Earl.Crawler.csproj" />
-        <ProjectReference Include="$(SrcDirectory)\Crawler\Templating\Templating\Earl.Crawler.Templating.csproj" />
-        <ProjectReference Include="$(SrcDirectory)\Crawler\Templating\DefaultTemplate\Earl.Crawler.Templating.DefaultTemplate.csproj" />
+
+        <ProjectReference Include="$(SrcDirectory)\Crawler\Persistence\Json\Earl.Crawler.Persistence.Json.csproj" />
     </ItemGroup>
 
 </Project>

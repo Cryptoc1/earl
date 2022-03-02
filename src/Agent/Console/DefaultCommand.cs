@@ -4,6 +4,9 @@ using Earl.Crawler.Abstractions;
 using Earl.Crawler.Abstractions.Configuration;
 using Earl.Crawler.Abstractions.Events;
 using Earl.Crawler.Configuration;
+using Earl.Crawler.Persistence.Configuration;
+using Earl.Crawler.Persistence.Json;
+using Earl.Crawler.Persistence.Json.Configuration;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -23,6 +26,7 @@ public class DefaultCommand : CancellableAsyncCommand<DefaultCommandSettings>
     {
         ArgumentNullException.ThrowIfNull( context );
 
+        int count = 0;
         await AnsiConsole.Status()
             .StartAsync(
                 $"Initiating crawl",
@@ -30,30 +34,34 @@ public class DefaultCommand : CancellableAsyncCommand<DefaultCommandSettings>
                 {
                     await Task.Delay( 1000 );
 
-                    int count = 0;
-
-                    var url = new Uri( "https://webscraper.io/" );
                     var builder = CrawlerOptionsBuilder.CreateDefault()
                         .On<CrawlErrorEvent>( onError )
                         .On<CrawlUrlResultEvent>( onUrlResult )
-                        .On<CrawlUrlStartedEvent>( onUrlStarted );
-                    /* .OutputWriter(
-                        output => output.AddJson()
-                            .ToDirectory("./out")
-                    ) */
+                        .On<CrawlUrlStartedEvent>( onUrlStarted )
+                        .PersistTo(
+                            persist => persist.ToJson(
+                                json => json.Destination(
+                                    Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.Desktop ), "CrawlResults" )
+                                )
+                            )
+                        );
 
                     if( settings.BatchDelay.HasValue )
                     {
                         builder.BatchDelay( settings.BatchDelay.Value );
                     }
 
-                    var options = builder.Build();
+                    if( settings.BatchSize.HasValue )
+                    {
+                        builder.BatchSize( settings.BatchSize.Value );
+                    }
 
-                    var crawl = crawler.CrawlAsync( settings.Url ?? url, options, cancellation );
+                    var options = builder.Build();
+                    var crawl = crawler.CrawlAsync( settings.Url, options, cancellation );
 
                     context.SpinnerStyle( Style.Parse( "green bold" ) );
                     context.Spinner( Spinner.Known.Triangle );
-                    context.Status( $"Crawling '{url}'" );
+                    context.Status( $"Crawling '{settings.Url}'" );
 
                     await Task.Delay( 1500 );
                     await crawl;
@@ -67,6 +75,7 @@ public class DefaultCommand : CancellableAsyncCommand<DefaultCommandSettings>
                             AnsiConsole.MarkupLine( $"[red]![/] {e.Url}" );
                         }
 
+                        AnsiConsole.WriteException( e.Exception );
                         return ValueTask.CompletedTask;
                     }
 
@@ -85,6 +94,9 @@ public class DefaultCommand : CancellableAsyncCommand<DefaultCommandSettings>
                     }
                 }
            );
+
+        AnsiConsole.WriteLine();
+        AnsiConsole.MarkupLine( $"[green]Completed crawl of {count} urls.[/]" );
 
         return 0;
     }
@@ -105,6 +117,6 @@ public class DefaultCommandSettings : CommandSettings
     public int? MaxParallelism { get; init; }
 
     [Description( "The url with which to initiate a crawl." )]
-    [CommandArgument( 0, "[url]" )]
+    [CommandArgument( 0, "<url>" )]
     public Uri Url { get; init; }
 }

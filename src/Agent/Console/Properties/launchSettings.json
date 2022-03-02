@@ -1,9 +1,9 @@
 {
-  "profiles": {
-    "Earl.Agent.Console": {
-      "commandName": "Project",
-      "jsWebView2Debugging": false,
-      "nativeDebugging": true
+    "profiles": {
+        "Earl.Agent.Console": {
+            "commandName": "Project",
+            "commandLineArgs": "https://webscraper.io/test-sites",
+            "nativeDebugging": true
+        }
     }
-  }
 }

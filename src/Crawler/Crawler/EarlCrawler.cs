@@ -6,7 +6,6 @@ using Earl.Crawler.Abstractions.Configuration;
 using Earl.Crawler.Events;
 using Earl.Crawler.Middleware.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace Earl.Crawler;
 
@@ -14,15 +13,11 @@ namespace Earl.Crawler;
 public class EarlCrawler : IEarlCrawler
 {
     #region Fields
-    private readonly ILogger logger;
     private readonly IServiceProvider serviceProvider;
     #endregion
 
-    public EarlCrawler( ILogger<EarlCrawler> logger, IServiceProvider serviceProvider )
-    {
-        this.logger = logger;
-        this.serviceProvider = serviceProvider;
-    }
+    public EarlCrawler( IServiceProvider serviceProvider )
+        => this.serviceProvider = serviceProvider;
 
     /// <inheritdoc/>
     public async Task CrawlAsync( Uri initiator, CrawlerOptions options, CancellationToken cancellation = default )
@@ -41,18 +36,15 @@ public class EarlCrawler : IEarlCrawler
             initiator,
             cancellationSource.Token,
             options,
+            serviceProvider,
             new ConcurrentHashSet<Uri>( UriComparer.OrdinalIgnoreCase ),
             new ConcurrentQueue<Uri>( new[] { initiator } )
         );
 
-        logger.LogDebug( "Starting crawl: '{initiator}', {options}.", initiator, options );
-
         await CrawlAsync( context );
-
-        logger.LogDebug( "Completed crawl" );
     }
 
-    private async Task CrawlAsync( CrawlContext context )
+    private static async Task CrawlAsync( CrawlContext context )
     {
         while( !context.UrlQueue.IsEmpty )
         {
@@ -63,11 +55,11 @@ public class EarlCrawler : IEarlCrawler
             }
 
             await CrawlBatchedAsync( context );
-            await context.EmitProgressAsync();
+            await context.OnProgressAsync();
         }
     }
 
-    private async Task CrawlBatchedAsync( CrawlContext context )
+    private static async Task CrawlBatchedAsync( CrawlContext context )
     {
         var processor = new ActionBlock<BatchProcessorContext>(
             async context => await context.Crawler( context.Url, context.Context ),
@@ -90,8 +82,6 @@ public class EarlCrawler : IEarlCrawler
             }
 
             var send = processor.SendAsync( new( CrawlUrlAsync, url, context ), context.CrawlCancelled );
-            logger.LogDebug( "Sent '{url}' to crawl processor.", url );
-
             batch.Add( send );
         }
 
@@ -100,30 +90,27 @@ public class EarlCrawler : IEarlCrawler
         processor.Complete();
         await processor.Completion.ConfigureAwait( false );
 
-        logger.LogDebug( "Processed a batch of {count} urls.", batch.Count );
         if( context.Options.BatchDelay.HasValue )
         {
             await Task.Delay( context.Options.BatchDelay.Value, context.CrawlCancelled );
         }
     }
 
-    private async Task CrawlUrlAsync( Uri url, CrawlContext context )
+    private static async Task CrawlUrlAsync( Uri url, CrawlContext context )
     {
         if( context.TouchedUrls.Contains( url ) )
         {
             return;
         }
 
-        var result = new CrawlUrlResultBuilder( url );
-
-        using var scope = serviceProvider.CreateScope();
-        var middleware = scope.ServiceProvider.GetRequiredService<ICrawlerMiddlewareInvoker>();
-
         using var features = new CrawlerFeatureCollection();
+        var result = new CrawlUrlResultBuilder( url );
+        using var scope = context.Services.CreateScope();
+
         var urlContext = new CrawlUrlContext( context, features, result, scope.ServiceProvider, url );
 
-        logger.LogDebug( "Invoking middleware for crawl of '{url}', {id}.", result.Id, url );
-        await context.Options.Events.OnUrlStartedAsync( new( url ), context.CrawlCancelled );
+        await urlContext.OnStartedAsync();
+        var middleware = scope.ServiceProvider.GetRequiredService<ICrawlerMiddlewareInvoker>();
 
         try
         {
@@ -131,16 +118,13 @@ public class EarlCrawler : IEarlCrawler
         }
         catch( Exception exception )
         {
-            logger.LogError( exception, "Exception encountered during invocation of middleware." );
-            await context.Options.Events.OnErrorAsync( new( exception, url ), context.CrawlCancelled );
-
+            await urlContext.OnErrorAsync( exception );
             return;
         }
 
         if( context.TouchedUrls.Add( url ) )
         {
-            logger.LogDebug( "Touched url '{url}'.", url );
-            await context.Options.Events.OnUrlResultAsync( new( result.Build() ), context.CrawlCancelled );
+            await urlContext.OnResultAsync( result.Build() );
         }
     }
 

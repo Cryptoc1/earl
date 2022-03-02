@@ -1,11 +1,15 @@
 ﻿using Earl.Agent.Console;
 using Earl.Crawler;
+using Earl.Crawler.Persistence;
+using Earl.Crawler.Persistence.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Spectre.Console.Cli;
 
 var services = new ServiceCollection()
     .AddLogging()
-    .AddEarlCrawler();
+    .AddEarlCrawler()
+    .AddCrawlerPersistence()
+    .AddCrawlerJsonPersistence();
 
 var registrar = new TypeRegistrar( services );
 var app = new CommandApp<DefaultCommand>( registrar );
