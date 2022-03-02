@@ -11,6 +11,10 @@ public interface ICrawlerJsonPersistenceOptionsBuilder
 
     /// <summary> Build the <see cref="CrawlerJsonPersistenceOptions"/> for the current state of the builder. </summary>
     CrawlerJsonPersistenceOptions Build( );
+
+    /// <summary> Configure the folder in which to persist JSON results. </summary>
+    /// <param name="destination"> The destination path. </param>
+    ICrawlerJsonPersistenceOptionsBuilder Destination( string destination );
 }
 
 /// <summary> Describes a method that configures the given <paramref name="options"/> for the given <paramref name="builder"/>. </summary>

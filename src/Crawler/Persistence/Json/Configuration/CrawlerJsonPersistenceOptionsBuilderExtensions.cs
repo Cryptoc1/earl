@@ -5,19 +5,6 @@ namespace Earl.Crawler.Persistence.Json.Configuration;
 /// <summary> Extensions to <see cref="ICrawlerJsonPersistenceOptionsBuilder"/>. </summary>
 public static class CrawlerJsonPersistenceOptionsBuilderExtensions
 {
-    /// <summary> Configure the folder in which to persist JSON results. </summary>
-    /// <param name="builder"> The builder to configure. </param>
-    /// <param name="destination"> The destination path. </param>
-    public static ICrawlerJsonPersistenceOptionsBuilder Destination( this ICrawlerJsonPersistenceOptionsBuilder builder, string destination )
-    {
-        ArgumentNullException.ThrowIfNull( builder );
-        ArgumentNullException.ThrowIfNull( destination );
-
-        return builder.Configure(
-            ( _, options ) => options with { Destination = destination }
-        );
-    }
-
     /// <summary> Adds the given build action to the builder. </summary>
     /// <param name="builder"> The builder to add the <paramref name="configure"/> to. </param>
     /// <param name="configure"> The <see cref="CrawlerJsonPersistenceOptionsBuildAction"/> to add. </param>

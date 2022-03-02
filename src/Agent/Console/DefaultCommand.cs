@@ -6,7 +6,6 @@ using Earl.Crawler.Abstractions.Events;
 using Earl.Crawler.Configuration;
 using Earl.Crawler.Persistence.Configuration;
 using Earl.Crawler.Persistence.Json;
-using Earl.Crawler.Persistence.Json.Configuration;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -40,9 +39,7 @@ public class DefaultCommand : CancellableAsyncCommand<DefaultCommandSettings>
                         .On<CrawlUrlStartedEvent>( onUrlStarted )
                         .PersistTo(
                             persist => persist.ToJson(
-                                json => json.Destination(
-                                    Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.Desktop ), "CrawlResults" )
-                                )
+                                json => json.Destination( Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.Desktop ), "CrawlResults" ) )
                             )
                         );
 

@@ -1,6 +1,6 @@
 ﻿using Earl.Crawler.Persistence.Abstractions.Configuration;
 
-namespace Earl.Crawler.Persistence;
+namespace Earl.Crawler.Persistence.Configuration;
 
 /// <summary> Default implementation of <see cref="ICrawlerPersistenceOptionsBuilder"/>. </summary>
 public class CrawlerPersistenceOptionsBuilder : ICrawlerPersistenceOptionsBuilder

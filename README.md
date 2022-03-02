@@ -2,7 +2,7 @@
 
 Earl loves URLs, _crawling them_...
 
-## Basic Usage
+## Usage
 
 ```csharp
 var services = new ServiceCollection()
@@ -31,6 +31,26 @@ var options = CrawlerOptionsBuilder.CreateDefault()
     );
 
 await crawler.CrawlAsync( new Uri( "..." ), options );
+```
+
+### Persisting Results
+
+```chsharp
+var services = new ServiceCollection()
+    .AddLogging()
+    .AddEarlCrawler()
+    .AddCrawlerPersistence()
+    .AddCrawlerJsonPersistence()
+
+    // ...
+    .BuildServiceProvider();
+
+// ...
+
+var options = CrawlerOptionsBuilder.CreateDefault()
+    .PersistTo( persist => persist.ToJson( json => json.Destination( "..." ) ) )
+
+    // ...
 ```
 
 ## Design
