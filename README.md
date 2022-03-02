@@ -35,7 +35,7 @@ await crawler.CrawlAsync( new Uri( "..." ), options );
 
 ### Persisting Results
 
-```chsharp
+```csharp
 var services = new ServiceCollection()
     .AddLogging()
     .AddEarlCrawler()
