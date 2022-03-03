@@ -36,6 +36,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Middleware.UrlScraping", "src\Crawler\Middleware\UrlScraping\Earl.Crawler.Middleware.UrlScraping.csproj", "{BDA1D0A8-2583-406A-AC36-3295620D4A39}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Persistence", "Persistence", "{B0E634ED-376C-4BB2-8983-84B6D5343D1A}"
+	ProjectSection(SolutionItems) = preProject
+		src\Crawler\Persistence\README.md = src\Crawler\Persistence\README.md
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Persistence.Abstractions", "src\Crawler\Persistence\Abstractions\Earl.Crawler.Persistence.Abstractions.csproj", "{732F2058-2634-4E46-AB8D-44F7E13C982B}"
 EndProject
