@@ -13,7 +13,8 @@ var options = CrawlerOptionsBuilder.CreateDefault()
         {
             // handle the event...
         }
-    );
+    )
+    .Build();
 
 await crawler.CrawlAsync( new Uri(...), options );
 ```
@@ -26,7 +27,8 @@ For example, the *JSON Persistence API* provides the [`ToJson( this ICrawlerPers
 var options = CrawlerOptionsBuilder.CreateDefault()
     .PersistTo(
         persist => persist.ToJson( json => json.Destination(...) )
-    );
+    )
+    .Build();
 
 await crawler.CrawlAsync( new Uri(...), options );
 ```

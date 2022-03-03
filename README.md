@@ -31,7 +31,8 @@ var options = CrawlerOptionsBuilder.CreateDefault()
             Console.WriteLine( $"Executing delegate middleware while crawling {context.Url}" );
             return next( context );
         }
-    );
+    )
+    .Build();
 
 await crawler.CrawlAsync( new Uri(...), options );
 ```
@@ -51,7 +52,8 @@ public class CustomMiddleware : IMiddleware
 // ...
 
 var options = CrawlerOptionsBuilder.CreateDefault()
-    .Use<CustomMiddleware>();
+    .Use<CustomMiddleware>()
+    .Build();
 
 await crawler.CrawlAsync( new Uri(...), options );
 ```
@@ -79,7 +81,8 @@ public class CustomMiddleware : IMiddleware<CustomMiddlewareOptions>
 // ...
 
 var options = CrawlerOptionsBuilder.CreateDefault()
-    .Use<CustomMiddleware, CustomMiddlewareOptions>( new( "Hello, World!" );
+    .Use<CustomMiddleware, CustomMiddlewareOptions>( new( "Hello, World!" ) )
+    .Build();
 
 await crawler.CrawlAsync( new Uri(...), options );
 ```
@@ -94,7 +97,8 @@ var options = CrawlerOptionsBuilder.CreateDefault()
             Console.WriteLine( $"Executing delegate middleware while crawling {context.Url}" );
             return next( context );
         }
-    );
+    )
+    .Build();
 
 await crawler.CrawlAsync( new Uri(...), options );
 ```
@@ -102,18 +106,9 @@ await crawler.CrawlAsync( new Uri(...), options );
 ### Persisting Results
 
 ```csharp
-var services = new ServiceCollection()
-    .AddLogging()
-    .AddEarlCrawler()
-    .AddEarlJsonPersistence()
-
-    // ...
-    .BuildServiceProvider();
-
-// ...
-
 var options = CrawlerOptionsBuilder.CreateDefault()
     .PersistTo( persist => persist.ToJson( json => json.Destination( "..." ) ) )
+    .Build();
 
-    // ...
+await crawler.CrawlAsync( new Uri(...), options );
 ```
