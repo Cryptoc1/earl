@@ -3,9 +3,13 @@
 Earl is a suite of APIs for developing url crawlers & web scrapers driven by a middleware pattern similar to, and strongly influenced by, ASP.NET Core.
 
 
-## Usage
+## Examples
 
-### Getting Started
+The following examples are provided for basic usage. Further documentation can be find within READMEs of various sub-directories throughout this repository. All public APIs *should* contain thorough XML (triple slash) comments. 
+
+> *Something missing? Please open an Issue or submit a PR!*
+
+### Basic Usage
 
 ```csharp
 var services = new ServiceCollection()

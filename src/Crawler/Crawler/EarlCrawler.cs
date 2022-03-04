@@ -83,7 +83,6 @@ public class EarlCrawler : IEarlCrawler
             }
 
             batch[ url ] = processor.SendAsync( new( CrawlUrlAsync, url, context ), context.CrawlCancelled );
-            await Task.Delay( 0 );
         }
 
         await Task.WhenAll( batch.Values );
