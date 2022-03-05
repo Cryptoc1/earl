@@ -1,0 +1,34 @@
+name: default
+
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+    
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+        
+      - name: Restore dependencies
+        run: dotnet restore --force
+
+      - name: Build    
+        run: dotnet build --configuration Release --no-restore --nologo
+
+      - name: Pack
+        run: dotnet pack --output dist --no-build 
+
+      - name: Publish artifact 'earl-packages'
+        uses: actions/upload-artifact@v3
+        with:
+            name: earl-packages
+            path: dist
