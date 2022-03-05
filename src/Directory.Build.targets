@@ -10,4 +10,10 @@
         <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="*" PrivateAssets="all" />
     </ItemGroup>
 
+    <Target Name="SetEarlPackageTags" BeforeTargets="GenerateNuspec;Pack">
+        <PropertyGroup>
+            <PackageTags>$(PackageTags);Earl;Web Crawler;Url Scraping;</PackageTags>
+        </PropertyGroup>
+    </Target>
+
 </Project>

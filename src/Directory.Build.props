@@ -22,4 +22,25 @@
         <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
 
+    <!-- Git Versioning + Metadata -->
+    <PropertyGroup>
+        <PublishRepositoryUrl>true</PublishRepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <UseGitVersioning>true</UseGitVersioning>
+    </PropertyGroup>
+
+    <!-- NuGet/AssemblyInfo -->
+    <PropertyGroup>
+        <Authors>cryptoc1</Authors>
+        <Copyright>$([System.DateTime]::Now.Year) Escape Developers</Copyright>
+        <PackageId>$(AssemblyName)</PackageId>
+        <ProjectUrl>https://github.com/cryptoc1/earl</ProjectUrl>
+        <RepositoryUrl>https://github.com/cryptoc1/earl.git</RepositoryUrl>
+        <Title>$(AssemblyName)</Title>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="MinVer" Version="*" PrivateAssets="all" />
+    </ItemGroup>
+
 </Project>
