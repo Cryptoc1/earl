@@ -38,8 +38,8 @@ await crawler.CrawlAsync( new Uri(...), options );
 
 Documentation can be find within the READMEs of the sub-directories representing the conceptual components of Earl:
 
-- [Middleware](https://github.com/Cryptoc1/earl/tree/develop/src/Crawler/Middleware)
-- [Persistence](https://github.com/Cryptoc1/earl/tree/develop/src/Crawler/Persistence)
+- [Middleware](https://github.com/Cryptoc1/earl/tree/develop/src/Crawler/Middleware/README.md)
+- [Persistence](https://github.com/Cryptoc1/earl/tree/develop/src/Crawler/Persistence/README.md)
 
 All public APIs *should* contain thorough XML (triple slash) comments. 
 
