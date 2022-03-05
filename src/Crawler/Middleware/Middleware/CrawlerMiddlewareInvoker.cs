@@ -1,5 +1,6 @@
 ﻿using Earl.Crawler.Events;
 using Earl.Crawler.Middleware.Abstractions;
+using Earl.Crawler.Middleware.Events;
 
 namespace Earl.Crawler.Middleware;
 

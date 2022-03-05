@@ -3,7 +3,7 @@
     <ItemGroup>
         <PackageReference Include="Axion.ConcurrentHashSet" Version="1.0.0" />
     </ItemGroup>
-    
+
     <ItemGroup>
         <ProjectReference Include="$(SrcDirectory)\Crawler\Abstractions\Earl.Crawler.Abstractions.csproj" />
     </ItemGroup>

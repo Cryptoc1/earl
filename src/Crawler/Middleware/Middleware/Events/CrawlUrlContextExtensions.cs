@@ -1,8 +1,9 @@
 ﻿using Earl.Crawler.Abstractions;
 using Earl.Crawler.Abstractions.Events;
+using Earl.Crawler.Events;
 using Earl.Crawler.Middleware.Abstractions;
 
-namespace Earl.Crawler.Events;
+namespace Earl.Crawler.Middleware.Events;
 
 /// <summary> Extensions to <see cref="CrawlContext"/> that supplement events. </summary>
 public static class CrawlUrlContextExtensions

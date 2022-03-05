@@ -5,6 +5,7 @@ using Earl.Crawler.Abstractions;
 using Earl.Crawler.Abstractions.Configuration;
 using Earl.Crawler.Events;
 using Earl.Crawler.Middleware.Abstractions;
+using Earl.Crawler.Middleware.Events;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Earl.Crawler;

@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <ItemGroup>
-        <PackageReference Include="System.Linq.Async" Version="6.0.*" />
+        <PackageReference Include="System.Linq.Async" Version="6.0.1" />
     </ItemGroup>
-    
+
     <ItemGroup>
         <ProjectReference Include="$(SrcDirectory)\Crawler\Middleware\Middleware\Earl.Crawler.Middleware.csproj" />
         <ProjectReference Include="$(SrcDirectory)\Crawler\Middleware\Html\Earl.Crawler.Middleware.Html.csproj" />
