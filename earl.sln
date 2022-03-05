@@ -24,6 +24,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EC588A5B-208
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Middleware", "Middleware", "{3B10168F-CB56-409F-9A7A-20AB0CF71AB5}"
+	ProjectSection(SolutionItems) = preProject
+		src\Crawler\Middleware\README.md = src\Crawler\Middleware\README.md
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Middleware.Abstractions", "src\Crawler\Middleware\Abstractions\Earl.Crawler.Middleware.Abstractions.csproj", "{6278AAA6-5D29-4F7B-9FC8-F802EC55CC5E}"
 EndProject
