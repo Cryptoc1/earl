@@ -53,6 +53,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Events", "src\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler.Middleware", "src\Crawler\Middleware\Middleware\Earl.Crawler.Middleware.csproj", "{3089DA07-1375-4EE0-90B5-93320B539F2B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{1870D7E3-B750-4ECA-93C3-1D74DB446114}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{85DB08C8-BEFE-48E5-9F24-564E20F4B401}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\default.yml = .github\workflows\default.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -133,6 +140,7 @@ Global
 		{AA0A44B2-8521-494E-A7C2-D73FDF6F7A7C} = {B0E634ED-376C-4BB2-8983-84B6D5343D1A}
 		{0628D7A0-CAA7-4DB1-B50D-C15E4ABDC664} = {BFC493AF-B103-485C-82A3-83483C919824}
 		{3089DA07-1375-4EE0-90B5-93320B539F2B} = {3B10168F-CB56-409F-9A7A-20AB0CF71AB5}
+		{85DB08C8-BEFE-48E5-9F24-564E20F4B401} = {1870D7E3-B750-4ECA-93C3-1D74DB446114}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95CB9206-4EC0-41AC-AEBC-C134144867DB}

@@ -25,7 +25,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore --nologo
 
       - name: Pack
-        run: dotnet pack --output dist --no-build 
+        run: dotnet pack --configuration Release --output dist --no-build 
 
       - name: Publish artifact 'earl-packages'
         uses: actions/upload-artifact@v3
