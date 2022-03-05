@@ -17,7 +17,7 @@ Middleware is configured for a crawl using the [`Use`](https://github.com/Crypto
 *"Typed Middleware"* refers to a class that implements the [`ICrawlerMiddleware`](https://github.com/Cryptoc1/earl/blob/develop/src/Crawler/Middleware/Abstractions/ICrawlerMiddleware.cs#L5) contract, for example:
 
 ```csharp
-public class CustomMiddleware : IMiddleware
+public class CustomMiddleware : ICrawlerMiddleware
 {
     public Task InvokeAsync( CrawlUrlContext context, CrawlUrlDelegate next )
     {
@@ -44,7 +44,7 @@ When using the [`ICrawlerMiddleware<TOptions>`](https://github.com/Cryptoc1/earl
 ```csharp
 public record CustomMiddlewareOptions( string Value );
 
-public class CustomMiddleware : IMiddleware<CustomMiddlewareOptions>
+public class CustomMiddleware : ICrawlerMiddleware<CustomMiddlewareOptions>
 {
     private readonly CustomMiddlewareOptions options;
 
@@ -86,4 +86,4 @@ var options = CrawlerOptionsBuilder.CreateDefault()
 await crawler.CrawlAsync( new Uri(...), options );
 ```
 
-Delegate Middleware is especially useful when debugging & testing other Middleware in the crawl.
+Delegate Middleware is especially useful for debugging & testing other Middleware in the crawl.
