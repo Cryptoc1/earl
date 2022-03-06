@@ -35,3 +35,24 @@ jobs:
         with:
             name: earl-packages
             path: dist
+
+  deploy:
+    if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/develop')
+    needs:
+      - build
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Download artifact 'earl-packages'
+        uses: actions/download-artifact@v3
+        with:
+          name: earl-packages
+      
+      - name: Publish packages
+        run: dotnet nuget push *.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
