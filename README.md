@@ -1,4 +1,4 @@
-# Earl 
+# Earl ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/cryptoc1/earl/default)
 
 Earl is a suite of APIs for developing url crawlers & web scrapers driven by a middleware pattern similar to, and strongly influenced by, ASP.NET Core.
 
@@ -33,6 +33,10 @@ var options = CrawlerOptionsBuilder.CreateDefault()
 
 await crawler.CrawlAsync( new Uri(...), options );
 ```
+
+## Packages
+
+
 
 ## Documentation
 
