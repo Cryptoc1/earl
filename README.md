@@ -38,6 +38,7 @@ await crawler.CrawlAsync( new Uri(...), options );
 
 Documentation can be find within the READMEs of the sub-directories representing the conceptual components of Earl:
 
+- [Events](https://github.com/Cryptoc1/earl/tree/develop/src/Crawler/Events/README.md)
 - [Middleware](https://github.com/Cryptoc1/earl/tree/develop/src/Crawler/Middleware/README.md)
 - [Persistence](https://github.com/Cryptoc1/earl/tree/develop/src/Crawler/Persistence/README.md)
 
