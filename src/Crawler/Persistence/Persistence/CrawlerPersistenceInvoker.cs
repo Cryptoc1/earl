@@ -15,14 +15,14 @@ public class CrawlerPersistenceInvoker : ICrawlerPersistenceInvoker
         => this.persistenceFactory = persistenceFactory;
 
     /// <inheritdoc/>
-    public virtual async Task InvokeAsync( CrawlUrlResult result, CrawlerPersistenceOptions options, CancellationToken cancellation = default )
+    public virtual Task InvokeAsync( CrawlUrlResult result, CrawlerPersistenceOptions options, CancellationToken cancellation = default )
     {
         ArgumentNullException.ThrowIfNull( result );
         ArgumentNullException.ThrowIfNull( options );
 
-        var providers = options.Descriptors.Select( persistenceFactory.Create );
-        await Task.WhenAll(
-            providers.Select( provider => provider.PersistAsync( result, cancellation ) )
+        return Task.WhenAll(
+            options.Descriptors.Select( persistenceFactory.Create )
+                .Select( provider => provider.PersistAsync( result, cancellation ) )
         );
     }
 }

@@ -104,9 +104,9 @@ public class EarlCrawler : IEarlCrawler
             return;
         }
 
-        using var features = new CrawlerFeatureCollection();
         var result = new CrawlUrlResultBuilder( url );
-        using var scope = context.Services.CreateScope();
+        await using var features = new CrawlerFeatureCollection();
+        await using var scope = context.Services.CreateAsyncScope();
 
         var urlContext = new CrawlUrlContext( context, features, result, scope.ServiceProvider, url );
 
