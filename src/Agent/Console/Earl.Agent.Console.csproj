@@ -3,8 +3,6 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <IsPackable>false</IsPackable>
-        <PreserveCompilationContext>true</PreserveCompilationContext>
-        <PreserveCompilationReferences>true</PreserveCompilationReferences>
     </PropertyGroup>
 
     <ItemGroup>

@@ -1,5 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+    <PropertyGroup>
+        <Description>
+            Abstractions for Earl Crawler's "Persistence" pattern.
+
+            Commonly used Types:
+            Earl.Crawler.Persistence.Abstractions.ICrawlerPersistence
+        </Description>
+        <ProjectUrl>https://github.com/cryptoc1/earl/tree/develop/src/Crawler/Persistence</ProjectUrl>
+    </PropertyGroup>
+
     <ItemGroup>
         <ProjectReference Include="$(SrcDirectory)\Crawler\Abstractions\Earl.Crawler.Abstractions.csproj" />
     </ItemGroup>

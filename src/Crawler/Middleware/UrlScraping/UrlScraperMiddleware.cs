@@ -1,5 +1,6 @@
 ﻿using Earl.Crawler.Middleware.Abstractions;
 using Earl.Crawler.Middleware.Html;
+using Earl.Crawler.Middleware.Html.Abstractions;
 using Earl.Crawler.Middleware.UrlScraping.Abstractions;
 using Earl.Crawler.Middleware.UrlScraping.Abstractions.Configuration;
 
@@ -34,7 +35,7 @@ public class UrlScraperMiddleware : ICrawlerMiddleware<UrlScraperOptions>
 
         var urls = scraper.ScrapeAsync( documentFeature.Document, options, context.CrawlContext.CrawlCancelled );
 
-        // NOTE: don't immediately await, invoke the rest of the middleware pipeline first
+        // NOTE: don't immediately await, invoke the remainder of the middleware pipeline first
         var enqueue = urls.ForEachAsync(
             url => context.CrawlContext.UrlQueue.Enqueue( url ),
             context.CrawlContext.CrawlCancelled
@@ -42,7 +43,7 @@ public class UrlScraperMiddleware : ICrawlerMiddleware<UrlScraperOptions>
 
         await next( context );
 
-        // wait for urls to queue
+        // wait for urls to be add to the queue
         await enqueue;
     }
 }

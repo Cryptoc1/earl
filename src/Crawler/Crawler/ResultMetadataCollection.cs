@@ -11,6 +11,7 @@ public class ResultMetadataCollection : IResultMetadataCollection
     #endregion
 
     #region Properties
+
     /// <inheritdoc/>
     public object this[ int index ] => items[ index ];
 

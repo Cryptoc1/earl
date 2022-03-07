@@ -1,1 +1,12 @@
-﻿<Project Sdk="Microsoft.NET.Sdk" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Description>
+            Abstractions for an Earl (url) Crawler.
+
+            Commonly used Types:
+            Earl.Crawler.Abstractions.IEarlCrawler
+        </Description>
+    </PropertyGroup>
+
+</Project>

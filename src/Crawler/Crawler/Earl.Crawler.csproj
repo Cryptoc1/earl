@@ -1,7 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+    <PropertyGroup>
+        <Description>Earl is a suite of APIs for developing url crawlers &amp; web scrapers driven by a middleware pattern similar to, and strongly influenced by, ASP.NET Core.</Description>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
+        <None Include="$(SrcDirectory)\..\README.md" Pack="True" PackagePath="\" />
     </ItemGroup>
 
     <ItemGroup>

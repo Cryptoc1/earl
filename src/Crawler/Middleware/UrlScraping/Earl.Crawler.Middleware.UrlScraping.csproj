@@ -1,5 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+    <PropertyGroup>
+        <Description>Earl Middleware for scarping and enqueuing urls via the Earl.Crawler.Middleware.Html.Abstractions.IHtmlDocumentFeature when crawling a url.</Description>
+        <ProjectUrl>https://github.com/cryptoc1/earl/tree/develop/src/Crawler/Middleware/UrlScraping</ProjectUrl>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="System.Linq.Async" Version="6.0.1" />
     </ItemGroup>

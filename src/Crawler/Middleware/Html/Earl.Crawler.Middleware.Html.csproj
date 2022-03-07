@@ -1,5 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+    <PropertyGroup>
+        <Description>
+            Earl Middleware for parsing an AngleSharp IHtmlDocument of the current HTTP request when crawling a url.
+
+            Commonly used Types:
+            Earl.Crawler.Middleware.Html.Abstractions.IHtmlDocumentFeature
+        </Description>
+        <ProjectUrl>https://github.com/cryptoc1/earl/tree/develop/src/Crawler/Middleware/Html</ProjectUrl>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="AngleSharp" Version="0.16.1" />
     </ItemGroup>

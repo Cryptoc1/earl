@@ -1,5 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+    <PropertyGroup>
+        <Description>
+            Earl Middleware for executing an HTTP request when crawling a Url.
+            
+            Commonly used Types:
+            Earl.Crawler.Middleware.Http.Abstractions.IHttpRepsonseFeature
+        </Description>
+        <ProjectUrl>https://github.com/cryptoc1/earl/tree/develop/src/Crawler/Middleware/Http</ProjectUrl>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
     </ItemGroup>

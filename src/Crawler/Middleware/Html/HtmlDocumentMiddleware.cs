@@ -2,6 +2,7 @@
 using AngleSharp;
 using AngleSharp.Html.Dom;
 using Earl.Crawler.Middleware.Abstractions;
+using Earl.Crawler.Middleware.Html.Abstractions;
 using Earl.Crawler.Middleware.Http.Abstractions;
 using Microsoft.Extensions.Primitives;
 

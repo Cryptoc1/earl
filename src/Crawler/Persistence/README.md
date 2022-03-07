@@ -1,8 +1,8 @@
 # Earl Persistence Layer
 
-The following area contains the *"Earl Persistence Layer"*, which refers to a suite of APIs that enable the results of a crawl to be persisted to a backing storage mechanism. 
+The *"Earl Persistence Layer"* refers to a suite of APIs that enable the results of a crawl to be persisted to a backing storage mechanism. 
 
-Out-of-the-box, and by design, Earl does not collect the results of a crawl. Rather, Earl takes an event based design that leaves it up to the consumer of the [`IEarlCrawler`](https://github.com/Cryptoc1/earl/blob/develop/src/Crawler/Abstractions/IEarlCrawler.cs) contract to handle the [`CrawlUrlResultEvent`](https://github.com/Cryptoc1/earl/blob/develop/src/Crawler/Abstractions/Events/ICrawlerEvents.cs#L41) in order to consume [`CrawlUrlResult`](https://github.com/Cryptoc1/earl/blob/develop/src/Crawler/Abstractions/CrawlUrlResult.cs)s.
+Out-of-the-box, and by design, Earl does not collect the results of a crawl. Rather, Earl provides an Events API that leaves it up to the consumer of the [`IEarlCrawler`](https://github.com/Cryptoc1/earl/blob/develop/src/Crawler/Abstractions/IEarlCrawler.cs) contract to handle the [`CrawlUrlResultEvent`](https://github.com/Cryptoc1/earl/blob/develop/src/Crawler/Abstractions/Events/ICrawlerEvents.cs#L41) in order to consume [`CrawlUrlResult`](https://github.com/Cryptoc1/earl/blob/develop/src/Crawler/Abstractions/CrawlUrlResult.cs)s.
 
 At the lowest level of the Crawler API, this is done by specifying an [`ICrawlerEvents`](https://github.com/Cryptoc1/earl/blob/develop/src/Crawler/Abstractions/Events/ICrawlerEvents.cs#L5) implementation for the [`CrawlerOptions.Events`](https://github.com/Cryptoc1/earl/blob/develop/src/Crawler/Abstractions/Configuration/CrawlerOptions.cs#L9) provided to the [`IEarlCrawler`](https://github.com/Cryptoc1/earl/blob/develop/src/Crawler/Abstractions/IEarlCrawler.cs). However, more commonly used, is likely the [`On<TEvent>(this ICrawlerOptionsBuilder builder, CrawlerEventHandler<TEvent> handler)`](https://github.com/Cryptoc1/earl/blob/develop/src/Crawler/Events/Configuration/ICrawlerOptionsBuilderEventExtensions.cs#L13) extension method:
 

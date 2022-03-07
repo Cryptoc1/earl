@@ -1,6 +1,6 @@
 # Earl Middleware Layer
 
-The following area contains the *"Earl Middleware Layer"*, which refers to a suite of APIs that enable the composition of code into a series of operations performed against a url during a crawl.
+The *"Earl Middleware Layer"* refers to a suite of APIs that enable the composition of code into a series of operations performed against a url during a crawl.
 
 > *Earl's Middleware pattern is strongly inlfuenced by ASP.NET Core's Middleware pattern, it is strongly recommended to review ASP.NET Core's [Middleware documentation](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware/?view=aspnetcore-6.0)*
 

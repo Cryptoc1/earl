@@ -1,5 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+    <PropertyGroup>
+        <Description>
+            Abstractions for Earl Crawler's Middleware pattern.
+
+            Commonly used Types:
+            Earl.Crawler.Middleware.Abstractions.ICrawlerMiddleware
+            Earl.Crawler.Middleware.Abstractions.ICrawlerMiddleware&lt;TOptions&gt;
+            Earl.Crawler.Middleware.Abstractions.CrawlUrlDelegate
+        </Description>
+        <ProjectUrl>https://github.com/cryptoc1/earl/tree/develop/src/Crawler/Middleware</ProjectUrl>
+    </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="Axion.ConcurrentHashSet" Version="1.0.0" />
     </ItemGroup>
