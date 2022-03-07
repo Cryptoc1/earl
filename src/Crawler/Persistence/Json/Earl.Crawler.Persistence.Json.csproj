@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <Description>An implementation of Earl's "Persistence" pattern for persiting results to JSON files.</Description>
-        <ProjectUrl>https://github.com/cryptoc1/earl/tree/develop/src/Crawler/Persistence/Json</ProjectUrl>
+        <PackageProjectUrl>https://github.com/cryptoc1/earl/tree/develop/src/Crawler/Persistence/Json</PackageProjectUrl>
     </PropertyGroup>
     
     <ItemGroup>

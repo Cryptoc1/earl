@@ -7,7 +7,7 @@
             Commonly used Types:
             Earl.Crawler.Persistence.Abstractions.ICrawlerPersistence
         </Description>
-        <ProjectUrl>https://github.com/cryptoc1/earl/tree/develop/src/Crawler/Persistence</ProjectUrl>
+        <PackageProjectUrl>https://github.com/cryptoc1/earl/tree/develop/src/Crawler/Persistence</PackageProjectUrl>
     </PropertyGroup>
 
     <ItemGroup>

@@ -3,7 +3,7 @@
     <PropertyGroup>
         <Description>Default implementation of Earl's "Persistence" pattern.</Description>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-        <ProjectUrl>https://github.com/cryptoc1/earl/tree/develop/src/Crawler/Persistence</ProjectUrl>
+        <PackageProjectUrl>https://github.com/cryptoc1/earl/tree/develop/src/Crawler/Persistence</PackageProjectUrl>
     </PropertyGroup>
 
     <ItemGroup>

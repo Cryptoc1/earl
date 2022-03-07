@@ -7,7 +7,7 @@
             Commonly used Types:
             Earl.Crawler.Middleware.Http.Abstractions.IHttpRepsonseFeature
         </Description>
-        <ProjectUrl>https://github.com/cryptoc1/earl/tree/develop/src/Crawler/Middleware/Http</ProjectUrl>
+        <PackageProjectUrl>https://github.com/cryptoc1/earl/tree/develop/src/Crawler/Middleware/Http</PackageProjectUrl>
     </PropertyGroup>
 
     <ItemGroup>
