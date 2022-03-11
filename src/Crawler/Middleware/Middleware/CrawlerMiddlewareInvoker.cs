@@ -31,7 +31,8 @@ public class CrawlerMiddlewareInvoker : ICrawlerMiddlewareInvoker
                 context.CrawlContext.CrawlCancelled.ThrowIfCancellationRequested();
 
                 var next = PopMiddlewareDelegate( middlewares );
-                await middleware.InvokeAsync( context, next );
+                await middleware.InvokeAsync( context, next )
+                    .ConfigureAwait( false );
 
                 await context.OnProgressAsync();
             };

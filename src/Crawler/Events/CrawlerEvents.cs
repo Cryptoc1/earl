@@ -25,7 +25,8 @@ public class CrawlerEvents : ICrawlerEvents
 
         if( events is not null )
         {
-            await events.HandleAsync( e, cancellation );
+            await events.HandleAsync( e, cancellation )
+                .ConfigureAwait( false );
         }
 
         if( eventHandlerMap.TryGetValue( typeof( TEvent ), out var handlers ) )

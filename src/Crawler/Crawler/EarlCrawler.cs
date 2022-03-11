@@ -86,10 +86,10 @@ public class EarlCrawler : IEarlCrawler
             batch[ url ] = processor.SendAsync( new( CrawlUrlAsync, url, context ), context.CrawlCancelled );
         }
 
-        await Task.WhenAll( batch.Values );
+        await Task.WhenAll( batch.Values ).ConfigureAwait( false );
 
         processor.Complete();
-        await processor.Completion;
+        await processor.Completion.ConfigureAwait( false );
 
         if( context.Options.BatchDelay.HasValue )
         {
@@ -115,7 +115,8 @@ public class EarlCrawler : IEarlCrawler
 
         try
         {
-            await middleware.InvokeAsync( urlContext );
+            await middleware.InvokeAsync( urlContext )
+                .ConfigureAwait( false );
         }
         catch( Exception exception )
         {

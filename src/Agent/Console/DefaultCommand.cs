@@ -5,8 +5,6 @@ using Earl.Crawler.Abstractions.Configuration;
 using Earl.Crawler.Abstractions.Events;
 using Earl.Crawler.Configuration;
 using Earl.Crawler.Events.Configuration;
-using Earl.Crawler.Persistence.Configuration;
-using Earl.Crawler.Persistence.Json;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
@@ -32,17 +30,17 @@ public class DefaultCommand : CancellableAsyncCommand<DefaultCommandSettings>
                 $"Initiating crawl",
                 async context =>
                 {
-                    await Task.Delay( 1000 );
+                    await Task.Delay( 1250 );
 
                     var builder = CrawlerOptionsBuilder.CreateDefault()
                         .On<CrawlErrorEvent>( onError )
                         .On<CrawlUrlResultEvent>( onUrlResult )
                         .On<CrawlUrlStartedEvent>( onUrlStarted );
-                        /* .PersistTo(
-                            persist => persist.ToJson(
-                                json => json.Destination( Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.Desktop ), "CrawlResults" ) )
-                            )
-                        ); */
+                    /* .PersistTo(
+                        persist => persist.ToJson(
+                            json => json.Destination( Path.Combine( Environment.GetFolderPath( Environment.SpecialFolder.Desktop ), "CrawlResults" ) )
+                        )
+                    ); */
 
                     if( settings.BatchDelay.HasValue )
                     {
@@ -61,10 +59,8 @@ public class DefaultCommand : CancellableAsyncCommand<DefaultCommandSettings>
                     context.Spinner( Spinner.Known.Triangle );
                     context.Status( $"Crawling '{settings.Url}'" );
 
-                    await Task.Delay( 1500 );
+                    await Task.Delay( 1000 );
                     await crawl;
-
-                    return;
 
                     ValueTask onError( CrawlErrorEvent e, CancellationToken cancellation )
                     {

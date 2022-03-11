@@ -10,7 +10,8 @@ public class EarlHttpMessageHandler : DelegatingHandler
     protected override async Task<HttpResponseMessage> SendAsync( HttpRequestMessage request, CancellationToken cancellation )
     {
         var stopwatch = ValueStopwatch.StartNew();
-        var response = await base.SendAsync( request, cancellation );
+        var response = await base.SendAsync( request, cancellation )
+            .ConfigureAwait( false );
 
         var elapsed = stopwatch.GetElapsedTime();
         return new EarlHttpResponseMessage

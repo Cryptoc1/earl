@@ -20,7 +20,7 @@ public class CrawlerJsonPersistence : ICrawlerPersistence
     {
         string? path = Path.Combine( options.Destination, $"{result.Id}.json" );
 
-        using var file = new FileStream( path, FileMode.Create, FileAccess.Write );
+        await using var file = new FileStream( path, FileMode.Create, FileAccess.Write );
         await JsonSerializer.SerializeAsync( file, result, options.Serialization, cancellation );
     }
 }

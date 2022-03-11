@@ -6,8 +6,8 @@ Earl is a suite of APIs for developing url crawlers & web scrapers driven by a m
 
 ```csharp
 var services = new ServiceCollection()
-    .AddLogging()
     .AddEarlCrawler()
+    .AddEarlJsonPersistence()
     .BuildServiceProvider();
 
 var crawler = services.GetService<IEarlCrawler>();
@@ -29,6 +29,7 @@ var options = CrawlerOptionsBuilder.CreateDefault()
             return next( context );
         }
     )
+    .PersistTo( persist => persist.ToJson( json => json.Destination(...) ) )
     .Build();
 
 await crawler.CrawlAsync( new Uri(...), options );

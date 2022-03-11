@@ -20,7 +20,9 @@ public class HtmlDocumentMiddleware : ICrawlerMiddleware
 
         var responseFeature = context.Features.Get<IHttpResponseFeature>();
 
-        var document = await GetDocumentAsync( responseFeature!, context.CrawlContext.CrawlCancelled );
+        var document = await GetDocumentAsync( responseFeature!, context.CrawlContext.CrawlCancelled )
+            .ConfigureAwait( false );
+
         if( document is not null )
         {
             // NOTE: feature is disposed by the context

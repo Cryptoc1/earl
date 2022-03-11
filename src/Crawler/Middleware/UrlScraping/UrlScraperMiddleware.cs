@@ -39,9 +39,9 @@ public class UrlScraperMiddleware : ICrawlerMiddleware<UrlScraperOptions>
         var enqueue = urls.ForEachAsync(
             url => context.CrawlContext.UrlQueue.Enqueue( url ),
             context.CrawlContext.CrawlCancelled
-        );
+        ).ConfigureAwait( false );
 
-        await next( context );
+        await next( context ).ConfigureAwait( false );
 
         // wait for urls to be add to the queue
         await enqueue;
