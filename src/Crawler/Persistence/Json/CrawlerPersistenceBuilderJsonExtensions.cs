@@ -14,7 +14,7 @@ public static class CrawlerPersistenceBuilderJsonExtensions
         ArgumentNullException.ThrowIfNull( builder );
         ArgumentNullException.ThrowIfNull( configure );
 
-        var jsonBuilder = new CrawlerJsonPersistenceOptionsBuilder();
+        var jsonBuilder = CrawlerJsonPersistenceOptionsBuilder.CreateDefault();
         configure( jsonBuilder );
 
         var jsonOptions = jsonBuilder.Build();

@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using Earl.Crawler.Persistence.Json.Serialization;
 
 namespace Earl.Crawler.Persistence.Json.Configuration;
 
@@ -30,6 +31,17 @@ public class CrawlerJsonPersistenceOptionsBuilder : ICrawlerJsonPersistenceOptio
         }
 
         return options;
+    }
+
+    /// <summary> Creates an <see cref="ICrawlerJsonPersistenceOptionsBuilder"/> with the default configuration. </summary>
+    public static ICrawlerJsonPersistenceOptionsBuilder CreateDefault( )
+        => new CrawlerJsonPersistenceOptionsBuilder()
+            .Serialize( ConfigureDefaultSerialization );
+
+    private static void ConfigureDefaultSerialization( JsonSerializerOptions options )
+    {
+        ArgumentNullException.ThrowIfNull( options );
+        options.Converters.Add( new ResultMetadataConverter() );
     }
 
     /// <inheritdoc/>
