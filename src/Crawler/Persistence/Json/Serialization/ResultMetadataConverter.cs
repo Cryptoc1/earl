@@ -21,34 +21,32 @@ public class ResultMetadataConverter : JsonConverter<IResultMetadataCollection>
 
         writer.WriteStartArray();
 
-        foreach( var entry in value.Select( _ => new MetadataEntry( _ ) ) )
+        foreach( object? entry in value )
         {
-            JsonSerializer.Serialize( writer, entry, entry.GetType(), options );
+            if( entry is null )
+            {
+                continue;
+            }
+
+            var type = entry!.GetType();
+
+            writer.WriteStartObject();
+
+            writer.WriteString( "@type", type.AssemblyQualifiedName! );
+            WriteEntryProperties( writer, entry, type, options );
+
+            writer.WriteEndObject();
         }
 
         writer.WriteEndArray();
     }
 
-    private struct MetadataEntry
+    private static void WriteEntryProperties( Utf8JsonWriter writer, object entry, Type type, JsonSerializerOptions options )
     {
-        #region Fields
-        private readonly Type type;
-        #endregion
-
-        #region Property
-
-        [JsonPropertyName( "@type" )]
-        public string Type => type.AssemblyQualifiedName!;
-
-        public object Value { get; }
-        #endregion
-
-        public MetadataEntry( object value )
+        var element = JsonSerializer.SerializeToElement( entry, type, options );
+        foreach( var property in element.EnumerateObject() )
         {
-            ArgumentNullException.ThrowIfNull( value );
-
-            type = value.GetType();
-            Value = value;
+            property.WriteTo( writer );
         }
     }
 }
