@@ -16,7 +16,7 @@ var config = DefaultConfig.Instance
     .AddExporter( MarkdownExporter.GitHub )
     .AddExporter( DefaultExporters.JsonFullCompressed )
     .AddJob(
-        Job.MediumRun
+        Job.ShortRun
             .AsBaseline()
             .WithId( "default" )
             .WithJit( Jit.RyuJit )
@@ -25,7 +25,7 @@ var config = DefaultConfig.Instance
     .AddJob(
         Job.RyuJitX64
             .UnfreezeCopy()
-            .ApplyAndFreeze( Job.MediumRun )
+            .ApplyAndFreeze( Job.ShortRun )
             .WithId( "x64" )
             .WithToolchain(
                 CsProjCoreToolchain.From(
@@ -37,7 +37,7 @@ var config = DefaultConfig.Instance
     .AddJob(
         Job.RyuJitX86
             .UnfreezeCopy()
-            .ApplyAndFreeze( Job.MediumRun )
+            .ApplyAndFreeze( Job.ShortRun )
             .WithId( "x86" )
             .WithToolchain(
                 CsProjCoreToolchain.From(
