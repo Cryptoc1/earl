@@ -39,7 +39,7 @@ jobs:
         with:
           alert-comment-cc-users: '@cryptoc1'
           alert-threshold: '125%'
-          auto-push: true
+          auto-push: false
           comment-on-alert: true
           comment-always: true
           external-data-json-path: ./cache/benchmark-data.json
