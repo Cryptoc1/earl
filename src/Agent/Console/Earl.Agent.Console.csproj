@@ -11,7 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="$(SrcDirectory)\Crawler\Crawler\Earl.Crawler.csproj" />
+        <ProjectReference Include="$(SrcDirectory)\Crawler\src\Earl.Crawler.csproj" />
         <ProjectReference Include="$(SrcDirectory)\Crawler\Persistence\Json\Earl.Crawler.Persistence.Json.csproj" />
     </ItemGroup>
 

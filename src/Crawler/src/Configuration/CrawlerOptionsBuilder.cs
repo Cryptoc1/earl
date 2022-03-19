@@ -21,7 +21,7 @@ public class CrawlerOptionsBuilder : ICrawlerOptionsBuilder
     {
         var options = new CrawlerOptions(
             BatchDelay: null,
-            BatchSize: Environment.ProcessorCount * 4,
+            BatchSize: 2 ^ Environment.ProcessorCount,
             Events: new CrawlerEvents(),
             MaxDegreeOfParallelism: Environment.ProcessorCount,
             MaxRequestCount: -1,

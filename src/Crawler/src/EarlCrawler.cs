@@ -38,7 +38,7 @@ public class EarlCrawler : IEarlCrawler
             cancellationSource.Token,
             options,
             serviceProvider,
-            new ConcurrentHashSet<Uri>( UriComparer.OrdinalIgnoreCase ),
+            new ConcurrentHashSet<Uri>( options.MaxDegreeOfParallelism, options.BatchSize, UriComparer.OrdinalIgnoreCase ),
             new ConcurrentQueue<Uri>( new[] { initiator } )
         );
 
