@@ -7,10 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Earl.Crawler.Benchmarks;
 
-[MaxColumn]
-[MemoryDiagnoser]
-[MinColumn]
-[ThreadingDiagnoser]
 public class CrawlerBenchmarks
 {
     #region Fields

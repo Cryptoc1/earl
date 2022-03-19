@@ -1,9 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <IsPackable>false</IsPackable>
+        <Optimize Condition=" '$(Configuration)' == 'Release' ">true</Optimize>
         <OutputType>Exe</OutputType>
         <TargetFramework>net6.0</TargetFramework>
-        <Optimize Condition=" '$(Configuration)' == 'Release' ">true</Optimize>
     </PropertyGroup>
 
     <ItemGroup>
