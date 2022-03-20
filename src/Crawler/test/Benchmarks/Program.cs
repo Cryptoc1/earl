@@ -22,7 +22,7 @@ var config = DefaultConfig.Instance
             .WithJit( Jit.RyuJit )
             .WithPlatform( Platform.AnyCpu )
     )
-    .AddJob(
+    /* .AddJob(
         Job.RyuJitX64
             .UnfreezeCopy()
             .ApplyAndFreeze( Job.ShortRun )
@@ -33,7 +33,7 @@ var config = DefaultConfig.Instance
                           .WithCustomDotNetCliPath( @"C:\Program Files\dotnet\dotnet.exe", ".NET (x64)" )
                 )
             )
-    )
+    ) */
     .AddJob(
         Job.RyuJitX86
             .UnfreezeCopy()
