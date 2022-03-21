@@ -7,8 +7,10 @@
 
     <PropertyGroup>
         <Deterministic>true</Deterministic>
+        <EmbedUntrackedSources>true</EmbedUntrackedSources>
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
         <ImplicitUsings>true</ImplicitUsings>
+        <IncludeSymbols>true</IncludeSymbols>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <Platforms>AnyCPU;x64;x86;ARM64;ARM32;ARM</Platforms>
@@ -44,5 +46,9 @@
         <PackageReference Include="MinVer" Version="*" PrivateAssets="all" />
         <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="all" />
     </ItemGroup>
+
+    <PropertyGroup Condition=" '$(GITHUB_ACTIONS)' == 'true' ">
+        <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+    </PropertyGroup>
 
 </Project>

@@ -55,7 +55,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{85DB08C8-BEFE-48E5-9F24-564E20F4B401}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\benchmark.yml = .github\workflows\benchmark.yml
-		.github\workflows\default.yml = .github\workflows\default.yml
+		.github\workflows\build.yml = .github\workflows\build.yml
+		.github\workflows\test.yml = .github\workflows\test.yml
+		.github\workflows\deploy.yml = .github\workflows\deploy.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Earl.Crawler", "src\Crawler\src\Earl.Crawler.csproj", "{56442662-DFA6-4F1B-85C0-744C59612367}"

@@ -1,0 +1,28 @@
+name: build
+
+on:
+  push:
+    branches: [ develop, main, 'feature/**' ]
+  
+  pull_request:
+    branches: [ develop, main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_NOLOGO: true
+
+    steps:
+      - uses: actions/checkout@v2
+    
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore --force
+
+      - name: Build solution
+        run: dotnet build --configuration Release --no-restore

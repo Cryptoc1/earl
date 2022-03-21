@@ -1,0 +1,60 @@
+name: deploy
+
+on:
+  workflow_run:
+    workflows: [ test ]
+    types: [ completed ]
+
+jobs:
+  pack:
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_NOLOGO: true
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+    
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+        
+      - name: Restore dependencies
+        run: dotnet restore --force
+
+      - name: Build    
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Pack
+        run: dotnet pack --configuration Release --output dist --no-build
+
+      - name: Publish artifact 'earl-packages'
+        uses: actions/upload-artifact@v3
+        with:
+            name: earl-packages
+            path: dist
+
+  publish:
+    env:
+        DOTNET_NOLOGO: true
+
+    if: ${{ github.event.workflow_run.conclusion == 'success' }} && ( startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/develop') )
+    needs:
+      - pack
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Download artifact 'earl-packages'
+        uses: actions/download-artifact@v3
+        with:
+          name: earl-packages
+      
+      - name: Publish packages
+        run: dotnet nuget push "*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
