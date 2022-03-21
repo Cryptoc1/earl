@@ -1,13 +1,14 @@
 name: test
 
 on:
-  workflow_run:
-    workflows: [ build ]
-    types: [ completed ]
+  push: 
+    branches: [ develop, main ]
+
+  pull_request:
+    branches: [ develop, main ]
 
 jobs:
   test:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     env:
       DOTNET_NOLOGO: true
