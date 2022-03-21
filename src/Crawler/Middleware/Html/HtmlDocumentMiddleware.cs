@@ -37,9 +37,7 @@ public class HtmlDocumentMiddleware : ICrawlerMiddleware
     {
         ArgumentNullException.ThrowIfNull( feature );
 
-        using var content = await feature.Response.Content.ReadAsStreamAsync( cancellation )
-            .ConfigureAwait( false );
-
+        await using var content = await feature.Response.Content.ReadAsStreamAsync( cancellation );
         var document = await BrowsingContext.New()
             .OpenAsync(
                 response =>
@@ -62,7 +60,7 @@ public class HtmlDocumentMiddleware : ICrawlerMiddleware
                     response.Content( content );
                 },
                 cancellation
-            ).ConfigureAwait( false );
+            );
 
         return document as IHtmlDocument;
     }

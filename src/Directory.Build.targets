@@ -1,5 +1,32 @@
 <Project>
 
+    <PropertyGroup Condition=" '$(IsTestProject)' == 'true' ">
+        <IsPackable>false</IsPackable>
+        <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(IsBenchmarkProject)' == 'true' ">
+        <IsPackable>false</IsPackable>
+        <GenerateDocumentationFile>false</GenerateDocumentationFile>
+        <Optimize Condition=" '$(Configuration)' == 'Release' ">true</Optimize>
+        <OutputType>Exe</OutputType>
+    </PropertyGroup>
+
+    <ItemGroup Condition=" '$(IsTestProject)' == 'true' ">
+        <PackageReference Include="coverlet.collector" Version="1.3.*" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.*" />
+        <PackageReference Include="xunit" Version="2.4.*" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.*" />
+
+        <Using Include="Xunit" />
+    </ItemGroup>
+
+    <ItemGroup Condition=" '$(IsBenchmarkProject)' == 'true' ">
+        <PackageReference Include="BenchmarkDotNet" Version="0.13.*" />
+
+        <Using Include="BenchmarkDotNet.Attributes" />
+    </ItemGroup>
+
     <ItemGroup Condition=" '$(RunAnalyzers)' == 'true' ">
         <!-- Include editorconfig (Visual Studio expects editorconfigs in the root of projects). More info here: https://docs.microsoft.com/en-us/visualstudio/ide/create-portable-custom-editor-options?view=vs-2019#file-hierarchy-and-precedence -->
         <None Include="$(SrcDirectory)\..\.editorconfig" Visible="false" />

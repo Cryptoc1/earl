@@ -1,4 +1,5 @@
 ﻿using Earl.Crawler.Abstractions;
+using Earl.Crawler.Abstractions.Configuration;
 using Earl.Crawler.Middleware;
 using Earl.Crawler.Middleware.Abstractions;
 using Earl.Crawler.Middleware.Http;
@@ -30,7 +31,16 @@ public static class EarlServiceCollectionExtensions
         services.AddTransient<ICrawlerMiddlewareInvoker, CrawlerMiddlewareInvoker>();
 
         services.AddTransient<ICrawlerMiddlewareFactory, CrawlerMiddlewareFactory>();
-        services.AddTransient<CrawlerMiddlewareFactory<DelegateCrawlerMiddlewareDescriptor>, DelegateCrawlerMiddlewareFactory>();
-        services.AddTransient<CrawlerMiddlewareFactory<ServiceCrawlerMiddlewareDescriptor>, ServiceCrawlerMiddlewareFactory>();
+        AddCrawlerMiddlewareFactory<DelegateCrawlerMiddlewareDescriptor, DelegateCrawlerMiddlewareFactory>( services );
+        AddCrawlerMiddlewareFactory<ServiceCrawlerMiddlewareDescriptor, ServiceCrawlerMiddlewareFactory>( services );
+
+        // TODO: make this public, move the Earl.Crawler.Middleware
+        static IServiceCollection AddCrawlerMiddlewareFactory<TDescriptor, TFactory>( IServiceCollection services )
+            where TDescriptor : ICrawlerMiddlewareDescriptor
+            where TFactory : CrawlerMiddlewareFactory<TDescriptor>
+        {
+            ArgumentNullException.ThrowIfNull( services );
+            return services.AddTransient<CrawlerMiddlewareFactory<TDescriptor>, TFactory>();
+        }
     }
 }

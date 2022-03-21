@@ -34,7 +34,8 @@ public class CrawlerMiddlewareInvoker : ICrawlerMiddlewareInvoker
                 await middleware.InvokeAsync( context, next )
                     .ConfigureAwait( false );
 
-                await context.OnProgressAsync();
+                await context.OnProgressAsync()
+                    .ConfigureAwait( false );
             };
 
     private Stack<ICrawlerMiddleware> CreateMiddlewareStack( CrawlUrlContext context )
