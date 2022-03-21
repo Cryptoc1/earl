@@ -1,7 +1,6 @@
 ﻿using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Diagnosers;
-using BenchmarkDotNet.Environments;
 using BenchmarkDotNet.Exporters;
 using BenchmarkDotNet.Jobs;
 using BenchmarkDotNet.Running;
@@ -15,14 +14,14 @@ var config = DefaultConfig.Instance
     .AddDiagnoser( ThreadingDiagnoser.Default )
     .AddExporter( MarkdownExporter.GitHub )
     .AddExporter( DefaultExporters.JsonFullCompressed )
-    .AddJob(
+    /* .AddJob(
         Job.ShortRun
             .AsBaseline()
             .WithId( "default" )
             .WithJit( Jit.RyuJit )
             .WithPlatform( Platform.AnyCpu )
     )
-    /* .AddJob(
+    .AddJob(
         Job.RyuJitX64
             .UnfreezeCopy()
             .ApplyAndFreeze( Job.ShortRun )
