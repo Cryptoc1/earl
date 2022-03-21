@@ -22,13 +22,13 @@ jobs:
 
       - name: Setup .NET Core
         run: |
-          Invoke-WebRequest -Uri "https://dot.net/v1/dotnet-install.ps1" -OutFile "dotnet-install.ps1"
+          Invoke-WebRequest -Uri "https://dotnet.microsoft.com/download/dotnet/scripts/v1/dotnet-install.ps1" -OutFile "dotnet-install.ps1"
 
           # Install 32bit SDK
-          ./dotnet-install -InstallDir "C:\Program Files (x86)\dotnet" -Architecture x86 -Channel 6.0.3xx
+          ./dotnet-install -InstallDir "C:\Program Files (x86)\dotnet" -Architecture x86 -Version 6.0.201
 
           # Install 64bit SDK
-          ./dotnet-install -InstallDir "C:\Program Files\dotnet" -Architecture x64 -Channel 6.0.3xx
+          ./dotnet-install -InstallDir "C:\Program Files\dotnet" -Architecture x64 -Version 6.0.201
 
         shell: pwsh
         
