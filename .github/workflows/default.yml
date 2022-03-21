@@ -54,7 +54,10 @@ jobs:
 
       - name: Public coverage results
         if: success() || failure()
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v2
+        with: 
+          directory: TestResults
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Publish artifact 'earl-test-results'
         uses: actions/upload-artifact@v3
