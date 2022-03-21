@@ -25,15 +25,16 @@ jobs:
           Invoke-WebRequest -Uri "https://dot.net/v1/dotnet-install.ps1" -OutFile "dotnet-install.ps1"
 
           # Install 32bit SDK
-          ./dotnet-install -InstallDir "C:\Program Files (x86)\dotnet" -Architecture x86 -Channel 6.0.2xx
+          ./dotnet-install -InstallDir "C:\Program Files (x86)\dotnet" -Architecture x86 -Channel 6.0.3xx
 
           # Install 64bit SDK
-          ./dotnet-install -InstallDir "C:\Program Files\dotnet" -Architecture x64 -Channel 6.0.2xx
+          ./dotnet-install -InstallDir "C:\Program Files\dotnet" -Architecture x64 -Channel 6.0.3xx
 
         shell: pwsh
         
       - name: Run crawler benchmarks
-        run: dotnet run --project .\src\Crawler\test\Benchmarks\Earl.Crawler.Benchmarks.csproj -c Release -- --filter *
+        run: . "C:\Program Files\dotnet\dotnet.exe" run --project .\src\Crawler\test\Benchmarks\Earl.Crawler.Benchmarks.csproj -c Release -- --filter *
+        shell: pwsh
 
       - name: Download cached benchmark results
         uses: actions/cache@v2
