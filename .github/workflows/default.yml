@@ -2,13 +2,71 @@ name: default
 
 on:
   push:
-    branches: [ develop, main ]
+    branches: [ develop, main, 'feature/**' ]
   
   pull_request:
     branches: [ develop, main ]
 
 jobs:
   build:
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_NOLOGO: true
+
+    steps:
+      - uses: actions/checkout@v2
+    
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore --force
+
+      - name: Build solution
+        run: dotnet build --configuration Release --no-restore
+
+  test:
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_NOLOGO: true
+
+    steps:
+      - uses: actions/checkout@v2
+    
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore --force
+
+      - name: Run tests
+        run: |
+          dotnet test --results-directory TestResults --logger "trx;LogFileName=earl-test-results.trx" --collect:"XPlat Code coverage"
+
+      - name: Publish test results
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: Earl Test Results
+          path: TestResults/earl-test-results.trx
+          reporter: dotnet-trx
+
+      - name: Public coverage results
+        if: success() || failure()
+        uses: codecov/codecov-action@v1
+
+      - name: Publish artifact 'earl-test-results'
+        uses: actions/upload-artifact@v3
+        if: success() || failure()
+        with:
+            name: earl-test-results
+            path: TestResults
+
+  pack:
     runs-on: ubuntu-latest
     env:
       DOTNET_NOLOGO: true
@@ -27,10 +85,10 @@ jobs:
         run: dotnet restore --force
 
       - name: Build    
-        run: dotnet build --configuration Release --no-restore --nologo
+        run: dotnet build --configuration Release --no-restore
 
       - name: Pack
-        run: dotnet pack --configuration Release --output dist --no-build --nologo
+        run: dotnet pack --configuration Release --output dist --no-build
 
       - name: Publish artifact 'earl-packages'
         uses: actions/upload-artifact@v3
@@ -38,13 +96,15 @@ jobs:
             name: earl-packages
             path: dist
 
-  deploy:
+  publish:
+    env:
+        DOTNET_NOLOGO: true
+
     if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/develop')
     needs:
-      - build
+      - pack
 
     runs-on: ubuntu-latest
-
     steps:
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
@@ -56,5 +116,57 @@ jobs:
         with:
           name: earl-packages
       
-      - name: Publish packages
+      - name: Push packages
         run: dotnet nuget push "*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+  benchmark:
+    if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/develop')
+    runs-on: windows-latest
+    env:
+      DOTNET_NOLOGO: true
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup .NET Core
+        run: |
+          Invoke-WebRequest -Uri "https://dotnet.microsoft.com/download/dotnet/scripts/v1/dotnet-install.ps1" -OutFile "dotnet-install.ps1"
+
+          # Install 32bit SDK
+          ./dotnet-install -InstallDir "C:\Program Files (x86)\dotnet" -Architecture x86 -Version 6.0.201
+
+          # Install 64bit SDK
+          ./dotnet-install -InstallDir "C:\Program Files\dotnet" -Architecture x64 -Version 6.0.201
+
+        shell: pwsh
+        
+      - name: Run benchmarks
+        run: . "C:\Program Files\dotnet\dotnet.exe" run --project .\src\Crawler\test\Benchmarks\Earl.Crawler.Benchmarks.csproj -c Release -- --filter *
+        shell: pwsh
+
+      - name: Download cached benchmark results
+        uses: actions/cache@v2
+        with:
+          key: ${{ runner.os }}-earl-benchmarks
+          path: ./cache
+
+      - name: Publish benchmark results
+        uses: benchmark-action/github-action-benchmark@v1
+        with:
+          alert-comment-cc-users: '@cryptoc1'
+          alert-threshold: '125%'
+          auto-push: false
+          comment-on-alert: true
+          comment-always: true
+          external-data-json-path: ./cache/benchmark-data.json
+          fail-threshold: '200%'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          name: Earl Benchmarks
+          output-file-path: BenchmarkDotNet.Artifacts/results/Earl.Crawler.Benchmarks.CrawlerBenchmarks-report-full-compressed.json
+          tool: benchmarkdotnet
+
+      - name: Publish artifact 'earl-benchmarks'
+        uses: actions/upload-artifact@v3
+        with:
+            name: earl-benchmarks
+            path: BenchmarkDotNet.Artifacts
