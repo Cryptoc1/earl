@@ -63,7 +63,6 @@ jobs:
         with:
           reports: TestResults/**/coverage.cobertura.xml
           reporttypes: 'Cobertura;MarkdownSummary'
-          sourcedirs: ${{ github.workspace }}/src/Crawler/
           targetdir: CoverageResults
           title: coverage results
 
