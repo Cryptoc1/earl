@@ -1,15 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <IsPackable>false</IsPackable>
-        <Optimize Condition=" '$(Configuration)' == 'Release' ">true</Optimize>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
+        <IsBenchmarkProject>true</IsBenchmarkProject>
     </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="BenchmarkDotNet" Version="0.13.1" />
-    </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="$(SrcDirectory)\Crawler\src\Earl.Crawler.csproj" />

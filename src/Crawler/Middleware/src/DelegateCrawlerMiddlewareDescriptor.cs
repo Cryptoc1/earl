@@ -23,7 +23,7 @@ public class DelegateCrawlerMiddlewareFactory : CrawlerMiddlewareFactory<Delegat
     public override ICrawlerMiddleware Create( DelegateCrawlerMiddlewareDescriptor descriptor )
         => new DelegateCrawlerMiddleware( descriptor.Middleware );
 
-    private class DelegateCrawlerMiddleware : ICrawlerMiddleware
+    private class DelegateCrawlerMiddleware : ICrawlerMiddleware<Func<CrawlUrlContext, CrawlUrlDelegate, Task>>
     {
         #region Fields
         private readonly Func<CrawlUrlContext, CrawlUrlDelegate, Task> middleware;

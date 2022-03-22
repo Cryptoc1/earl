@@ -1,5 +1,4 @@
-﻿using BenchmarkDotNet.Attributes;
-using Earl.Crawler.Abstractions;
+﻿using Earl.Crawler.Abstractions;
 using Earl.Crawler.Abstractions.Events;
 using Earl.Crawler.Configuration;
 using Earl.Crawler.Events.Configuration;
