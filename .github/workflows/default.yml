@@ -74,7 +74,7 @@ jobs:
           path: CoverageResults
 
       - name: Report coverage results
-        uses: cryptoc1/cobertura-action@master
+        uses: Cryptoc1/cobertura-action@master
         if: success() || failure()
         with: 
           fail_below_threshold: false
