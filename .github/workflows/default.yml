@@ -42,7 +42,7 @@ jobs:
         run: dotnet restore --force
 
       - name: Run tests
-        run: dotnet test --results-directory TestResults --logger "trx;LogFileName=earl-test-results.trx" --collect:"XPlat Code Coverage"
+        run: dotnet test --results-directory TestResults --logger "trx;LogFileName=earl-test-results.trx" --collect:"XPlat Code Coverage" /p:WarningLevel=0
      
       - name: Publish artifact 'earl-test-results'
         uses: actions/upload-artifact@v3
@@ -86,7 +86,7 @@ jobs:
         run: dotnet restore --force
 
       - name: Build    
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build --configuration Release --no-restore /p:WarningLevel=0
 
       - name: Pack
         run: dotnet pack --configuration Release --output dist --no-build
@@ -142,7 +142,7 @@ jobs:
         shell: pwsh
         
       - name: Run benchmarks
-        run: . "C:\Program Files\dotnet\dotnet.exe" run --project .\src\Crawler\test\Benchmarks\Earl.Crawler.Benchmarks.csproj -c Release -- --filter *
+        run: . "C:\Program Files\dotnet\dotnet.exe" run --project .\src\Crawler\test\Benchmarks\Earl.Crawler.Benchmarks.csproj -c Release /p:WarningLevel=0 -- --filter *
         shell: pwsh
 
       - name: Download cached benchmark results
