@@ -4,9 +4,11 @@ env:
   EARL_DOTNET_VERSION: 6.0.201
   DOTNET_NOLOGO: true
 
-on:
+on:   
   push:
     branches: [ develop, main, 'feature/**' ]
+
+  workflow_dispatch:
 
 jobs:
   build:
@@ -40,8 +42,9 @@ jobs:
         run: dotnet restore --force
 
       - name: Run tests
-        run: dotnet test --results-directory TestResults --logger "trx;LogFileName=earl-test-results.trx" --collect:"XPlat Code Coverage" /p:WarningLevel=0
-     
+        run: |
+          dotnet test --results-directory TestResults --logger "trx;LogFileName=earl-test-results.trx" --collect:"XPlat Code Coverage" /p:WarningLevel=0 -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.DeterministicReport=true
+
       - name: Upload artifact 'earl-test-results'
         uses: actions/upload-artifact@v3
         if: success() || failure()
@@ -57,18 +60,32 @@ jobs:
           path: TestResults/earl-test-results.trx
           reporter: dotnet-trx
 
+      - name: Generate coverage results
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.1.2
+        with:
+          reports: TestResults/**/coverage.cobertura.xml
+          reporttypes: 'Cobertura;MarkdownSummary'
+          targetdir: CoverageResults
+          title: coverage results
+
+      - name: Upload artifact 'earl-coverage-results'
+        uses: actions/upload-artifact@v3
+        if: success() || failure()
+        with:
+          name: earl-coverage-results
+          path: CoverageResults
+
       - name: Report coverage results
-        uses: 5monkeys/cobertura-action@master
+        uses: cryptoc1/cobertura-action@master
         if: success() || failure()
         with: 
           fail_below_threshold: false
           link_missing_lines: true
-          link_missing_lines_source_dir: 'src/Crawler'
           minimum_coverage: 80
-          path: TestResults/**/coverage.cobertura.xml
+          path: CoverageResults/Cobertura.xml 
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           report_name: coverage results
-          show_branch: true
+          show_branch: false
           show_class_names: true
           show_missing: true
           skip_covered: false
@@ -76,9 +93,6 @@ jobs:
       - name: Publish coverage results
         if: success() || failure()
         uses: codecov/codecov-action@v2
-        with: 
-          directory: TestResults
-          token: ${{ secrets.CODECOV_TOKEN }}
 
   pack:
     needs: [ build ]
