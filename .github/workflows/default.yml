@@ -6,10 +6,10 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     env:
       DOTNET_NOLOGO: true
 
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
     
@@ -25,10 +25,11 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
   test:
-    runs-on: windows-latest
     env:
       DOTNET_NOLOGO: true
 
+    needs: [ build ]
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
     
@@ -66,10 +67,11 @@ jobs:
           reporter: dotnet-trx
 
   pack:
-    runs-on: ubuntu-latest
     env:
       DOTNET_NOLOGO: true
 
+    needs: [ build ]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
@@ -100,8 +102,7 @@ jobs:
         DOTNET_NOLOGO: true
 
     if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/develop')
-    needs:
-      - pack
+    needs: [ pack ]
 
     runs-on: ubuntu-latest
     steps:
@@ -119,11 +120,12 @@ jobs:
         run: dotnet nuget push "*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
 
   benchmark:
-    if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/develop')
-    runs-on: windows-latest
     env:
       DOTNET_NOLOGO: true
 
+    if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/develop')
+    needs: [ build ]
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
 

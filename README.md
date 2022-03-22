@@ -1,4 +1,4 @@
-<h1 align="center">Earl</h1>
+<h1 align="center">earl</h1>
 
 <div align="center">
 
