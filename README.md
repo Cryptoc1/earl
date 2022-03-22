@@ -1,4 +1,12 @@
-# Earl ![Build Status](https://img.shields.io/github/workflow/status/cryptoc1/earl/default) [![Version](https://img.shields.io/nuget/vpre/Earl.Crawler)](https://www.nuget.org/packages/Earl.Crawler)
+<h1 align="center">Earl</h1>
+
+<div align="center">
+
+*Looking for URLs in your area.*
+
+[![Checks](https://img.shields.io/github/checks-status/cryptoc1/earl/develop)](https://github.com/Cryptoc1/earl/actions/workflows/default.yml) [![Coverage](https://img.shields.io/codecov/c/github/cryptoc1/earl)](https://app.codecov.io/gh/Cryptoc1/earl/) [![Version](https://img.shields.io/nuget/vpre/Earl.Crawler)](https://www.nuget.org/packages/Earl.Crawler)
+
+</div>
 
 Earl is a suite of APIs for developing url crawlers & web scrapers driven by a middleware pattern similar to, and strongly influenced by, ASP.NET Core.
 

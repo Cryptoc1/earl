@@ -15,11 +15,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EC588A5B-208
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		src\CodeStyleSuppressions.cs = src\CodeStyleSuppressions.cs
+		src\default.ruleset = src\default.ruleset
 		src\Directory.Build.props = src\Directory.Build.props
 		src\Directory.Build.targets = src\Directory.Build.targets
 		LICENSE = LICENSE
 		README.md = README.md
-		src\StandardRules.ruleset = src\StandardRules.ruleset
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Middleware", "Middleware", "{3B10168F-CB56-409F-9A7A-20AB0CF71AB5}"
