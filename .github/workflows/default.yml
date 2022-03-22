@@ -47,6 +47,7 @@ jobs:
         with:
           reports: TestResults/**/coverage.cobertura.xml
           reporttypes: 'Cobertura;HtmlInline_AzurePipelines_Dark;MarkdownSummary'
+          sourcedirs: ${{ github.workspace }}/src/Crawler
           targetdir: TestResults/CoverageReports
           title: coverage results
 
@@ -75,7 +76,6 @@ jobs:
           path: TestResults/CoverageReports/Cobertura.xml 
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           report_name: coverage results
-          sourcedirs: ${{ github.workspace }}/src/Crawler
           show_branch: false
           show_class_names: true
           show_missing: true
