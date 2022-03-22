@@ -41,7 +41,7 @@ jobs:
         run: dotnet restore --force
 
       - name: Run tests
-        run: dotnet test --results-directory TestResults --logger "trx;LogFileName=earl-test-results.trx" --collect:"XPlat Code coverage"
+        run: dotnet test --results-directory TestResults --logger "trx;LogFileName=earl-test-results.trx" --collect:"XPlat Code Coverage"
      
       - name: Publish artifact 'earl-test-results'
         uses: actions/upload-artifact@v3
