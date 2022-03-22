@@ -63,7 +63,7 @@ jobs:
         with:
           reports: TestResults/**/coverage.cobertura.xml
           reporttypes: 'Cobertura;MarkdownSummary'
-          sourcedirs: ''
+          sourcedirs: '/'
           targetdir: CoverageResults
           title: coverage results
 
