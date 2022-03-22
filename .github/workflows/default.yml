@@ -41,7 +41,7 @@ jobs:
 
       - name: Run tests
         run: |
-          dotnet test --results-directory TestResults --logger "trx;LogFileName=earl-test-results.trx" --collect:"XPlat Code Coverage" /p:WarningLevel=0
+          dotnet test --results-directory TestResults --logger "trx;LogFileName=earl-test-results.trx" --collect:"XPlat Code Coverage" /p:WarningLevel=0 -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.DeterministicReport=true
 
       - name: Upload artifact 'earl-test-results'
         uses: actions/upload-artifact@v3
@@ -63,7 +63,7 @@ jobs:
         with:
           reports: TestResults/**/coverage.cobertura.xml
           reporttypes: 'Cobertura;MarkdownSummary'
-          sourcedirs: '/'
+          sourcedirs: ${{ github.workspace }}/src/Crawler/
           targetdir: CoverageResults
           title: coverage results
 
