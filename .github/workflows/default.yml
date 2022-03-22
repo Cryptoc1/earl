@@ -43,7 +43,7 @@ jobs:
         run: dotnet test --results-directory TestResults --logger "trx;LogFileName=earl-test-results.trx" --collect:"XPlat Code Coverage" /p:WarningLevel=0
 
       - name: Generate coverage reports
-        uses: danielpalme/ReportGenerator-GitHub-Action@5
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.1.2
         with:
           reports: TestResults/**/coverage.cobertura.xml
           reporttypes: 'Cobertura;Html_Dark'
