@@ -41,16 +41,7 @@ jobs:
 
       - name: Run tests
         run: |
-          dotnet test --results-directory TestResults --logger "trx;LogFileName=earl-test-results.trx" --collect:"XPlat Code Coverage" /p:WarningLevel=0 -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.UseSourceLink=true
-
-      - name: Generate coverage reports
-        uses: danielpalme/ReportGenerator-GitHub-Action@5.1.2
-        with:
-          reports: TestResults/**/coverage.cobertura.xml
-          reporttypes: 'Cobertura;MarkdownSummary'
-          #sourcedirs: src/Crawler
-          targetdir: TestResults/CoverageReports
-          title: coverage results
+          dotnet test --results-directory TestResults --logger "trx;LogFileName=earl-test-results.trx" --collect:"XPlat Code Coverage" /p:WarningLevel=0
 
       - name: Upload artifact 'earl-test-results'
         uses: actions/upload-artifact@v3
@@ -67,6 +58,22 @@ jobs:
           path: TestResults/earl-test-results.trx
           reporter: dotnet-trx
 
+      - name: Generate coverage results
+        uses: danielpalme/ReportGenerator-GitHub-Action@5.1.2
+        with:
+          reports: TestResults/**/coverage.cobertura.xml
+          reporttypes: 'Cobertura;MarkdownSummary'
+          sourcedirs: ${{ github.workspace }}/src/Crawler/
+          targetdir: CoverageResults
+          title: coverage results
+
+      - name: Upload artifact 'earl-coverage-results'
+        uses: actions/upload-artifact@v3
+        if: success() || failure()
+        with:
+          name: earl-coverage-results
+          path: CoverageResults
+
       - name: Report coverage results
         uses: 5monkeys/cobertura-action@master
         if: success() || failure()
@@ -74,7 +81,7 @@ jobs:
           fail_below_threshold: false
           link_missing_lines: true
           minimum_coverage: 80
-          path: TestResults/CoverageReports/Cobertura.xml 
+          path: CoverageResults/Cobertura.xml 
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           report_name: coverage results
           show_branch: false
@@ -85,9 +92,6 @@ jobs:
       - name: Publish coverage results
         if: success() || failure()
         uses: codecov/codecov-action@v2
-        with: 
-          directory: TestResults
-          token: ${{ secrets.CODECOV_TOKEN }}
 
   pack:
     needs: [ build ]
