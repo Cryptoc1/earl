@@ -63,13 +63,13 @@ jobs:
         with: 
           fail_below_threshold: false
           link_missing_lines: true
+          link_missing_lines_source_dir: 'src/Crawler'
           minimum_coverage: 80
           path: TestResults/**/coverage.cobertura.xml
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           report_name: coverage results
           show_branch: true
           show_class_names: true
-          show_line: true
           show_missing: true
           skip_covered: false
 
