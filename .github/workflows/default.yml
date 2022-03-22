@@ -63,7 +63,6 @@ jobs:
         with:
           reports: TestResults/**/coverage.cobertura.xml
           reporttypes: 'Cobertura;MarkdownSummary'
-          sourcedirs: '${{ github.workspace }};${{ github.workspace }}/src/Crawler;src/Crawler'
           targetdir: CoverageResults
           title: coverage results
 
@@ -75,7 +74,7 @@ jobs:
           path: CoverageResults
 
       - name: Report coverage results
-        uses: 5monkeys/cobertura-action@master
+        uses: cryptoc1/cobertura-action@master
         if: success() || failure()
         with: 
           fail_below_threshold: false
