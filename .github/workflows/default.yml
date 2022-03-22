@@ -25,7 +25,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     env:
       DOTNET_NOLOGO: true
 
@@ -52,7 +52,7 @@ jobs:
           path: TestResults/earl-test-results.trx
           reporter: dotnet-trx
 
-      - name: Public coverage results
+      - name: Publish coverage results
         if: success() || failure()
         uses: codecov/codecov-action@v2
         with: 
