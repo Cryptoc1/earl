@@ -4,9 +4,11 @@ env:
   EARL_DOTNET_VERSION: 6.0.201
   DOTNET_NOLOGO: true
 
-on:
+on:   
   push:
     branches: [ develop, main, 'feature/**' ]
+
+  workflow_dispatch:
 
 jobs:
   build:
@@ -74,7 +76,7 @@ jobs:
           path: CoverageResults
 
       - name: Report coverage results
-        uses: Cryptoc1/cobertura-action@master
+        uses: cryptoc1/cobertura-action@master
         if: success() || failure()
         with: 
           fail_below_threshold: false
