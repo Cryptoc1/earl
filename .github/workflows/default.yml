@@ -41,13 +41,13 @@ jobs:
 
       - name: Run tests
         run: |
-          dotnet test --results-directory TestResults --logger "trx;LogFileName=earl-test-results.trx" --collect:"XPlat Code Coverage" /p:WarningLevel=0 -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.DeterministicReport=true
+          dotnet test --results-directory TestResults --logger "trx;LogFileName=earl-test-results.trx" --collect:"XPlat Code Coverage" /p:WarningLevel=0 -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura
 
       - name: Generate coverage reports
         uses: danielpalme/ReportGenerator-GitHub-Action@5.1.2
         with:
           reports: TestResults/**/coverage.cobertura.xml
-          reporttypes: 'Cobertura;HtmlInline_AzurePipelines_Dark;MarkdownSummary'
+          reporttypes: 'Cobertura;MarkdownSummary'
           sourcedirs: src/Crawler
           targetdir: TestResults/CoverageReports
           title: coverage results
