@@ -46,7 +46,7 @@ jobs:
         uses: danielpalme/ReportGenerator-GitHub-Action@5.1.2
         with:
           reports: TestResults/**/coverage.cobertura.xml
-          reporttypes: 'Cobertura;Html_Dark'
+          reporttypes: 'Cobertura;HtmlInline_AzurePipelines_Dark;MarkdownSummary'
           targetdir: TestResults/CoverageReports
           title: coverage results
 
@@ -71,11 +71,11 @@ jobs:
         with: 
           fail_below_threshold: false
           link_missing_lines: true
-          link_missing_lines_source_dir: 'src/Crawler'
           minimum_coverage: 80
           path: TestResults/CoverageReports/Cobertura.xml 
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           report_name: coverage results
+          sourcedirs: ${{ github.workspace }}/src/Crawler
           show_branch: false
           show_class_names: true
           show_missing: true
