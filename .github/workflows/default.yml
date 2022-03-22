@@ -40,7 +40,8 @@ jobs:
         run: dotnet restore --force
 
       - name: Run tests
-        run: dotnet test --results-directory TestResults --logger "trx;LogFileName=earl-test-results.trx" --collect:"XPlat Code Coverage" /p:WarningLevel=0
+        run: |
+          dotnet test --results-directory TestResults --logger "trx;LogFileName=earl-test-results.trx" --collect:"XPlat Code Coverage" /p:WarningLevel=0 -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.DeterministicReport=true
 
       - name: Generate coverage reports
         uses: danielpalme/ReportGenerator-GitHub-Action@5.1.2
