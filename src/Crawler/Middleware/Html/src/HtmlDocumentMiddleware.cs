@@ -18,18 +18,20 @@ public sealed class HtmlDocumentMiddleware : ICrawlerMiddleware
         ArgumentNullException.ThrowIfNull( context );
         ArgumentNullException.ThrowIfNull( next );
 
-        var responseFeature = context.Features.Get<IHttpResponseFeature>();
-
-        var document = await GetDocumentAsync( responseFeature!, context.CrawlContext.CrawlCancelled )
-            .ConfigureAwait( false );
-
-        if( document is not null )
+        var feature = context.Features.Get<IHttpResponseFeature>();
+        if( feature is null )
         {
-            // NOTE: feature is disposed by the context
-            context.Features.Set<IHtmlDocumentFeature?>( new HtmlDocumentFeature( document ) );
+            await next( context );
+            return;
         }
 
-        context.Result.DisplayName = $"Crawl Results for '{document!.Title}'";
+        using var document = await GetDocumentAsync( feature!, context.CrawlContext.CrawlCancelled );
+        if( document is not null )
+        {
+            context.Features.Set<IHtmlDocumentFeature?>( new HtmlDocumentFeature( document ) );
+            context.Result.DisplayName = document.Title;
+        }
+
         await next( context );
     }
 
@@ -42,8 +44,11 @@ public sealed class HtmlDocumentMiddleware : ICrawlerMiddleware
             .OpenAsync(
                 response =>
                 {
-                    response.Status( feature.Response.StatusCode )
-                        .Address( feature.Response.RequestMessage!.RequestUri );
+                    response.Status( feature.Response.StatusCode );
+                    if( feature.Response.RequestMessage is not null )
+                    {
+                        response.Address( feature.Response.RequestMessage.RequestUri );
+                    }
 
                     var headers = MapHeaders( feature.Response.Content.Headers )
                         .Concat( MapHeaders( feature.Response.Headers ) );
@@ -60,7 +65,7 @@ public sealed class HtmlDocumentMiddleware : ICrawlerMiddleware
                     response.Content( content );
                 },
                 cancellation
-            );
+            ).ConfigureAwait( false );
 
         return document as IHtmlDocument;
     }
@@ -72,8 +77,5 @@ public sealed class HtmlDocumentMiddleware : ICrawlerMiddleware
                 entry => new StringValues( entry.Value.ToArray() )
             );
 
-    private sealed record HtmlDocumentFeature( IHtmlDocument Document ) : IHtmlDocumentFeature, IDisposable
-    {
-        public void Dispose( ) => Document?.Dispose();
-    }
+    private sealed record HtmlDocumentFeature( IHtmlDocument Document ) : IHtmlDocumentFeature;
 }

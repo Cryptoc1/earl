@@ -28,6 +28,7 @@ public sealed class UrlScraperMiddleware : ICrawlerMiddleware<UrlScraperOptions>
         var documentFeature = context.Features.Get<IHtmlDocumentFeature?>();
         if( documentFeature is null )
         {
+            await next( context );
             return;
         }
 

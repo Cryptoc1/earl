@@ -4,6 +4,7 @@ using Axion.Collections.Concurrent;
 using Earl.Crawler.Abstractions;
 using Earl.Crawler.Abstractions.Configuration;
 using Earl.Crawler.Events;
+using Earl.Crawler.Middleware;
 using Earl.Crawler.Middleware.Abstractions;
 using Earl.Crawler.Middleware.Events;
 using Microsoft.Extensions.DependencyInjection;

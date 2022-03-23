@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using Earl.Crawler.Middleware.Abstractions;
 
-namespace Earl.Crawler;
+namespace Earl.Crawler.Middleware;
 
 /// <summary> Default implementation of <see cref="ICrawlerFeatureCollection"/>. </summary>
 public sealed class CrawlerFeatureCollection : ICrawlerFeatureCollection, IDisposable, IAsyncDisposable

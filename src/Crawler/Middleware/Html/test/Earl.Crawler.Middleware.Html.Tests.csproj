@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <IsTestProject>true</IsTestProject>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <ProjectReference Include="$(SrcDirectory)\Crawler\Middleware\Html\src\Earl.Crawler.Middleware.Html.csproj" />
+        <ProjectReference Include="$(SrcDirectory)\Crawler\Middleware\src\Earl.Crawler.Middleware.csproj" />
+    </ItemGroup>
+    
+</Project>
