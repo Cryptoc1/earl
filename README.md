@@ -4,7 +4,10 @@
 
 *Looking for URLs in your area.*
 
-[![Checks](https://img.shields.io/github/checks-status/cryptoc1/earl/develop)](https://github.com/Cryptoc1/earl/actions/workflows/default.yml) [![Coverage](https://img.shields.io/codecov/c/github/cryptoc1/earl)](https://app.codecov.io/gh/Cryptoc1/earl/) [![Version](https://img.shields.io/nuget/vpre/Earl.Crawler)](https://www.nuget.org/packages/Earl.Crawler)
+![Language](https://img.shields.io/github/languages/top/cryptoc1/earl)
+[![Checks](https://img.shields.io/github/checks-status/cryptoc1/earl/develop)](https://github.com/Cryptoc1/earl/actions/workflows/default.yml)
+[![Coverage](https://img.shields.io/codecov/c/github/cryptoc1/earl)](https://app.codecov.io/gh/Cryptoc1/earl/)
+[![Version](https://img.shields.io/nuget/vpre/Earl.Crawler)](https://www.nuget.org/packages/Earl.Crawler)
 
 </div>
 
