@@ -8,12 +8,10 @@ namespace Earl.Crawler.Middleware.UrlScraping;
 
 /// <summary> Scrapes and queues urls for the current url crawl. </summary>
 /// <remarks> Requires that the <see cref="HtmlDocumentMiddleware"/>, or compatible middleware is registered before this middleware in the pipeline. </remarks>
-public class UrlScraperMiddleware : ICrawlerMiddleware<UrlScraperOptions>
+public sealed class UrlScraperMiddleware : ICrawlerMiddleware<UrlScraperOptions>
 {
-    #region Fields
     private readonly UrlScraperOptions options;
     private readonly IUrlScraper scraper;
-    #endregion
 
     public UrlScraperMiddleware( UrlScraperOptions options, IUrlScraper scraper )
     {

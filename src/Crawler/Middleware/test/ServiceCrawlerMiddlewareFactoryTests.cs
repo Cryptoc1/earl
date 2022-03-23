@@ -47,12 +47,12 @@ public class ServiceCrawlerMiddlewareFactoryTests
         Assert.Equal( "Test", typedMiddleware.Options.Value );
     }
 
-    private class TestMiddleware : ICrawlerMiddleware
+    internal sealed class TestMiddleware : ICrawlerMiddleware
     {
         public Task InvokeAsync( CrawlUrlContext context, CrawlUrlDelegate next ) => throw new NotImplementedException();
     }
 
-    private class MiddlewareWithDependency : ICrawlerMiddleware
+    internal sealed class MiddlewareWithDependency : ICrawlerMiddleware
     {
         public MiddlewareDependency Dependency { get; }
 
@@ -62,11 +62,11 @@ public class ServiceCrawlerMiddlewareFactoryTests
         public Task InvokeAsync( CrawlUrlContext context, CrawlUrlDelegate next ) => throw new NotImplementedException();
     }
 
-    public class MiddlewareDependency
+    internal sealed class MiddlewareDependency
     {
     }
 
-    private class MiddlewareWithOptions : ICrawlerMiddleware<MiddlewareOptions>
+    internal sealed class MiddlewareWithOptions : ICrawlerMiddleware<MiddlewareOptions>
     {
         public MiddlewareOptions Options { get; }
 
@@ -76,5 +76,5 @@ public class ServiceCrawlerMiddlewareFactoryTests
         public Task InvokeAsync( CrawlUrlContext context, CrawlUrlDelegate next ) => throw new NotImplementedException();
     }
 
-    private record MiddlewareOptions( string Value );
+    internal sealed record MiddlewareOptions( string Value );
 }

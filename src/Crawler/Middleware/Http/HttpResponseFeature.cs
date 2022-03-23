@@ -6,15 +6,10 @@ namespace Earl.Crawler.Middleware.Http;
 /// <param name="EarlResponse"> <see cref="IHttpResponseFeature.Response"/>. </param>
 public record HttpResponseFeature( EarlHttpResponseMessage EarlResponse ) : IHttpResponseFeature, IDisposable
 {
-    #region Field
-    private bool disposedValue;
-    #endregion
-
-    #region Properties
-
     /// <inheritdoc/>
     public HttpResponseMessage Response => EarlResponse;
-    #endregion
+
+    private bool disposedValue;
 
     protected virtual void Dispose( bool disposing )
     {

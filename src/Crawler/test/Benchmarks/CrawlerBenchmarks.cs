@@ -8,10 +8,8 @@ namespace Earl.Crawler.Benchmarks;
 
 public class CrawlerBenchmarks
 {
-    #region Fields
     private readonly IEarlCrawler crawler;
     private readonly Uri url;
-    #endregion
 
     public CrawlerBenchmarks( )
     {

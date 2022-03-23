@@ -23,7 +23,7 @@ public static class CrawlerPersistenceBuilderJsonExtensions
             {
                 Descriptors = options.Descriptors
                     .Append( new CrawlerJsonPersistenceDescriptor( jsonOptions ) )
-                    .ToList()
+                    .ToList(),
             }
         );
     }

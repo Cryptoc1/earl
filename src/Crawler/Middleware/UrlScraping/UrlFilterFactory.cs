@@ -7,12 +7,10 @@ namespace Earl.Crawler.Middleware.UrlScraping;
 /// <summary> Default implementation of <see cref="IUrlFilterFactory"/>. </summary>
 public class UrlFilterFactory : IUrlFilterFactory
 {
-    #region Fields
     private static readonly Type UrlFilterFactoryOfTType = typeof( UrlFilterFactory<> );
 
     private readonly IDictionary<Type, Type> factoryTypeMap;
     private readonly IServiceProvider serviceProvider;
-    #endregion
 
     public UrlFilterFactory( IServiceProvider serviceProvider )
     {

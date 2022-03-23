@@ -3,7 +3,7 @@ using Spectre.Console.Cli;
 
 namespace Earl.Agent.Console.Abstractions;
 
-/// <summary>  Base class for an asynchronous command with no settings that supports cancellation. </summary>
+/// <summary> Base class for an asynchronous command with no settings that supports cancellation. </summary>
 public abstract class CancellableAsyncCommand : CancellableAsyncCommand<EmptyCommandSettings>
 {
     /// <summary> Executes the command. </summary>
@@ -17,6 +17,7 @@ public abstract class CancellableAsyncCommand : CancellableAsyncCommand<EmptyCom
         => ExecuteAsync( context, cancellation );
 }
 
+/// <summary> Base class for an asynchronous command with settings that supports cancellation. </summary>
 public abstract class CancellableAsyncCommand<TSettings> : AsyncCommand<TSettings>
     where TSettings : CommandSettings
 {

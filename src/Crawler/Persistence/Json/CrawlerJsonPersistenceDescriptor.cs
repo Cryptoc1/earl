@@ -5,18 +5,17 @@ using Earl.Crawler.Persistence.Json.Configuration;
 namespace Earl.Crawler.Persistence.Json;
 
 /// <summary> Represents an <see cref="ICrawlerPersistenceDescriptor"/> for <see cref="CrawlerJsonPersistence"/>. </summary>
-public class CrawlerJsonPersistenceDescriptor : ICrawlerPersistenceDescriptor
+public sealed class CrawlerJsonPersistenceDescriptor : ICrawlerPersistenceDescriptor
 {
-    #region Properties
+    /// <summary> The configured options for JSON persistence. </summary>
     public CrawlerJsonPersistenceOptions Options { get; }
-    #endregion
 
     public CrawlerJsonPersistenceDescriptor( CrawlerJsonPersistenceOptions options )
         => Options = options;
 }
 
 /// <summary> An implementation of <see cref="ICrawlerPersistenceFactory"/> for <see cref="CrawlerJsonPersistenceDescriptor"/>. </summary>
-public class CrawlerJsonPersistenceFactory : CrawlerPersistenceFactory<CrawlerJsonPersistenceDescriptor>
+public sealed class CrawlerJsonPersistenceFactory : CrawlerPersistenceFactory<CrawlerJsonPersistenceDescriptor>
 {
     /// <inheritdoc/>
     public override ICrawlerPersistence Create( CrawlerJsonPersistenceDescriptor descriptor )

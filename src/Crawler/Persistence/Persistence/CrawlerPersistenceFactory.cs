@@ -5,14 +5,12 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Earl.Crawler.Persistence;
 
 /// <summary> Default implementation of <see cref="ICrawlerPersistenceFactory"/>. </summary>
-public class CrawlerPersistenceFactory : ICrawlerPersistenceFactory
+public sealed class CrawlerPersistenceFactory : ICrawlerPersistenceFactory
 {
-    #region Fields
     private static readonly Type CrawlerPersistenceFactoryOfTType = typeof( CrawlerPersistenceFactory<> );
 
     private readonly IDictionary<Type, Type> factoryTypeMap;
     private readonly IServiceProvider serviceProvider;
-    #endregion
 
     public CrawlerPersistenceFactory( IServiceProvider serviceProvider )
     {

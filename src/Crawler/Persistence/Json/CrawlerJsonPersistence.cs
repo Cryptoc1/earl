@@ -6,11 +6,9 @@ using Earl.Crawler.Persistence.Json.Configuration;
 namespace Earl.Crawler.Persistence.Json;
 
 /// <summary> An implementation of <see cref="ICrawlerPersistence"/> that persists results to JSON files. </summary>
-public class CrawlerJsonPersistence : ICrawlerPersistence
+public sealed class CrawlerJsonPersistence : ICrawlerPersistence
 {
-    #region Fields
     private readonly CrawlerJsonPersistenceOptions options;
-    #endregion
 
     public CrawlerJsonPersistence( CrawlerJsonPersistenceOptions options )
         => this.options = options;

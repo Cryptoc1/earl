@@ -3,11 +3,8 @@
 /// <summary> Describes a builder of <see cref="CrawlerJsonPersistenceOptions"/>. </summary>
 public interface ICrawlerJsonPersistenceOptionsBuilder
 {
-    #region Properties
-
     /// <summary> A collection of methods used to build the <see cref="CrawlerJsonPersistenceOptions"/>. </summary>
     IList<CrawlerJsonPersistenceOptionsBuildAction> BuildActions { get; }
-    #endregion
 
     /// <summary> Build the <see cref="CrawlerJsonPersistenceOptions"/> for the current state of the builder. </summary>
     CrawlerJsonPersistenceOptions Build( );

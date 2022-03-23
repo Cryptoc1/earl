@@ -5,9 +5,7 @@ namespace Earl.Crawler.Middleware.Http;
 /// <summary> Default implementation of <see cref="IEarlHttpClient"/>. </summary>
 public class EarlHttpClient : IEarlHttpClient
 {
-    #region Fields
     private readonly HttpClient client;
-    #endregion
 
     public EarlHttpClient( HttpClient client )
         => this.client = client;
@@ -18,6 +16,6 @@ public class EarlHttpClient : IEarlHttpClient
         var response = await client.GetAsync( url, HttpCompletionOption.ResponseContentRead, cancellation )
             .ConfigureAwait( false );
 
-        return ( response as EarlHttpResponseMessage )!;
+        return ( EarlHttpResponseMessage )response;
     }
 }

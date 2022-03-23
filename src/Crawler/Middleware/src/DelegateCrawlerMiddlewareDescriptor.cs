@@ -4,13 +4,10 @@ using Earl.Crawler.Middleware.Abstractions;
 namespace Earl.Crawler.Middleware;
 
 /// <summary> Represents an <see cref="ICrawlerMiddlewareDescriptor"/> for a delegate method. </summary>
-public class DelegateCrawlerMiddlewareDescriptor : ICrawlerMiddlewareDescriptor
+public sealed class DelegateCrawlerMiddlewareDescriptor : ICrawlerMiddlewareDescriptor
 {
-    #region Properties
-
     /// <summary> The delegate method representing the <see cref="ICrawlerMiddleware.InvokeAsync(CrawlUrlContext, CrawlUrlDelegate)"/> body. </summary>
     public Func<CrawlUrlContext, CrawlUrlDelegate, Task> Middleware { get; }
-    #endregion
 
     public DelegateCrawlerMiddlewareDescriptor( Func<CrawlUrlContext, CrawlUrlDelegate, Task> middleware )
         => Middleware = middleware;
@@ -23,11 +20,9 @@ public class DelegateCrawlerMiddlewareFactory : CrawlerMiddlewareFactory<Delegat
     public override ICrawlerMiddleware Create( DelegateCrawlerMiddlewareDescriptor descriptor )
         => new DelegateCrawlerMiddleware( descriptor.Middleware );
 
-    private class DelegateCrawlerMiddleware : ICrawlerMiddleware<Func<CrawlUrlContext, CrawlUrlDelegate, Task>>
+    private sealed class DelegateCrawlerMiddleware : ICrawlerMiddleware<Func<CrawlUrlContext, CrawlUrlDelegate, Task>>
     {
-        #region Fields
         private readonly Func<CrawlUrlContext, CrawlUrlDelegate, Task> middleware;
-        #endregion
 
         public DelegateCrawlerMiddleware( Func<CrawlUrlContext, CrawlUrlDelegate, Task> middleware )
             => this.middleware = middleware;

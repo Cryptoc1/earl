@@ -7,9 +7,7 @@ namespace Earl.Crawler.Persistence;
 /// <summary> Default implementation of <see cref="ICrawlerPersistenceInvoker"/>. </summary>
 public class CrawlerPersistenceInvoker : ICrawlerPersistenceInvoker
 {
-    #region Fields
     private readonly ICrawlerPersistenceFactory persistenceFactory;
-    #endregion
 
     public CrawlerPersistenceInvoker( ICrawlerPersistenceFactory persistenceFactory )
         => this.persistenceFactory = persistenceFactory;

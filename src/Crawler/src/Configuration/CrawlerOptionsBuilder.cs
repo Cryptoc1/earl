@@ -8,13 +8,10 @@ using Earl.Crawler.Middleware.UrlScraping.Configuration;
 namespace Earl.Crawler.Configuration;
 
 /// <summary> Default implementation of <see cref="ICrawlerOptionsBuilder"/>. </summary>
-public class CrawlerOptionsBuilder : ICrawlerOptionsBuilder
+public sealed class CrawlerOptionsBuilder : ICrawlerOptionsBuilder
 {
-    #region Properties
-
     /// <inheritdoc/>
     public IList<CrawlerOptionsBuildAction> BuildActions { get; } = new List<CrawlerOptionsBuildAction>();
-    #endregion
 
     /// <inheritdoc/>
     public CrawlerOptions Build( )

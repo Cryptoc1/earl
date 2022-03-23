@@ -10,11 +10,9 @@ using Spectre.Console.Cli;
 
 namespace Earl.Agent.Console;
 
-public class DefaultCommand : CancellableAsyncCommand<DefaultCommandSettings>
+public sealed class DefaultCommand : CancellableAsyncCommand<DefaultCommandSettings>
 {
-    #region Fields
     private readonly IEarlCrawler crawler;
-    #endregion
 
     public DefaultCommand( IEarlCrawler crawler )
         => this.crawler = crawler;
@@ -96,7 +94,7 @@ public class DefaultCommand : CancellableAsyncCommand<DefaultCommandSettings>
     }
 }
 
-public class DefaultCommandSettings : CommandSettings
+public sealed class DefaultCommandSettings : CommandSettings
 {
     /// <seealso cref="CrawlerOptions.BatchDelay"/>
     [CommandOption( "--batch-delay" )]
@@ -112,5 +110,5 @@ public class DefaultCommandSettings : CommandSettings
 
     [Description( "The url with which to initiate a crawl." )]
     [CommandArgument( 0, "<url>" )]
-    public Uri Url { get; init; }
+    public Uri Url { get; init; } = default!;
 }

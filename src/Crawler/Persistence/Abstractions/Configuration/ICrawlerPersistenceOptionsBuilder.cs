@@ -3,11 +3,8 @@
 /// <summary> Describes a builder of <see cref="CrawlerPersistenceOptions"/>. </summary>
 public interface ICrawlerPersistenceOptionsBuilder
 {
-    #region Properties
-
     /// <summary> A collection of methods used to build the <see cref="CrawlerPersistenceOptions"/>. </summary>
     IList<CrawlerPersistenceOptionsBuildAction> BuildActions { get; }
-    #endregion
 
     /// <summary> Build the <see cref="CrawlerPersistenceOptions"/> for the current state of the builder. </summary>
     CrawlerPersistenceOptions Build( );

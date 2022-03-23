@@ -3,12 +3,9 @@
 /// <summary> Describes an arbitratry collection of objects by their types. </summary>
 public interface ICrawlerFeatureCollection : IEnumerable<KeyValuePair<Type, object>>
 {
-    #region Properties
-
     /// <summary> The integer version of the collection. </summary>
     /// <remarks> Incremented every mutation to the collection. </remarks>
     int Revision { get; }
-    #endregion
 
     /// <summary> Retrieve a Feature by its <see cref="Type"/>. </summary>
     /// <param name="featureType"> The <see cref="Type"/> of the Feature to retrieve. </param>

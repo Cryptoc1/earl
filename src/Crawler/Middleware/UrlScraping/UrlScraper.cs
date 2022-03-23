@@ -5,11 +5,9 @@ using Earl.Crawler.Middleware.UrlScraping.Abstractions.Configuration;
 namespace Earl.Crawler.Middleware.UrlScraping;
 
 /// <summary> Default implementation of <see cref="IUrlScraper"/>. </summary>
-public class UrlScraper : IUrlScraper
+public sealed class UrlScraper : IUrlScraper
 {
-    #region Fields
     private readonly IUrlFilterInvoker filterInvoker;
-    #endregion
 
     public UrlScraper( IUrlFilterInvoker filterInvoker )
         => this.filterInvoker = filterInvoker;

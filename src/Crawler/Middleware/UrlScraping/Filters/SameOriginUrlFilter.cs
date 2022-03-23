@@ -1,9 +1,10 @@
-﻿using AngleSharp.Html.Dom;
+﻿using AngleSharp.Dom;
+using AngleSharp.Html.Dom;
 using Earl.Crawler.Middleware.UrlScraping.Abstractions;
 
 namespace Earl.Crawler.Middleware.UrlScraping.Filters;
 
-/// <summary> An <see cref="IUrlFilter"/> that filters scraped urls to those that match the <see cref="IHtmlDocument.Origin"/>. </summary>
+/// <summary> An <see cref="IUrlFilter"/> that filters scraped urls to those that match the <see cref="IDocument.Origin"/>. </summary>
 public class SameOriginUrlFilter : IUrlFilter
 {
     /// <inheritdoc/>

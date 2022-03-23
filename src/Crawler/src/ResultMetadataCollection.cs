@@ -4,20 +4,15 @@ using Earl.Crawler.Abstractions;
 namespace Earl.Crawler;
 
 /// <summary> Default implementation of <see cref="IResultMetadataCollection"/>. </summary>
-public class ResultMetadataCollection : IResultMetadataCollection
+public sealed class ResultMetadataCollection : IResultMetadataCollection
 {
-    #region Fields
-    private readonly object[] items;
-    #endregion
-
-    #region Properties
-
     /// <inheritdoc/>
     public object this[ int index ] => items[ index ];
 
     /// <inheritdoc/>
     public int Count => items.Length;
-    #endregion
+
+    private readonly object[] items;
 
     public ResultMetadataCollection( IEnumerable<object> items )
         => this.items = items.ToArray();
@@ -36,6 +31,7 @@ public class ResultMetadataCollection : IResultMetadataCollection
         where T : class
         => throw new NotImplementedException();
 
+    /// <inheritdoc/>
     IEnumerator IEnumerable.GetEnumerator( )
         => GetEnumerator();
 }

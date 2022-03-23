@@ -14,7 +14,7 @@ public static class UrlScraperOptionsExtensions
         {
             Filters = options.Filters
                 .Append( new ServiceUrlFilterDescriptor( typeof( TFilter ) ) )
-                .ToList()
+                .ToList(),
         };
     }
 }

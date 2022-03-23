@@ -10,7 +10,7 @@ namespace Earl.Crawler.Middleware.Html;
 
 /// <summary> Supports the <see cref="IHtmlDocumentFeature"/>. </summary>
 /// <remarks> The implementation of this middleware relies on the <see cref="IHttpResponseFeature.Response"/> to produce an <see cref="IHtmlDocument"/>. </remarks>
-public class HtmlDocumentMiddleware : ICrawlerMiddleware
+public sealed class HtmlDocumentMiddleware : ICrawlerMiddleware
 {
     /// <inheritdoc/>
     public async Task InvokeAsync( CrawlUrlContext context, CrawlUrlDelegate next )
@@ -72,7 +72,7 @@ public class HtmlDocumentMiddleware : ICrawlerMiddleware
                 entry => new StringValues( entry.Value.ToArray() )
             );
 
-    private record HtmlDocumentFeature( IHtmlDocument Document ) : IHtmlDocumentFeature, IDisposable
+    private sealed record HtmlDocumentFeature( IHtmlDocument Document ) : IHtmlDocumentFeature, IDisposable
     {
         public void Dispose( ) => Document?.Dispose();
     }

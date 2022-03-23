@@ -48,7 +48,7 @@ public class CrawlerMiddlewareInvokerTests
         );
     }
 
-    private class ResultBuilder : ICrawlUrlResultBuilder
+    private sealed class ResultBuilder : ICrawlUrlResultBuilder
     {
         public string? DisplayName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 

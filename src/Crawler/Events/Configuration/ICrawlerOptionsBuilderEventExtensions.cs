@@ -19,7 +19,7 @@ public static class ICrawlerOptionsBuilderEventExtensions
         return builder.Configure(
             ( _, options ) => options with
             {
-                Events = CrawlerEvents.Compose( options.Events, handler )
+                Events = CrawlerEvents.Compose( options.Events, handler ),
             }
         );
     }

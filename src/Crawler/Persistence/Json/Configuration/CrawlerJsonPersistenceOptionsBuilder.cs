@@ -4,17 +4,12 @@ using Earl.Crawler.Persistence.Json.Serialization;
 namespace Earl.Crawler.Persistence.Json.Configuration;
 
 /// <summary> Default implementation of <see cref="ICrawlerJsonPersistenceOptionsBuilder"/>. </summary>
-public class CrawlerJsonPersistenceOptionsBuilder : ICrawlerJsonPersistenceOptionsBuilder
+public sealed class CrawlerJsonPersistenceOptionsBuilder : ICrawlerJsonPersistenceOptionsBuilder
 {
-    #region Fields
-    private string? destination;
-    #endregion
-
-    #region Properties
-
     /// <inheritdoc/>
     public IList<CrawlerJsonPersistenceOptionsBuildAction> BuildActions { get; } = new List<CrawlerJsonPersistenceOptionsBuildAction>();
-    #endregion
+
+    private string? destination;
 
     /// <inheritdoc/>
     public CrawlerJsonPersistenceOptions Build( )

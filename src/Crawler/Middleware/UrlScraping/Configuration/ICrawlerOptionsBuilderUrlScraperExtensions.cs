@@ -7,9 +7,7 @@ namespace Earl.Crawler.Middleware.UrlScraping.Configuration;
 /// <summary> Extensions to <see cref="ICrawlerOptionsBuilder"/> for configuring the <see cref="UrlScraperMiddleware"/>. </summary>
 public static class ICrawlerOptionsBuilderUrlScraperExtensions
 {
-    #region Fields
     private static readonly Type UrlScraperMiddlewareType = typeof( UrlScraperMiddleware );
-    #endregion
 
     private static UrlScraperOptions CreateDefaultScraperOptions( )
         => new UrlScraperOptions( new List<IUrlFilterDescriptor>() )
@@ -48,7 +46,7 @@ public static class ICrawlerOptionsBuilderUrlScraperExtensions
                 middleware.Insert( insertAt, descriptor );
                 return options with
                 {
-                    Middleware = middleware
+                    Middleware = middleware,
                 };
             }
         );

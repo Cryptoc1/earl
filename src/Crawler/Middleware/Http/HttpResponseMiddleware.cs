@@ -6,11 +6,9 @@ using Microsoft.Extensions.Primitives;
 namespace Earl.Crawler.Middleware.Http;
 
 /// <summary> Supports the <see cref="IHttpResponseFeature"/> by making a HTTP GET request to the current url using <see cref="IEarlHttpClient"/>. </summary>
-public class HttpResponseMiddleware : ICrawlerMiddleware
+public sealed class HttpResponseMiddleware : ICrawlerMiddleware
 {
-    #region Fields
     private readonly IEarlHttpClient client;
-    #endregion
 
     public HttpResponseMiddleware( IEarlHttpClient client ) => this.client = client;
 

@@ -3,18 +3,16 @@
 namespace Earl.Crawler.Events;
 
 /// <summary> Default implementation of <see cref="ICrawlerEvents"/>. </summary>
-public class CrawlerEvents : ICrawlerEvents
+public sealed class CrawlerEvents : ICrawlerEvents
 {
-    #region Fields
     private readonly IDictionary<Type, IList<Delegate>> eventHandlerMap = new Dictionary<Type, IList<Delegate>>();
     private readonly ICrawlerEvents? events;
-    #endregion
 
     public CrawlerEvents( )
     {
     }
 
-    protected CrawlerEvents( ICrawlerEvents events )
+    private CrawlerEvents( ICrawlerEvents events )
         => this.events = events;
 
     /// <inheritdoc/>

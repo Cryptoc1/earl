@@ -5,11 +5,9 @@ using Earl.Crawler.Middleware.Events;
 namespace Earl.Crawler.Middleware;
 
 /// <summary> Default implementation of <see cref="ICrawlerMiddlewareInvoker"/>. </summary>
-public class CrawlerMiddlewareInvoker : ICrawlerMiddlewareInvoker
+public sealed class CrawlerMiddlewareInvoker : ICrawlerMiddlewareInvoker
 {
-    #region Fields
     private readonly ICrawlerMiddlewareFactory middlewareFactory;
-    #endregion
 
     public CrawlerMiddlewareInvoker( ICrawlerMiddlewareFactory middlewareFactory )
         => this.middlewareFactory = middlewareFactory;

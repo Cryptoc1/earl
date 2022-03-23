@@ -6,15 +6,10 @@ namespace Earl.Crawler;
 /// <summary> Default implementation of <see cref="ICrawlerFeatureCollection"/>. </summary>
 public sealed class CrawlerFeatureCollection : ICrawlerFeatureCollection, IDisposable, IAsyncDisposable
 {
-    #region Fields
-    private IDictionary<Type, object>? features;
-    #endregion
-
-    #region Properties
-
     /// <inheritdoc/>
     public int Revision { get; private set; } = -1;
-    #endregion
+
+    private IDictionary<Type, object>? features;
 
     /// <inheritdoc/>
     public object? this[ Type key ]
@@ -24,6 +19,7 @@ public sealed class CrawlerFeatureCollection : ICrawlerFeatureCollection, IDispo
             ArgumentNullException.ThrowIfNull( key );
             return features?.TryGetValue( key!, out object? value ) is true ? value : null;
         }
+
         set
         {
             ArgumentNullException.ThrowIfNull( key );

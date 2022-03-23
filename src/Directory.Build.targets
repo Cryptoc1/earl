@@ -3,12 +3,14 @@
     <PropertyGroup Condition=" '$(IsTestProject)' == 'true' ">
         <IsPackable>false</IsPackable>
         <GenerateDocumentationFile>false</GenerateDocumentationFile>
+        <NoWarn>CS1591;SA1600</NoWarn>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(IsBenchmarkProject)' == 'true' ">
         <IsPackable>false</IsPackable>
         <GenerateDocumentationFile>false</GenerateDocumentationFile>
         <Optimize Condition=" '$(Configuration)' == 'Release' ">true</Optimize>
+        <NoWarn>CS1591;SA1600</NoWarn>
         <OutputType>Exe</OutputType>
     </PropertyGroup>
 
@@ -39,7 +41,7 @@
 
     <Target Name="SetEarlPackageTags" BeforeTargets="GenerateNuspec;Pack">
         <PropertyGroup>
-            <PackageTags>$(PackageTags);Earl;Web Crawler;Url Scraping;</PackageTags>
+            <PackageTags>$(PackageTags);Earl;WebCrawler;UrlScraping;</PackageTags>
         </PropertyGroup>
     </Target>
 

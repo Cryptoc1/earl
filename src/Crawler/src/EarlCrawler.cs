@@ -11,11 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Earl.Crawler;
 
 /// <summary> Default implementation of <see cref="IEarlCrawler"/>. </summary>
-public class EarlCrawler : IEarlCrawler
+public sealed class EarlCrawler : IEarlCrawler
 {
-    #region Fields
     private readonly IServiceProvider serviceProvider;
-    #endregion
 
     public EarlCrawler( IServiceProvider serviceProvider )
         => this.serviceProvider = serviceProvider;
@@ -24,6 +22,7 @@ public class EarlCrawler : IEarlCrawler
     public async Task CrawlAsync( Uri initiator, CrawlerOptions options, CancellationToken cancellation = default )
     {
         ArgumentNullException.ThrowIfNull( initiator );
+        ArgumentNullException.ThrowIfNull( options );
 
         using var timeoutSource = options.Timeout.HasValue
             ? new CancellationTokenSource( options.Timeout.Value )
@@ -33,11 +32,12 @@ public class EarlCrawler : IEarlCrawler
             ? CancellationTokenSource.CreateLinkedTokenSource( cancellation, timeoutSource.Token )
             : CancellationTokenSource.CreateLinkedTokenSource( cancellation );
 
+        await using var scope = serviceProvider.CreateAsyncScope();
         var context = new CrawlContext(
             initiator,
             cancellationSource.Token,
             options,
-            serviceProvider,
+            scope.ServiceProvider,
             new ConcurrentHashSet<Uri>( options.MaxDegreeOfParallelism, options.BatchSize, UriComparer.OrdinalIgnoreCase ),
             new ConcurrentQueue<Uri>( new[] { initiator } )
         );
@@ -68,7 +68,7 @@ public class EarlCrawler : IEarlCrawler
             {
                 CancellationToken = context.CrawlCancelled,
                 EnsureOrdered = false,
-                MaxDegreeOfParallelism = Math.Max( 1, context.Options.MaxDegreeOfParallelism )
+                MaxDegreeOfParallelism = Math.Max( 1, context.Options.MaxDegreeOfParallelism ),
             }
         );
 
@@ -99,19 +99,14 @@ public class EarlCrawler : IEarlCrawler
 
     private static async Task CrawlUrlAsync( Uri url, CrawlContext context )
     {
-        if( context.TouchedUrls.Contains( url ) )
-        {
-            return;
-        }
-
         var result = new CrawlUrlResultBuilder( url );
         await using var features = new CrawlerFeatureCollection();
         await using var scope = context.Services.CreateAsyncScope();
 
+        var middleware = scope.ServiceProvider.GetRequiredService<ICrawlerMiddlewareInvoker>();
         var urlContext = new CrawlUrlContext( context, features, result, scope.ServiceProvider, url );
 
         await urlContext.OnStartedAsync();
-        var middleware = scope.ServiceProvider.GetRequiredService<ICrawlerMiddlewareInvoker>();
 
         try
         {
@@ -130,5 +125,5 @@ public class EarlCrawler : IEarlCrawler
         }
     }
 
-    private record BatchProcessorContext( Func<Uri, CrawlContext, Task> Crawler, Uri Url, CrawlContext Context );
+    private sealed record BatchProcessorContext( Func<Uri, CrawlContext, Task> Crawler, Uri Url, CrawlContext Context );
 }

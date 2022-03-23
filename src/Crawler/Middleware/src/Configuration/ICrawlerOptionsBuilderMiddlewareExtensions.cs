@@ -43,7 +43,7 @@ public static class ICrawlerOptionsBuilderMiddlewareExtensions
             {
                 Middleware = options.Middleware
                     .Prepend( descriptor )
-                    .ToList()
+                    .ToList(),
             }
         );
     }

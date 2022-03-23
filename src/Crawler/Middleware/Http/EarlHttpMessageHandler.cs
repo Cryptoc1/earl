@@ -21,20 +21,16 @@ public class EarlHttpMessageHandler : DelegatingHandler
             RequestMessage = response.RequestMessage,
             StatusCode = response.StatusCode,
             TotalDuration = elapsed,
-            Version = response.Version
+            Version = response.Version,
         };
     }
 
-    private struct ValueStopwatch
+    private readonly struct ValueStopwatch
     {
-        #region Fields
+        public bool IsActive => start is not 0;
+
         private static readonly long TimestampToTicks = TimeSpan.TicksPerSecond / Stopwatch.Frequency;
         private readonly long start;
-        #endregion
-
-        #region Properties
-        public bool IsActive => start is not 0;
-        #endregion
 
         private ValueStopwatch( long start )
             => this.start = start;

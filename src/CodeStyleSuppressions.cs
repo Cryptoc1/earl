@@ -1,8 +1,3 @@
-// This file is used by Code Analysis to maintain SuppressMessage
-// attributes that are applied to this project.
-// Project-level suppressions either have no target or are given
-// a specific target and scoped to a namespace, type, member, etc.
-
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage( "Globalization", "CA1305:The behavior of 'string.Format(string, object, object, object)' could vary based on the current user's locale settings", Justification = "Passing an 'IFormatProvider' is not required." )]
@@ -27,3 +22,4 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage( "StyleCop.CSharp.LayoutRules", "SA1513:Closing brace should be followed by blank line", Justification = "Formatting is configured via .editorconfig." )]
 [assembly: SuppressMessage( "StyleCop.CSharp.SpacingRules", "SA1623:The property's documentation summary text should begin with: 'Gets or sets'", Justification = "Getting/Setting is assumed, prefer to describe the properties usage." )]
 [assembly: SuppressMessage( "StyleCop.CSharp.SpacingRules", "SA1627:The documentation text within the 'exception' tag should not be empty", Justification = "It is recommended to document exception reasons, but not required. Documenting exceptions, such as ArgumentNullException, is redundant." )]
+[assembly: SuppressMessage( "StyleCop.CSharp.DocumentationRules", "SA1633:File should have header", Justification = "File headers are not required." )]

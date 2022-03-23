@@ -18,7 +18,7 @@ public class CrawlerMiddlewareFactoryTests
         Assert.IsType<TestMiddleware>( middleware );
     }
 
-    private class TestMiddleware : ICrawlerMiddleware
+    private sealed class TestMiddleware : ICrawlerMiddleware
     {
         public Task InvokeAsync( CrawlUrlContext context, CrawlUrlDelegate next ) => throw new NotImplementedException();
     }

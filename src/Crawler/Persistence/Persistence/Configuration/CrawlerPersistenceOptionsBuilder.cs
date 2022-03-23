@@ -3,13 +3,10 @@
 namespace Earl.Crawler.Persistence.Configuration;
 
 /// <summary> Default implementation of <see cref="ICrawlerPersistenceOptionsBuilder"/>. </summary>
-public class CrawlerPersistenceOptionsBuilder : ICrawlerPersistenceOptionsBuilder
+public sealed class CrawlerPersistenceOptionsBuilder : ICrawlerPersistenceOptionsBuilder
 {
-    #region Properties
-
     /// <inheritdoc/>
     public IList<CrawlerPersistenceOptionsBuildAction> BuildActions { get; } = new List<CrawlerPersistenceOptionsBuildAction>();
-    #endregion
 
     /// <inheritdoc/>
     public CrawlerPersistenceOptions Build( )

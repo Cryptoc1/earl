@@ -1,17 +1,12 @@
 ﻿namespace Earl.Crawler;
 
 /// <summary> A type that can determine the equality of <see cref="Uri"/>s' via their string value. </summary>
-public class UriComparer : IComparer<Uri>, IEqualityComparer<Uri>
+public sealed class UriComparer : IComparer<Uri>, IEqualityComparer<Uri>
 {
-    #region Fields
-    private readonly StringComparer comparer;
-    #endregion
-
-    #region Properties
-
     /// <summary> An <see cref="UriComparer"/> derived from <see cref="StringComparer.OrdinalIgnoreCase"/>. </summary>
     public static UriComparer OrdinalIgnoreCase { get; } = new( StringComparer.OrdinalIgnoreCase );
-    #endregion
+
+    private readonly StringComparer comparer;
 
     public UriComparer( StringComparer comparer )
         => this.comparer = comparer;

@@ -7,12 +7,10 @@ namespace Earl.Crawler.Middleware;
 /// <summary> Default implementation of <see cref="ICrawlerMiddlewareFactory"/>. </summary>
 public class CrawlerMiddlewareFactory : ICrawlerMiddlewareFactory
 {
-    #region Fields
     private static readonly Type CrawlerMiddlewareFactoryOfTType = typeof( CrawlerMiddlewareFactory<> );
 
     private readonly IDictionary<Type, Type> factoryTypeMap;
     private readonly IServiceProvider serviceProvider;
-    #endregion
 
     public CrawlerMiddlewareFactory( IServiceProvider serviceProvider )
     {

@@ -5,7 +5,7 @@ using Earl.Crawler.Abstractions;
 namespace Earl.Crawler.Persistence.Json.Serialization;
 
 /// <summary> A <see cref="JsonConverter"/> that embeds metadata entry type info. </summary>
-public class ResultMetadataConverter : JsonConverter<IResultMetadataCollection>
+public sealed class ResultMetadataConverter : JsonConverter<IResultMetadataCollection>
 {
     /// <inheritdoc/>
     /// <exception cref="NotImplementedException"/>

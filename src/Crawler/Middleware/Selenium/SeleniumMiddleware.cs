@@ -5,7 +5,7 @@ using OpenQA.Selenium.Edge;
 
 namespace Earl.Crawler.Middleware.Selenium;
 
-public class SeleniumMiddleware : ICrawlerMiddleware
+public sealed class SeleniumMiddleware : ICrawlerMiddleware
 {
     public async Task InvokeAsync( CrawlUrlContext context, CrawlUrlDelegate next )
     {
@@ -14,7 +14,7 @@ public class SeleniumMiddleware : ICrawlerMiddleware
 
         var options = new EdgeOptions
         {
-            AcceptInsecureCertificates = true
+            AcceptInsecureCertificates = true,
         };
 
         options.SetLoggingPreference( LogType.Browser, LogLevel.All );
@@ -34,7 +34,7 @@ public class SeleniumMiddleware : ICrawlerMiddleware
         context.Features.Set<ISeleniumFeature?>( null );
     }
 
-    private record SeleniumFeature( IWebDriver Driver ) : ISeleniumFeature, IDisposable
+    private sealed record SeleniumFeature( IWebDriver Driver ) : ISeleniumFeature, IDisposable
     {
         public void Dispose( )
             => Driver?.Dispose();

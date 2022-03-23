@@ -27,7 +27,7 @@ app.Configure(
 return await app.RunAsync( args )
     .ConfigureAwait( false );
 
-internal class TypeRegistrar : ITypeRegistrar
+internal sealed class TypeRegistrar : ITypeRegistrar
 {
     private readonly IServiceCollection services;
 
@@ -37,16 +37,23 @@ internal class TypeRegistrar : ITypeRegistrar
         this.services = services;
     }
 
+    /// <inheritdoc/>
     public ITypeResolver Build( ) => new TypeResolver( services.BuildServiceProvider() );
+
+    /// <inheritdoc/>
     public void Register( Type service, Type implementation ) => services.AddSingleton( service, implementation );
+
+    /// <inheritdoc/>
     public void RegisterInstance( Type service, object implementation ) => services.AddSingleton( service, implementation );
+
+    /// <inheritdoc/>
     public void RegisterLazy( Type service, Func<object> factory )
     {
         ArgumentNullException.ThrowIfNull( factory );
         services.AddSingleton( service, _ => factory() );
     }
 
-    private class TypeResolver : ITypeResolver, IDisposable
+    private sealed class TypeResolver : ITypeResolver, IDisposable
     {
         private readonly IServiceProvider serviceProvider;
 

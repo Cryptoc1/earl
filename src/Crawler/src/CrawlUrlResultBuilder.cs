@@ -6,13 +6,6 @@ namespace Earl.Crawler;
 /// <summary> Default implementation of <see cref="ICrawlUrlResultBuilder"/>. </summary>
 public class CrawlUrlResultBuilder : ICrawlUrlResultBuilder
 {
-    #region Fields
-    private readonly string displayName;
-    private readonly Uri url;
-    #endregion
-
-    #region Properties
-
     /// <inheritdoc/>
     public string? DisplayName { get; set; }
 
@@ -21,7 +14,9 @@ public class CrawlUrlResultBuilder : ICrawlUrlResultBuilder
 
     /// <inheritdoc/>
     public IList<object> Metadata { get; }
-    #endregion
+
+    private readonly string displayName;
+    private readonly Uri url;
 
     public CrawlUrlResultBuilder( Uri url, string? displayName = null, IList<object>? metadata = null )
     {

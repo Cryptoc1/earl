@@ -5,17 +5,12 @@ using Microsoft.Extensions.DependencyInjection;
 namespace Earl.Crawler.Middleware.UrlScraping;
 
 /// <summary> Represents an <see cref="IUrlFilterDescriptor"/> for a <see cref="Type"/> that can be activated via <see cref="ActivatorUtilities"/>. </summary>
-public class ServiceUrlFilterDescriptor : IUrlFilterDescriptor
+public sealed class ServiceUrlFilterDescriptor : IUrlFilterDescriptor
 {
-    #region Fields
-    private static readonly Type IUrlFilterType = typeof( IUrlFilter );
-    #endregion
-
-    #region Properties
-
     /// <summary> The <see cref="Type"/> of <see cref="IUrlFilter"/> being defined. </summary>
     public Type FilterType { get; }
-    #endregion
+
+    private static readonly Type IUrlFilterType = typeof( IUrlFilter );
 
     public ServiceUrlFilterDescriptor( Type type )
     {
@@ -31,9 +26,7 @@ public class ServiceUrlFilterDescriptor : IUrlFilterDescriptor
 /// <summary> An <see cref="IUrlFilterFactory"/> for handling the <see cref="ServiceUrlFilterDescriptor"/>. </summary>
 public class ServiceUrlFilterFactory : UrlFilterFactory<ServiceUrlFilterDescriptor>
 {
-    #region Fields
     private readonly IServiceProvider serviceProvider;
-    #endregion
 
     public ServiceUrlFilterFactory( IServiceProvider serviceProvider )
         => this.serviceProvider = serviceProvider;
