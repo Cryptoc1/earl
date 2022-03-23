@@ -42,8 +42,8 @@ jobs:
         run: dotnet restore --force
 
       - name: Run tests
-        run: |
-          dotnet test --results-directory TestResults --logger trx --collect:"XPlat Code Coverage" /p:WarningLevel=0 -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.DeterministicReport=true
+        run: foreach( $project in Get-ChildItem "Earl.Crawler.*Tests.csproj" -Recurse ) { dotnet test "$($project.FullName)" --results-directory TestResults --logger "trx;logFileName=$($project.BaseName).trx" --collect:"XPlat Code Coverage" /p:WarningLevel=0 -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.DeterministicReport=true }        
+        shell: pwsh
 
       - name: Upload artifact 'earl-test-results'
         uses: actions/upload-artifact@v3
