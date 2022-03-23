@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Earl.Crawler.Middleware.Tests;
 
-public class CrawlerMiddlewareFactoryTests
+public sealed class CrawlerMiddlewareFactoryTests
 {
     [Fact]
     public void Factory_creates_middleware_using_typed_factory( )

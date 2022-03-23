@@ -6,7 +6,9 @@ namespace Earl.Crawler.Middleware.Abstractions;
 public interface ICrawlUrlResultBuilder
 {
     string? DisplayName { get; set; }
+
     Guid Id { get; }
+
     IList<object> Metadata { get; }
 
     /// <summary> Build the <see cref="CrawlUrlResult"/> for the current state of the builder. </summary>

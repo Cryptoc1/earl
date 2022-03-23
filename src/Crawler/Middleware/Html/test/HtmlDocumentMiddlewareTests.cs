@@ -7,7 +7,7 @@ using Earl.Crawler.Middleware.Http.Abstractions;
 
 namespace Earl.Crawler.Middleware.Html.Tests;
 
-public class HtmlDocumentMiddlewareTests
+public sealed class HtmlDocumentMiddlewareTests
 {
     [Fact]
     public async Task Middleware_parses_document_from_response_feature( )

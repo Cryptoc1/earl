@@ -4,7 +4,7 @@ using Earl.Crawler.Middleware.Abstractions;
 namespace Earl.Crawler.Middleware.Configuration;
 
 /// <summary> Extensions to <see cref="ICrawlerOptionsBuilder"/> for registering <see cref="ICrawlerMiddlewareDescriptor"/>s. </summary>
-public static class ICrawlerOptionsBuilderMiddlewareExtensions
+public static class MiddlewareCrawlerOptionsBuilderExtensions
 {
     /// <summary> Register the middleware of type <typeparamref name="TMiddleware"/>. </summary>
     /// <typeparam name="TMiddleware"> The type of middleware to be registered. </typeparam>

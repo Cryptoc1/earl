@@ -10,7 +10,10 @@ public sealed class DelegateCrawlerMiddlewareDescriptor : ICrawlerMiddlewareDesc
     public Func<CrawlUrlContext, CrawlUrlDelegate, Task> Middleware { get; }
 
     public DelegateCrawlerMiddlewareDescriptor( Func<CrawlUrlContext, CrawlUrlDelegate, Task> middleware )
-        => Middleware = middleware;
+    {
+        ArgumentNullException.ThrowIfNull( middleware );
+        Middleware = middleware;
+    }
 }
 
 /// <summary> An <see cref="ICrawlerMiddlewareFactory"/> for handling the <see cref="DelegateCrawlerMiddlewareDescriptor"/>. </summary>

@@ -4,6 +4,7 @@ using Earl.Crawler.Middleware.Abstractions;
 namespace Earl.Crawler.Middleware;
 
 /// <summary> Default implementation of <see cref="ICrawlerFeatureCollection"/>. </summary>
+/// <remarks> This implementation supports <see cref="IDisposable"/> and <see cref="IAsyncDisposable"/>, and will cascade disposal to any supporting features within the collection. </remarks>
 public sealed class CrawlerFeatureCollection : ICrawlerFeatureCollection, IDisposable, IAsyncDisposable
 {
     /// <inheritdoc/>
@@ -47,14 +48,25 @@ public sealed class CrawlerFeatureCollection : ICrawlerFeatureCollection, IDispo
     /// <inheritdoc/>
     public void Dispose( )
     {
-        if( features is not null )
-        {
-            var disposables = features.Values.Where( feature => feature is IDisposable )
-                .Select( feature => feature as IDisposable );
+        Dispose( true );
+        GC.SuppressFinalize( this );
+    }
 
-            foreach( var feature in disposables )
+    private void Dispose( bool disposing )
+    {
+        if( disposing )
+        {
+            if( features is not null )
             {
-                feature!.Dispose();
+                foreach( object? feature in features.Values )
+                {
+                    if( feature is IDisposable disposable )
+                    {
+                        disposable.Dispose();
+                    }
+                }
+
+                features = null;
             }
         }
     }
@@ -64,14 +76,23 @@ public sealed class CrawlerFeatureCollection : ICrawlerFeatureCollection, IDispo
     {
         if( features is not null )
         {
-            var disposables = features.Values.Where( feature => feature is IAsyncDisposable )
-                .Select( feature => feature as IAsyncDisposable );
-
-            foreach( var feature in disposables )
+            foreach( object? feature in features.Values )
             {
-                await feature!.DisposeAsync();
+                if( feature is IAsyncDisposable asyncDisposable )
+                {
+                    await asyncDisposable.DisposeAsync().ConfigureAwait( false );
+                }
+                else if( feature is IDisposable disposable )
+                {
+                    disposable.Dispose();
+                }
             }
+
+            features = null;
         }
+
+        Dispose( false );
+        GC.SuppressFinalize( this );
     }
 
     /// <inheritdoc/>
@@ -84,9 +105,10 @@ public sealed class CrawlerFeatureCollection : ICrawlerFeatureCollection, IDispo
             .GetEnumerator();
 
     /// <inheritdoc/>
-    public void Set<TFeature>( TFeature? instance )
-        => this[ typeof( TFeature ) ] = instance;
+    public void Set<TFeature>( TFeature? feature )
+        => this[ typeof( TFeature ) ] = feature;
 
+    /// <inheritdoc/>
     IEnumerator IEnumerable.GetEnumerator( )
         => GetEnumerator();
 }

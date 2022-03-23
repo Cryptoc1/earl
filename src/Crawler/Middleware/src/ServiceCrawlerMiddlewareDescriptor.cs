@@ -24,7 +24,7 @@ public sealed class ServiceCrawlerMiddlewareDescriptor : ICrawlerMiddlewareDescr
             throw new ArgumentException( $"Given type '{type.Name}' does not implement '{nameof( ICrawlerMiddleware )}'.", nameof( type ) );
         }
 
-        if( type.IsAssignableTo( ICrawlerMiddlewareOfTType ) )
+        if( type.GetInterface( ICrawlerMiddlewareOfTType.Name ) is not null )
         {
             ArgumentNullException.ThrowIfNull( options );
         }
@@ -44,12 +44,7 @@ public class ServiceCrawlerMiddlewareFactory : CrawlerMiddlewareFactory<ServiceC
 
     /// <inheritdoc/>
     public override ICrawlerMiddleware Create( ServiceCrawlerMiddlewareDescriptor descriptor )
-    {
-        if( descriptor.Options is not null )
-        {
-            return ( ICrawlerMiddleware )ActivatorUtilities.CreateInstance( serviceProvider, descriptor.MiddlewareType, descriptor.Options );
-        }
-
-        return ( ICrawlerMiddleware )ActivatorUtilities.CreateInstance( serviceProvider, descriptor.MiddlewareType );
-    }
+        => descriptor.Options is not null
+            ? ( ICrawlerMiddleware )ActivatorUtilities.CreateInstance( serviceProvider, descriptor.MiddlewareType, descriptor.Options )
+            : ( ICrawlerMiddleware )ActivatorUtilities.CreateInstance( serviceProvider, descriptor.MiddlewareType );
 }

@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Earl.Crawler.Middleware.Tests;
 
-public class CrawlerMiddlewareInvokerTests
+public sealed class CrawlerMiddlewareInvokerTests
 {
     [Fact]
     public async Task Invoker_invokes_middleware_in_reverse_order( )
