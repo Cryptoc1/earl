@@ -4,6 +4,7 @@ using BenchmarkDotNet.Diagnosers;
 using BenchmarkDotNet.Environments;
 using BenchmarkDotNet.Exporters;
 using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Loggers;
 using BenchmarkDotNet.Running;
 using BenchmarkDotNet.Toolchains.CsProj;
 using BenchmarkDotNet.Toolchains.DotNetCli;
@@ -45,7 +46,8 @@ var config = DefaultConfig.Instance
                           .WithCustomDotNetCliPath( @"C:\Program Files (x86)\dotnet\dotnet.exe", ".NET (x86)" )
                 )
             )
-    );
+    )
+    .AddLogger( ConsoleLogger.Unicode );
 
 BenchmarkSwitcher.FromAssembly( typeof( Program ).Assembly )
     .Run( args, config );
