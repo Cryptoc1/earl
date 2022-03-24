@@ -21,14 +21,14 @@ public abstract record CrawlEvent( IServiceProvider Services );
 /// <param name="Exception"> The exception that was thrown. </param>
 /// <param name="Services"> The scoped provider of services to the crawler. Intended for handlers to resolve services required to handle the event. </param>
 /// <param name="Url"> If the <see cref="Exception"/> was thrown while crawling a url, the said url. </param>
-public record CrawlErrorEvent( Exception Exception, IServiceProvider Services, Uri? Url = null ) : CrawlEvent( Services );
+public sealed record CrawlErrorEvent( Exception Exception, IServiceProvider Services, Uri? Url = null ) : CrawlEvent( Services );
 
 /// <summary> Represents an event broadcasted when the execution of a crawl progresses. </summary>
 /// <param name="CrawledCount"> The number of crawled urls at the time the event was broadcasted. </param>
 /// <param name="CurrentQueueLength"> The number of urls enqueued at the time the event was broadcasted. </param>
 /// <param name="Services"> The scoped provider of services to the crawler. Intended for handlers to resolve services required to handle the event. </param>
 /// <param name="Url"> If the event was emitted while crawling a url, the said url. </param>
-public record CrawlProgressEvent(
+public sealed record CrawlProgressEvent(
     int CrawledCount,
     int CurrentQueueLength,
     IServiceProvider Services,
@@ -38,9 +38,9 @@ public record CrawlProgressEvent(
 /// <summary> Represents an event broadcasted when a crawl has completed for a url. </summary>
 /// <param name="Result"> The result of crawling a url. </param>
 /// <param name="Services"> The scoped provider of services to the crawler. Intended for handlers to resolve services required to handle the event. </param>
-public record CrawlUrlResultEvent( CrawlUrlResult Result, IServiceProvider Services ) : CrawlEvent( Services );
+public sealed record CrawlUrlResultEvent( CrawlUrlResult Result, IServiceProvider Services ) : CrawlEvent( Services );
 
 /// <summary> Represents an event broadcasted when the crawler starts crawling a url. </summary>
 /// <param name="Services"> The scoped provider of services to the crawler. Intended for handlers to resolve services required to handle the event. </param>
 /// <param name="Url"> The url in which crawling has started. </param>
-public record CrawlUrlStartedEvent( IServiceProvider Services, Uri Url ) : CrawlEvent( Services );
+public sealed record CrawlUrlStartedEvent( IServiceProvider Services, Uri Url ) : CrawlEvent( Services );

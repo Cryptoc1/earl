@@ -158,7 +158,7 @@ jobs:
         shell: pwsh
         
       - name: Run benchmarks
-        run: . "C:\Program Files\dotnet\dotnet.exe" run --project .\src\Crawler\test\Benchmarks\Earl.Crawler.Benchmarks.csproj -c Release /p:WarningLevel=0 -- --filter *
+        run: . "C:\Program Files\dotnet\dotnet.exe" run --project .\src\Crawler\benchmark\Earl.Crawler.Benchmarks.csproj -c Release /p:WarningLevel=0 -- --filter *
         shell: pwsh
   
       - name: Upload artifact 'earl-benchmarks'

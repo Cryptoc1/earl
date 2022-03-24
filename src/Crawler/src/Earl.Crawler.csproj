@@ -10,7 +10,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="$(SrcDirectory)\Crawler\Abstractions\Earl.Crawler.Abstractions.csproj" />
+        <ProjectReference Include="$(SrcDirectory)\Crawler\Abstractions\src\Earl.Crawler.Abstractions.csproj" />
         <ProjectReference Include="$(SrcDirectory)\Crawler\Events\src\Earl.Crawler.Events.csproj" />
         <ProjectReference Include="$(SrcDirectory)\Crawler\Middleware\src\Earl.Crawler.Middleware.csproj" />
         <ProjectReference Include="$(SrcDirectory)\Crawler\Middleware\Html\src\Earl.Crawler.Middleware.Html.csproj" />

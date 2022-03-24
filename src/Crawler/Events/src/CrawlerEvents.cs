@@ -65,35 +65,10 @@ public sealed class CrawlerEvents : ICrawlerEvents
 
         if( eventHandlerMap?.TryGetValue( typeof( TEvent ), out var handlers ) is true )
         {
-            await WhenAll(
-                handlers.Cast<CrawlEventHandler<TEvent>>()
-                    .Select( handler => handler( e, cancellation ) )
-                    .ToArray()
-            ).ConfigureAwait( false );
-        }
-    }
+            var tasks = handlers.Cast<CrawlEventHandler<TEvent>>()
+                .Select( async handler => await handler( e, cancellation ).ConfigureAwait( false ) );
 
-    private static async ValueTask WhenAll( IReadOnlyList<ValueTask> tasks )
-    {
-        int count = tasks.Count;
-        List<Exception>? exceptions = null;
-
-        foreach( var task in tasks )
-        {
-            try
-            {
-                await task.ConfigureAwait( false );
-            }
-            catch( Exception ex )
-            {
-                exceptions ??= new List<Exception>( count );
-                exceptions.Add( ex );
-            }
-        }
-
-        if( exceptions is not null )
-        {
-            throw new AggregateException( exceptions );
+            await Task.WhenAll( tasks ).ConfigureAwait( false );
         }
     }
 }
