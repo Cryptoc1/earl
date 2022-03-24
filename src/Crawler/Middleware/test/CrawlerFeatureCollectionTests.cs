@@ -27,6 +27,23 @@ public sealed class CrawlerFeatureCollectionTests
     }
 
     [Fact]
+    public void Collection_enumerates_key_value_pairs( )
+    {
+        var features = new CrawlerFeatureCollection();
+        var feature = new TestFeature();
+
+        features.Set<ITestFeature>( feature );
+        Assert.Collection(
+            features,
+            entry =>
+            {
+                Assert.Equal( entry.Key, typeof( ITestFeature ) );
+                Assert.Equal( entry.Value, feature );
+            }
+        );
+    }
+
+    [Fact]
     public void Collection_increments_revision_on_mutation( )
     {
         var features = new CrawlerFeatureCollection();

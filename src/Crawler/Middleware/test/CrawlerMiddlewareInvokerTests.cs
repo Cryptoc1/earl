@@ -29,7 +29,7 @@ public sealed class CrawlerMiddlewareInvokerTests
             )
         ).ToList();
 
-        var options = new CrawlerOptions( null, default, new CrawlerEvents(), default, default, middleware, null );
+        var options = new CrawlerOptions( null, default, CrawlerEvents.Empty, default, default, middleware, null );
 
         var result = new ResultBuilder();
         var context = new CrawlUrlContext(

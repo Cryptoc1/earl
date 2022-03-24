@@ -10,6 +10,32 @@ namespace Earl.Crawler.Middleware.Html.Tests;
 public sealed class HtmlDocumentMiddlewareTests
 {
     [Fact]
+    public async Task Middleware_continues_without_response_feature( )
+    {
+        await using var features = new CrawlerFeatureCollection();
+        var context = new CrawlUrlContext(
+            new( default!, CancellationToken.None, default!, default!, default!, default! ),
+            features,
+            new ResultBuilder(),
+            default!,
+            default!
+        );
+
+        var middleware = new HtmlDocumentMiddleware();
+        bool continued = false;
+
+        await middleware.InvokeAsync(
+            context,
+            _ =>
+            {
+                continued = true;
+                return Task.CompletedTask;
+            }
+        );
+        Assert.True( continued );
+    }
+
+    [Fact]
     public async Task Middleware_parses_document_from_response_feature( )
     {
         await using var features = new CrawlerFeatureCollection();
@@ -90,6 +116,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
             {
                 Content = content,
                 ReasonPhrase = nameof( HttpStatusCode.OK ),
+                RequestMessage = new HttpRequestMessage
+                {
+                    RequestUri = new Uri( "https://localhost:8080" ),
+                },
                 StatusCode = HttpStatusCode.OK,
             };
         }

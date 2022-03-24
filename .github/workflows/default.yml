@@ -139,7 +139,7 @@ jobs:
         run: dotnet nuget push "*.nupkg" --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
 
   benchmark:
-    if: startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/develop')
+    if: startsWith(github.ref, 'refs/heads/main')
     needs: [ build ]
     runs-on: windows-latest
     steps:

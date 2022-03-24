@@ -19,7 +19,7 @@ public sealed class CrawlerOptionsBuilder : ICrawlerOptionsBuilder
         var options = new CrawlerOptions(
             BatchDelay: null,
             BatchSize: 2 ^ Environment.ProcessorCount,
-            Events: new CrawlerEvents(),
+            Events: CrawlerEvents.Empty,
             MaxDegreeOfParallelism: Environment.ProcessorCount,
             MaxRequestCount: -1,
             Middleware: new List<ICrawlerMiddlewareDescriptor>(),

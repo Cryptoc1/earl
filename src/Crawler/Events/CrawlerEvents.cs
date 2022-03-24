@@ -5,15 +5,51 @@ namespace Earl.Crawler.Events;
 /// <summary> Default implementation of <see cref="ICrawlerEvents"/>. </summary>
 public sealed class CrawlerEvents : ICrawlerEvents
 {
-    private readonly IDictionary<Type, IList<Delegate>> eventHandlerMap = new Dictionary<Type, IList<Delegate>>();
-    private readonly ICrawlerEvents? events;
+    /// <summary> An instance of <see cref="CrawlerEvents"/> with no handlers. </summary>
+    public static readonly CrawlerEvents Empty = new();
 
-    public CrawlerEvents( )
+    private readonly ICrawlerEvents? events;
+    private IDictionary<Type, IList<Delegate>>? eventHandlerMap;
+
+    private CrawlerEvents( )
     {
     }
 
     private CrawlerEvents( ICrawlerEvents events )
         => this.events = events;
+
+    /// <summary> Composes an <see cref="ICrawlerEvents"/> instance that contains the given <paramref name="handler"/>. </summary>
+    /// <typeparam name="TEvent"> The type of <see cref="CrawlEvent"/> handled. </typeparam>
+    /// <param name="events"> The <see cref="ICrawlerEvents"/> to compose. </param>
+    /// <param name="handler"> The <see cref="CrawlEventHandler{TEvent}"/> to compose. </param>
+    /// <returns> If the given <paramref name="events"/> instance is of type <see cref="CrawlerEvents"/>, the provided instance with the added <paramref name="handler"/>, or a new instance of <see cref="CrawlerEvents"/> with the added <paramref name="handler"/>. </returns>
+    public static CrawlerEvents Compose<TEvent>( ICrawlerEvents events, CrawlEventHandler<TEvent> handler )
+        where TEvent : CrawlEvent
+    {
+        ArgumentNullException.ThrowIfNull( events );
+        ArgumentNullException.ThrowIfNull( handler );
+
+        var eventType = typeof( TEvent );
+        var typedEvents = events == Empty
+            ? new CrawlerEvents()
+            : events as CrawlerEvents ?? new CrawlerEvents( events );
+
+        var handlerMap = typedEvents.eventHandlerMap ??= new Dictionary<Type, IList<Delegate>>();
+        if( !handlerMap.TryGetValue( eventType, out var handlers ) )
+        {
+            handlers = handlerMap[ eventType ] = new List<Delegate>();
+        }
+
+        handlers.Add( handler );
+        return typedEvents;
+    }
+
+    /// <summary> Creates an instance for the given <paramref name="handler"/>. </summary>
+    /// <typeparam name="TEvent"> The type of event being handled. </typeparam>
+    /// <param name="handler"> The <see cref="CrawlEventHandler{TEvent}"/> to initialize an instance for. </param>
+    public static CrawlerEvents For<TEvent>( CrawlEventHandler<TEvent> handler )
+        where TEvent : CrawlEvent
+        => Compose( Empty, handler );
 
     /// <inheritdoc/>
     public async ValueTask HandleAsync<TEvent>( TEvent e, CancellationToken cancellation = default )
@@ -27,36 +63,37 @@ public sealed class CrawlerEvents : ICrawlerEvents
                 .ConfigureAwait( false );
         }
 
-        if( eventHandlerMap.TryGetValue( typeof( TEvent ), out var handlers ) )
+        if( eventHandlerMap?.TryGetValue( typeof( TEvent ), out var handlers ) is true )
         {
-            await ValueTaskExtensions.WhenAll(
+            await WhenAll(
                 handlers.Cast<CrawlEventHandler<TEvent>>()
                     .Select( handler => handler( e, cancellation ) )
                     .ToArray()
-            );
+            ).ConfigureAwait( false );
         }
     }
 
-    /// <summary> Composes an <see cref="ICrawlerEvents"/> instance that contains the given <paramref name="handler"/>. </summary>
-    /// <typeparam name="TEvent"> The type of <see cref="CrawlEvent"/> handled. </typeparam>
-    /// <param name="events"> The <see cref="ICrawlerEvents"/> to compose. </param>
-    /// <param name="handler"> The <see cref="CrawlEventHandler{TEvent}"/> to compose. </param>
-    /// <returns> If the given <paramref name="events"/> instance is of type <see cref="CrawlerEvents"/>, the provided instance with the added <paramref name="handler"/>, or a new instance of <see cref="CrawlerEvents"/> with the added <paramref name="handler"/>. </returns>
-    public static CrawlerEvents Compose<TEvent>( ICrawlerEvents events, CrawlEventHandler<TEvent> handler )
-        where TEvent : CrawlEvent
+    private static async ValueTask WhenAll( IReadOnlyList<ValueTask> tasks )
     {
-        ArgumentNullException.ThrowIfNull( events );
-        ArgumentNullException.ThrowIfNull( handler );
+        int count = tasks.Count;
+        List<Exception>? exceptions = null;
 
-        var typedEvents = events as CrawlerEvents ?? new CrawlerEvents( events );
-
-        var eventType = typeof( TEvent );
-        if( !typedEvents.eventHandlerMap.TryGetValue( eventType, out var handlers ) )
+        foreach( var task in tasks )
         {
-            handlers = typedEvents.eventHandlerMap[ eventType ] = new List<Delegate>();
+            try
+            {
+                await task.ConfigureAwait( false );
+            }
+            catch( Exception ex )
+            {
+                exceptions ??= new List<Exception>( count );
+                exceptions.Add( ex );
+            }
         }
 
-        handlers.Add( handler );
-        return typedEvents;
+        if( exceptions is not null )
+        {
+            throw new AggregateException( exceptions );
+        }
     }
 }
