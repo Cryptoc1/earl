@@ -13,6 +13,10 @@ public sealed class CrawlerOptionsBuilder : ICrawlerOptionsBuilder
     /// <inheritdoc/>
     public IList<CrawlerOptionsBuildAction> BuildActions { get; } = new List<CrawlerOptionsBuildAction>();
 
+    private CrawlerOptionsBuilder( )
+    {
+    }
+
     /// <inheritdoc/>
     public CrawlerOptions Build( )
     {
