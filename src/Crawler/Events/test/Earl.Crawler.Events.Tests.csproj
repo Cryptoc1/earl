@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <IsTestProject>true</IsTestProject>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <ProjectReference Include="$(SrcDirectory)\Crawler\Events\src\Earl.Crawler.Events.csproj" />
+    </ItemGroup>
+    
+</Project>

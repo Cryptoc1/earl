@@ -4,7 +4,7 @@ using Earl.Crawler.Abstractions.Events;
 namespace Earl.Crawler.Events.Configuration;
 
 /// <summary> Extensions to <see cref="ICrawlerOptionsBuilder"/> for registering <see cref="ICrawlerEvents"/> handlers. </summary>
-public static class ICrawlerOptionsBuilderEventExtensions
+public static class EventCrawlerOptionsBuilderExtensions
 {
     /// <summary> Register the given handler. </summary>
     /// <typeparam name="TEvent"> The type of event handler to be registered. </typeparam>
