@@ -22,7 +22,7 @@ public sealed class CrawlerOptionsBuilder : ICrawlerOptionsBuilder
     {
         var options = new CrawlerOptions(
             BatchDelay: null,
-            BatchSize: 2 ^ Environment.ProcessorCount,
+            BatchSize: ( int )Math.Pow( Environment.ProcessorCount, 2 ),
             Events: CrawlerEvents.Empty,
             MaxDegreeOfParallelism: Environment.ProcessorCount,
             MaxRequestCount: -1,
