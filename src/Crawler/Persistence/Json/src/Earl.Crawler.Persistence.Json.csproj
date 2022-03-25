@@ -6,7 +6,7 @@
     </PropertyGroup>
     
     <ItemGroup>
-        <ProjectReference Include="$(SrcDirectory)\Crawler\Persistence\Persistence\Earl.Crawler.Persistence.csproj" />
+        <ProjectReference Include="$(SrcDirectory)\Crawler\Persistence\src\Earl.Crawler.Persistence.csproj" />
     </ItemGroup>
 
 </Project>

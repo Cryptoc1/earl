@@ -11,7 +11,10 @@ public sealed class CrawlerJsonPersistenceDescriptor : ICrawlerPersistenceDescri
     public CrawlerJsonPersistenceOptions Options { get; }
 
     public CrawlerJsonPersistenceDescriptor( CrawlerJsonPersistenceOptions options )
-        => Options = options;
+    {
+        ArgumentNullException.ThrowIfNull( options );
+        Options = options;
+    }
 }
 
 /// <summary> An implementation of <see cref="ICrawlerPersistenceFactory"/> for <see cref="CrawlerJsonPersistenceDescriptor"/>. </summary>
