@@ -25,14 +25,14 @@ public sealed class CrawlerOptionsBuilderTests
     }
 
     [Fact]
-    public void Builder_uses_processor_count_for_default_max_parallelism( )
+    public void Default_builder_uses_processor_count_for_default_max_parallelism( )
     {
         var options = CrawlerOptionsBuilder.CreateDefault().Build();
         Assert.Equal( Environment.ProcessorCount, options.MaxDegreeOfParallelism );
     }
 
     [Fact]
-    public void Builder_uses_processor_count_to_the_power_of_two_for_default_batch_size( )
+    public void Default_builder_uses_processor_count_to_the_power_of_two_for_default_batch_size( )
     {
         var options = CrawlerOptionsBuilder.CreateDefault().Build();
         Assert.Equal( Math.Pow( Environment.ProcessorCount, 2 ), options.BatchSize );

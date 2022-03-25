@@ -11,6 +11,10 @@ public sealed class CrawlerJsonPersistenceOptionsBuilder : ICrawlerJsonPersisten
 
     private string? destination;
 
+    private CrawlerJsonPersistenceOptionsBuilder( )
+    {
+    }
+
     /// <inheritdoc/>
     public CrawlerJsonPersistenceOptions Build( )
     {
