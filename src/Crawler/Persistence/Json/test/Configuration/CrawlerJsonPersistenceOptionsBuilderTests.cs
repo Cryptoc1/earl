@@ -7,7 +7,8 @@ public sealed class CrawlerJsonPersistenceOptionsBuilderTests
     [Fact]
     public void Builder_builds_options_with_build_actions( )
     {
-        var builder = CrawlerJsonPersistenceOptionsBuilder.CreateDefault();
+        var builder = CrawlerJsonPersistenceOptionsBuilder.CreateDefault()
+            .Destination( "." );
 
         bool built = false;
         builder.BuildActions.Add(
@@ -42,7 +43,10 @@ public sealed class CrawlerJsonPersistenceOptionsBuilderTests
     [Fact]
     public void Default_builder_adds_result_metadata_converter( )
     {
-        var options = CrawlerJsonPersistenceOptionsBuilder.CreateDefault().Build();
+        var options = CrawlerJsonPersistenceOptionsBuilder.CreateDefault()
+            .Destination( "." )
+            .Build();
+
         Assert.Contains(
             options.Serialization.Converters,
             converter => converter is ResultMetadataConverter

@@ -28,6 +28,7 @@ public sealed class CrawlerJsonPersistenceOptionsBuilderExtensionsTests
     private sealed class TestConverter : JsonConverter<Guid>
     {
         public override Guid Read( ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options ) => throw new NotImplementedException();
+
         public override void Write( Utf8JsonWriter writer, Guid value, JsonSerializerOptions options ) => throw new NotImplementedException();
     }
 
@@ -37,7 +38,7 @@ public sealed class CrawlerJsonPersistenceOptionsBuilderExtensionsTests
 
         public CrawlerJsonPersistenceOptions Build( )
         {
-            var options = new CrawlerJsonPersistenceOptions( default!, default! );
+            var options = new CrawlerJsonPersistenceOptions( string.Empty, new() );
             foreach( var action in BuildActions )
             {
                 options = action( this, options );
