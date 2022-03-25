@@ -5,6 +5,7 @@ using Earl.Crawler.Middleware.Abstractions;
 using Earl.Crawler.Middleware.Http;
 using Earl.Crawler.Middleware.UrlScraping;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Earl.Crawler;
 
@@ -30,7 +31,6 @@ public static class EarlServiceCollectionExtensions
     {
         services.AddTransient<ICrawlerMiddlewareInvoker, CrawlerMiddlewareInvoker>();
 
-        services.AddTransient<ICrawlerMiddlewareFactory, CrawlerMiddlewareFactory>();
         AddCrawlerMiddlewareFactory<DelegateCrawlerMiddlewareDescriptor, DelegateCrawlerMiddlewareFactory>( services );
         AddCrawlerMiddlewareFactory<ServiceCrawlerMiddlewareDescriptor, ServiceCrawlerMiddlewareFactory>( services );
 
@@ -40,6 +40,8 @@ public static class EarlServiceCollectionExtensions
             where TFactory : CrawlerMiddlewareFactory<TDescriptor>
         {
             ArgumentNullException.ThrowIfNull( services );
+
+            services.TryAddTransient<ICrawlerMiddlewareFactory, CrawlerMiddlewareFactory>();
             return services.AddTransient<CrawlerMiddlewareFactory<TDescriptor>, TFactory>();
         }
     }

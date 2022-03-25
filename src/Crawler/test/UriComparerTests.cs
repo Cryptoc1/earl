@@ -10,7 +10,36 @@ public sealed class UriComparerTests
         var otherUri = new Uri( otherUrl );
         var uriComparer = new UriComparer( comparer );
 
-        bool equal = ( ( uriComparer.Compare( uri, otherUri ) is 0 ) && uriComparer.Equals( uri, otherUri ) ) == expected;
+        bool equal = ( uriComparer.Compare( uri, otherUri ) is 0 ) == expected;
+        Assert.True( equal );
+    }
+
+    [Theory]
+    [ClassData( typeof( UriComparisonData ) )]
+    public void Comparer_compares_equality_of_uris_with_string_comparer( StringComparer comparer, string url, string otherUrl, bool expected )
+    {
+        var uri = new Uri( url );
+        var otherUri = new Uri( otherUrl );
+        var uriComparer = new UriComparer( comparer );
+
+        bool equal = ( uriComparer.Equals( uri, otherUri ) && comparer.Equals( url, otherUrl ) ) == expected;
+        Assert.True( equal );
+    }
+
+    [Theory]
+    [ClassData( typeof( UriComparisonData ) )]
+    public void Comparer_gets_hash_code_with_string_comparer_hash_code_getter( StringComparer comparer, string url, string otherUrl, bool expected )
+    {
+        var uri = new Uri( url );
+        var otherUri = new Uri( otherUrl );
+        var uriComparer = new UriComparer( comparer );
+
+        bool equal = (
+            uriComparer.GetHashCode( uri ) == uriComparer.GetHashCode( otherUri )
+            &&
+            comparer.GetHashCode( url ) == comparer.GetHashCode( otherUrl )
+        ) == expected;
+
         Assert.True( equal );
     }
 
