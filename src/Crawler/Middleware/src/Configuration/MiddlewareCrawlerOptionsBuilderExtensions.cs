@@ -17,6 +17,7 @@ public static class MiddlewareCrawlerOptionsBuilderExtensions
     /// <typeparam name="TMiddleware"> The type of middleware to be registered. </typeparam>
     /// <typeparam name="TOptions"> The type of options to be registered. </typeparam>
     /// <param name="builder"> The options builder to register the handler with. </param>
+    /// <param name="options"> The middleware options to register. </param>
     public static ICrawlerOptionsBuilder Use<TMiddleware, TOptions>( this ICrawlerOptionsBuilder builder, TOptions options )
         where TMiddleware : ICrawlerMiddleware<TOptions>
         => Use( builder, new ServiceCrawlerMiddlewareDescriptor( typeof( TMiddleware ), options ) );

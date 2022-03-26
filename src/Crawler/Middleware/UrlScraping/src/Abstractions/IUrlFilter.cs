@@ -1,9 +1,8 @@
 ﻿using AngleSharp.Html.Dom;
-using Earl.Crawler.Middleware.UrlScraping.Abstractions.Configuration;
 
 namespace Earl.Crawler.Middleware.UrlScraping.Abstractions;
 
-/// <summary> Describes a service that filters urls scraped via <see cref="IUrlScraper.ScrapeAsync(AngleSharp.Html.Dom.IHtmlDocument, UrlScraperOptions, CancellationToken)"/>. </summary>
+/// <summary> Describes a service that filters urls scraped via <see cref="IUrlScraper.ScrapeAsync(IHtmlDocument, CancellationToken)"/>. </summary>
 public interface IUrlFilter
 {
     /// <summary> Filters the given <paramref name="urls"/> from the given <paramref name="document"/>. </summary>

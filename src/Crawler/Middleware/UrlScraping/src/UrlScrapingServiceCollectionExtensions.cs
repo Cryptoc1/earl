@@ -10,9 +10,11 @@ public static class UrlScrapingServiceCollectionExtensions
     /// <param name="services"> The <see cref="IServiceCollection"/> to add dependencies to. </param>
     public static IServiceCollection AddEarlUrlScraper( this IServiceCollection services )
     {
-        services.AddTransient<IUrlScraper, UrlScraper>();
-        services.AddTransient<IUrlFilterInvoker, UrlFilterInvoker>();
+        services.AddTransient<IUrlScraperInvoker, UrlScraperInvoker>();
+        services.AddTransient<IUrlScraperFactory, UrlScraperFactory>();
+        services.AddTransient<UrlScraperFactory<ServiceUrlScraperDescriptor>, ServiceUrlScraperFactory>();
 
+        services.AddTransient<IUrlFilterInvoker, UrlFilterInvoker>();
         services.AddTransient<IUrlFilterFactory, UrlFilterFactory>();
         services.AddTransient<UrlFilterFactory<ServiceUrlFilterDescriptor>, ServiceUrlFilterFactory>();
 

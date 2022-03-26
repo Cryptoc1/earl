@@ -1,4 +1,4 @@
-﻿namespace Earl.Crawler.Tests;
+﻿namespace Earl.Crawler.Abstractions.Tests;
 
 public sealed class UriComparerTests
 {

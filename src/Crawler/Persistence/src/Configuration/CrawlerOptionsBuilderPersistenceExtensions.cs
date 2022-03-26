@@ -30,6 +30,6 @@ public static class CrawlerOptionsBuilderPersistenceExtensions
     {
         var options = builder.Build();
         return async ( e, cancellation ) => await e.Services.GetRequiredService<ICrawlerPersistenceInvoker>()
-            .InvokeAsync( e.Result, options, cancellation );
+            .InvokeAsync( options.Providers, e.Result, cancellation );
     }
 }

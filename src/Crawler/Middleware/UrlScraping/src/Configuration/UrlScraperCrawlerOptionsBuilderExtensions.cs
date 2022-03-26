@@ -1,17 +1,20 @@
 ﻿using Earl.Crawler.Abstractions.Configuration;
 using Earl.Crawler.Middleware.UrlScraping.Abstractions.Configuration;
 using Earl.Crawler.Middleware.UrlScraping.Filters;
+using Earl.Crawler.Middleware.UrlScraping.Scrapers;
 
 namespace Earl.Crawler.Middleware.UrlScraping.Configuration;
 
 /// <summary> Extensions to <see cref="ICrawlerOptionsBuilder"/> for configuring the <see cref="UrlScraperMiddleware"/>. </summary>
-public static class ICrawlerOptionsBuilderUrlScraperExtensions
+public static class UrlScraperCrawlerOptionsBuilderExtensions
 {
     private static readonly Type UrlScraperMiddlewareType = typeof( UrlScraperMiddleware );
 
     private static UrlScraperOptions CreateDefaultScraperOptions( )
-        => new UrlScraperOptions( new List<IUrlFilterDescriptor>() )
-            .WithFilter<SameOriginUrlFilter>();
+        => new UrlScraperOptions( new List<IUrlFilterDescriptor>(), new List<IUrlScraperDescriptor>() )
+            .WithFilter<DistinctUrlFilter>()
+            .WithFilter<SameOriginUrlFilter>()
+            .WithScraper<AnchorUrlScraper>();
 
     /// <summary> Register the <see cref="UrlScraperMiddleware"/>. </summary>
     /// <param name="builder"> The builder to register the middleware to. </param>
@@ -23,8 +26,9 @@ public static class ICrawlerOptionsBuilderUrlScraperExtensions
             ( _, options ) =>
             {
                 var middleware = options.Middleware.ToList();
-                var existingDescriptor = middleware.OfType<ServiceCrawlerMiddlewareDescriptor>()
-                    .FirstOrDefault( descriptor => descriptor.MiddlewareType == UrlScraperMiddlewareType );
+                var existingDescriptor = middleware.Find(
+                    descriptor => descriptor is ServiceCrawlerMiddlewareDescriptor typedDescriptor && typedDescriptor.MiddlewareType == UrlScraperMiddlewareType
+                ) as ServiceCrawlerMiddlewareDescriptor;
 
                 var middlewareOptions = ( existingDescriptor?.Options as UrlScraperOptions )
                     ?? CreateDefaultScraperOptions();

@@ -21,7 +21,7 @@ public static class CrawlerPersistenceBuilderJsonExtensions
         return builder.Configure(
             ( _, options ) => options with
             {
-                Descriptors = options.Descriptors
+                Providers = options.Providers
                     .Append( new CrawlerJsonPersistenceDescriptor( jsonOptions ) )
                     .ToList(),
             }

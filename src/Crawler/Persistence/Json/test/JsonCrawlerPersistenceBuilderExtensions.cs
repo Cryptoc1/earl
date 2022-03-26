@@ -12,7 +12,7 @@ public sealed class CrawlerPersistenceBuilderJsonExtensions
             .Build();
 
         Assert.Collection(
-            options.Descriptors,
+            options.Providers,
             descriptor => Assert.True( descriptor is CrawlerJsonPersistenceDescriptor )
         );
     }

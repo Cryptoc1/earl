@@ -17,4 +17,19 @@ public static class UrlScraperOptionsExtensions
                 .ToList(),
         };
     }
+
+    /// <summary> Register the <see cref="IUrlScraper"/> of type <typeparamref name="TScraper"/>. </summary>
+    /// <typeparam name="TScraper"> The type of <see cref="IUrlScraper"/> to register. </typeparam>
+    /// <param name="options"> The <see cref="UrlScraperOptions"/> to register the filter to. </param>
+    public static UrlScraperOptions WithScraper<TScraper>( this UrlScraperOptions options )
+        where TScraper : IUrlScraper
+    {
+        ArgumentNullException.ThrowIfNull( options );
+        return options with
+        {
+            Scrapers = options.Scrapers
+                .Append( new ServiceUrlScraperDescriptor( typeof( TScraper ) ) )
+                .ToList(),
+        };
+    }
 }

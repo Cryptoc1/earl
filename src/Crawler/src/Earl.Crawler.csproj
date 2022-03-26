@@ -15,7 +15,7 @@
         <ProjectReference Include="$(SrcDirectory)\Crawler\Middleware\src\Earl.Crawler.Middleware.csproj" />
         <ProjectReference Include="$(SrcDirectory)\Crawler\Middleware\Html\src\Earl.Crawler.Middleware.Html.csproj" />
         <ProjectReference Include="$(SrcDirectory)\Crawler\Middleware\Http\Earl.Crawler.Middleware.Http.csproj" />
-        <ProjectReference Include="$(SrcDirectory)\Crawler\Middleware\UrlScraping\Earl.Crawler.Middleware.UrlScraping.csproj" />
+        <ProjectReference Include="$(SrcDirectory)\Crawler\Middleware\UrlScraping\src\Earl.Crawler.Middleware.UrlScraping.csproj" />
     </ItemGroup>
 
 </Project>

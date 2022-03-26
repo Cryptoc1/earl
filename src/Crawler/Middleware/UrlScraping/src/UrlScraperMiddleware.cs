@@ -10,13 +10,19 @@ namespace Earl.Crawler.Middleware.UrlScraping;
 /// <remarks> Requires that the <see cref="HtmlDocumentMiddleware"/>, or compatible middleware is registered before this middleware in the pipeline. </remarks>
 public sealed class UrlScraperMiddleware : ICrawlerMiddleware<UrlScraperOptions>
 {
+    private readonly IUrlFilterInvoker filterInvoker;
     private readonly UrlScraperOptions options;
-    private readonly IUrlScraper scraper;
+    private readonly IUrlScraperInvoker scraperInvoker;
 
-    public UrlScraperMiddleware( UrlScraperOptions options, IUrlScraper scraper )
+    public UrlScraperMiddleware(
+        IUrlFilterInvoker filterInvoker,
+        UrlScraperOptions options,
+        IUrlScraperInvoker scraperInvoker
+    )
     {
+        this.filterInvoker = filterInvoker;
         this.options = options;
-        this.scraper = scraper;
+        this.scraperInvoker = scraperInvoker;
     }
 
     /// <inheritdoc/>
@@ -25,24 +31,25 @@ public sealed class UrlScraperMiddleware : ICrawlerMiddleware<UrlScraperOptions>
         ArgumentNullException.ThrowIfNull( context );
         ArgumentNullException.ThrowIfNull( next );
 
-        var documentFeature = context.Features.Get<IHtmlDocumentFeature?>();
-        if( documentFeature is null )
+        var feature = context.Features.Get<IHtmlDocumentFeature?>();
+        if( feature is null )
         {
             await next( context );
             return;
         }
 
-        var urls = scraper.ScrapeAsync( documentFeature.Document, options, context.CrawlContext.CrawlCancelled );
+        var urls = scraperInvoker.InvokeAsync( options.Scrapers, feature.Document, context.CrawlContext.CrawlCancelled );
 
-        // NOTE: don't immediately await, invoke the remainder of the middleware pipeline first
-        var enqueue = urls.ForEachAsync(
-            url => context.CrawlContext.UrlQueue.Enqueue( url ),
-            context.CrawlContext.CrawlCancelled
-        ).ConfigureAwait( false );
+        // NOTE: don't immediately await
+        var enqueue = filterInvoker.InvokeAsync( options.Filters, feature.Document, urls, context.CrawlContext.CrawlCancelled )
+            .ForEachAsync(
+                url => context.CrawlContext.UrlQueue.Enqueue( url ),
+                context.CrawlContext.CrawlCancelled
+            );
 
-        await next( context ).ConfigureAwait( false );
+        await next( context );
 
         // wait for urls to be add to the queue
-        await enqueue;
+        await enqueue.ConfigureAwait( false );
     }
 }

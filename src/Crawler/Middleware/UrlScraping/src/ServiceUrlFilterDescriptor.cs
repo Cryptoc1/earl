@@ -31,6 +31,7 @@ public class ServiceUrlFilterFactory : UrlFilterFactory<ServiceUrlFilterDescript
     public ServiceUrlFilterFactory( IServiceProvider serviceProvider )
         => this.serviceProvider = serviceProvider;
 
+    /// <inheritdoc/>
     public override IUrlFilter Create( ServiceUrlFilterDescriptor descriptor )
         => ( IUrlFilter )ActivatorUtilities.CreateInstance( serviceProvider, descriptor.FilterType );
 }

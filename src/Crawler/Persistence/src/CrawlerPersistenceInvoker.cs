@@ -13,13 +13,13 @@ public class CrawlerPersistenceInvoker : ICrawlerPersistenceInvoker
         => this.persistenceFactory = persistenceFactory;
 
     /// <inheritdoc/>
-    public virtual Task InvokeAsync( CrawlUrlResult result, CrawlerPersistenceOptions options, CancellationToken cancellation = default )
+    public virtual Task InvokeAsync( IReadOnlyList<ICrawlerPersistenceDescriptor> providers, CrawlUrlResult result, CancellationToken cancellation = default )
     {
+        ArgumentNullException.ThrowIfNull( providers );
         ArgumentNullException.ThrowIfNull( result );
-        ArgumentNullException.ThrowIfNull( options );
 
         return Task.WhenAll(
-            options.Descriptors.Select( persistenceFactory.Create )
+            providers.Select( persistenceFactory.Create )
                 .Select( provider => provider.PersistAsync( result, cancellation ) )
         );
     }

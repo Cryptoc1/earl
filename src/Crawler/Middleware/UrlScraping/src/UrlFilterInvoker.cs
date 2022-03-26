@@ -13,14 +13,13 @@ public sealed class UrlFilterInvoker : IUrlFilterInvoker
         => this.filterFactory = filterFactory;
 
     /// <inheritdoc/>
-    public IAsyncEnumerable<Uri> InvokeAsync( IAsyncEnumerable<Uri> urls, IHtmlDocument document, UrlScraperOptions options, CancellationToken cancellation = default )
+    public IAsyncEnumerable<Uri> InvokeAsync( IReadOnlyList<IUrlFilterDescriptor> filters, IHtmlDocument document, IAsyncEnumerable<Uri> urls, CancellationToken cancellation = default )
     {
-        ArgumentNullException.ThrowIfNull( urls );
+        ArgumentNullException.ThrowIfNull( filters );
         ArgumentNullException.ThrowIfNull( document );
-        ArgumentNullException.ThrowIfNull( options );
+        ArgumentNullException.ThrowIfNull( urls );
 
-        var filters = options.Filters.Select( filterFactory.Create );
-        foreach( var filter in filters )
+        foreach( var filter in filters.Select( filterFactory.Create ) )
         {
             urls = filter.FilterAsync( urls, document, cancellation );
         }

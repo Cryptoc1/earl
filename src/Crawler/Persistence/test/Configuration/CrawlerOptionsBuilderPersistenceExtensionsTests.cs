@@ -48,7 +48,7 @@ public sealed class CrawlerOptionsBuilderPersistenceExtensionsTests
     {
         public bool Invoked { get; set; }
 
-        public Task InvokeAsync( CrawlUrlResult result, CrawlerPersistenceOptions options, CancellationToken cancellation = default )
+        public Task InvokeAsync( IReadOnlyList<ICrawlerPersistenceDescriptor> providers, CrawlUrlResult result, CancellationToken cancellation = default )
         {
             Invoked = true;
             return Task.CompletedTask;

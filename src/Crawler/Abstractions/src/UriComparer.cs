@@ -1,4 +1,4 @@
-﻿namespace Earl.Crawler;
+﻿namespace Earl.Crawler.Abstractions;
 
 /// <summary> A type that can determine the equality of <see cref="Uri"/>s' via their string value. </summary>
 public sealed class UriComparer : IComparer<Uri>, IEqualityComparer<Uri>

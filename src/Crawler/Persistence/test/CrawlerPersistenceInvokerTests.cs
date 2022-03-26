@@ -26,7 +26,7 @@ public sealed class CrawlerPersistenceInvokerTests
         var result = new CrawlUrlResult( default!, Guid.Empty, default!, default! );
         var options = new CrawlerPersistenceOptions( descriptors );
 
-        await invoker.InvokeAsync( result, options );
+        await invoker.InvokeAsync( options.Providers, result );
 
         Assert.Equal( ids, results );
     }
