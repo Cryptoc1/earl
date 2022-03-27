@@ -6,7 +6,7 @@ namespace Earl.Crawler.Middleware.UrlScraping.Abstractions;
 /// <summary> Describes a service that can invoke <see cref="IUrlFilter"/>s. </summary>
 public interface IUrlFilterInvoker
 {
-    /// <summary> Invokes the given <paramref name="filters"/> upon the <paramref name="document"/>. </summary>
+    /// <summary> Invokes the given <paramref name="filters"/> upon the <paramref name="urls"/> scraped from <paramref name="document"/>. </summary>
     /// <param name="filters"> The configuration of <see cref="IUrlFilter"/>s to invoke. </param>
     /// <param name="document"> The document to invoke the filters on. </param>
     /// <param name="urls"> The urls to invoke the filters on. </param>

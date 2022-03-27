@@ -12,6 +12,6 @@ public class SameOriginUrlFilter : IUrlFilter
     {
         ArgumentNullException.ThrowIfNull( urls );
         ArgumentNullException.ThrowIfNull( document );
-        return urls.Where( url => url.AbsoluteUri.StartsWith( document.Origin! ) );
+        return urls.Where( url => url.AbsoluteUri.StartsWith( document.Origin!, StringComparison.OrdinalIgnoreCase ) );
     }
 }
