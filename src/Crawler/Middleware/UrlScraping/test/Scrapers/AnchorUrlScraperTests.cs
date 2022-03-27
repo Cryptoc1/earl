@@ -19,10 +19,14 @@ public sealed class AnchorUrlScraperTests
 <title>Hello, World!</title>
 </head>
 <body>
-<h1>Hello, World!</h1>
+<h1 id=""header"">Hello, World!</h1>
 <p>
 <a href=""https://localhost:8080/earl"">Earl (localhost)</a>
+<a href=""//localhost:8080/earl"">Earl (localhost, no-protocol)</a>
 <a href=""https://github.com/cryptoc1/earl"">Earl (GitHub)</a>
+<a href="""">Empty</a>
+<a href=""#header"">Hashlink (header)</a>
+<a href=""https://github.com/cryptoc1/earl#documentation"">Earl Documentation (GitHub Hashlink)</a>
 </p>
 </body>
 </html>" );
@@ -33,6 +37,7 @@ public sealed class AnchorUrlScraperTests
         {
             new Uri( "https://localhost:8080/earl" ),
             new Uri( "https://github.com/cryptoc1/earl" ),
+            new Uri( "https://github.com/cryptoc1/earl#documentation" ),
         };
 
         var scraper = new AnchorUrlScraper();

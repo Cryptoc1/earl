@@ -14,19 +14,13 @@ public sealed class AnchorUrlScraper : IUrlScraper
         ArgumentNullException.ThrowIfNull( document );
         return document.QuerySelectorAll<IHtmlAnchorElement>( "a:not([href=\"\"])" )
 
-            // ignore fragments
-            .Where( anchor => !string.IsNullOrWhiteSpace( anchor.Href ) && anchor.Href?.StartsWith( '#' ) is false )
+            // ignore relative fragments
+            .Where( anchor => string.IsNullOrWhiteSpace( anchor.Hash ) || !anchor.Href.Equals( document.Location.Href + anchor.Hash, StringComparison.OrdinalIgnoreCase ) )
 
             // Force protocol
-            .Select( anchor => anchor.Href.StartsWith( "//" ) ? document.Location.Protocol + anchor.Href : anchor.Href )
+            .Select( anchor => anchor.Href )
             .Distinct( StringComparer.OrdinalIgnoreCase )
-
-            // try parse as Uri
-            .Select(
-                href => Uri.TryCreate( href, UriKind.Absolute, out var url )
-                    || Uri.TryCreate( $"{document.Origin?.TrimEnd( '/' )}/{href.TrimStart( '/' )}", UriKind.Absolute, out url )
-                    || Uri.TryCreate( href, UriKind.RelativeOrAbsolute, out url ) ? url : null
-            )
+            .Select( href => Uri.TryCreate( href, UriKind.Absolute, out var url ) ? url : null )
             .Where( url => url is not null )
             .Select( url => url! )
             .ToAsyncEnumerable();
