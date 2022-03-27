@@ -8,7 +8,7 @@ public sealed class AnchorUrlScraperTests
     [Fact]
     public async Task Scraper_scrapes_urls_from_anchors( )
     {
-        var document = await BrowsingContext.New()
+        using var document = await BrowsingContext.New()
             .OpenAsync(
                 response =>
                 {
