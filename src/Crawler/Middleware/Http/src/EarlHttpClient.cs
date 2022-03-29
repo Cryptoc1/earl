@@ -3,7 +3,7 @@
 namespace Earl.Crawler.Middleware.Http;
 
 /// <summary> Default implementation of <see cref="IEarlHttpClient"/>. </summary>
-public class EarlHttpClient : IEarlHttpClient
+public sealed class EarlHttpClient : IEarlHttpClient
 {
     private readonly HttpClient client;
 

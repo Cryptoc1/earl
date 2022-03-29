@@ -10,7 +10,8 @@ public sealed class HttpResponseMiddleware : ICrawlerMiddleware
 {
     private readonly IEarlHttpClient client;
 
-    public HttpResponseMiddleware( IEarlHttpClient client ) => this.client = client;
+    public HttpResponseMiddleware( IEarlHttpClient client )
+        => this.client = client;
 
     /// <inheritdoc/>
     public async Task InvokeAsync( CrawlUrlContext context, CrawlUrlDelegate next )
@@ -19,9 +20,7 @@ public sealed class HttpResponseMiddleware : ICrawlerMiddleware
         ArgumentNullException.ThrowIfNull( next );
 
         using var response = await client.GetAsync( context.Url, context.CrawlContext.CrawlCancelled );
-
-        using var feature = new HttpResponseFeature( response );
-        context.Features.Set<IHttpResponseFeature?>( feature );
+        context.Features.Set<IHttpResponseFeature?>( new HttpResponseFeature( response ) );
 
         var metadata = new HttpResponseMetadata(
             new ReadOnlyDictionary<string, StringValues>(
