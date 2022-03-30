@@ -25,7 +25,6 @@ public sealed class EarlHttpMessageHandlerTests
     }
 
     [Theory]
-    [InlineData( 0 )]
     [InlineData( 75 )]
     [InlineData( 100 )]
     [InlineData( 150 )]
@@ -47,7 +46,7 @@ public sealed class EarlHttpMessageHandlerTests
 
         Assert.NotEqual( default, response.TotalDuration );
 
-        double inaccuracy = Math.Max( duration, 1 ) * .333;
+        double inaccuracy = duration * .333;
         Assert.InRange( response.TotalDuration.TotalMilliseconds, duration, duration + inaccuracy );
     }
 
