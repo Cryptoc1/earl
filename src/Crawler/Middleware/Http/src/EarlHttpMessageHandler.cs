@@ -20,8 +20,7 @@ public class EarlHttpMessageHandler : DelegatingHandler
         EnsureEarlHeaders( request );
 
         var stopwatch = ValueStopwatch.StartNew();
-        var response = await base.SendAsync( request, cancellation )
-            .ConfigureAwait( false );
+        var response = await base.SendAsync( request, cancellation );
 
         var elapsed = stopwatch.GetElapsedTime();
         return new EarlHttpResponseMessage

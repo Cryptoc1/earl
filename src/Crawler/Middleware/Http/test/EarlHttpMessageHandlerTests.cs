@@ -44,8 +44,6 @@ public sealed class EarlHttpMessageHandlerTests
             await invoker.SendAsync( request, CancellationToken.None )
         );
 
-        Assert.NotEqual( default, response.TotalDuration );
-
         double inaccuracy = duration * .333;
         Assert.InRange( response.TotalDuration.TotalMilliseconds, duration, duration + inaccuracy );
     }
