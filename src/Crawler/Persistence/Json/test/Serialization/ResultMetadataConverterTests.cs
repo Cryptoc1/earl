@@ -9,11 +9,12 @@ public sealed class ResultMetadataConverterTests
     public async ValueTask Converter_embeds_type_info( )
     {
         var metadata = new MetadataCollection(
-            new[]
+            new object[]
             {
-                new Data(),
-                new Data(),
-                new Data(),
+                new Data("Hello, World"),
+                default!,
+                new Data("Test"),
+                new Data("Test1"),
             }
         );
 
@@ -30,13 +31,16 @@ public sealed class ResultMetadataConverterTests
         Assert.Equal(
             $@"[
   {{
-    ""@type"": ""Earl.Crawler.Persistence.Json.Serialization.Tests.ResultMetadataConverterTests+Data, Earl.Crawler.Persistence.Json.Tests, Version = 0.0.0.0, Culture = neutral, PublicKeyToken = null""
+    ""@type"": ""Earl.Crawler.Persistence.Json.Serialization.Tests.ResultMetadataConverterTests+Data, Earl.Crawler.Persistence.Json.Tests, Version = 0.0.0.0, Culture = neutral, PublicKeyToken = null"",
+    ""Value"": ""Hello, World!""
   }},
   {{
-    ""@type"": ""Earl.Crawler.Persistence.Json.Serialization.Tests.ResultMetadataConverterTests+Data, Earl.Crawler.Persistence.Json.Tests, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null""
+    ""@type"": ""Earl.Crawler.Persistence.Json.Serialization.Tests.ResultMetadataConverterTests+Data, Earl.Crawler.Persistence.Json.Tests, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"",
+    ""Value"": ""Test""
   }},
   {{
-    ""@type"": ""Earl.Crawler.Persistence.Json.Serialization.Tests.ResultMetadataConverterTests+Data, Earl.Crawler.Persistence.Json.Tests, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null""
+    ""@type"": ""Earl.Crawler.Persistence.Json.Serialization.Tests.ResultMetadataConverterTests+Data, Earl.Crawler.Persistence.Json.Tests, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null"",
+    ""Value"": ""Test1""
   }}
 ]",
             await reader.ReadToEndAsync()
@@ -65,5 +69,5 @@ public sealed class ResultMetadataConverterTests
         IEnumerator IEnumerable.GetEnumerator( ) => GetEnumerator();
     }
 
-    private sealed record Data( );
+    private sealed record Data( string Value );
 }
