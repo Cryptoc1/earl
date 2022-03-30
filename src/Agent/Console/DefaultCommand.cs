@@ -58,7 +58,7 @@ public sealed class DefaultCommand : CancellableAsyncCommand<DefaultCommandSetti
                     context.Status( $"Crawling '{settings.Url}'" );
 
                     await Task.Delay( 1000 );
-                    await crawl;
+                    await crawl.ConfigureAwait( false );
 
                     ValueTask onError( CrawlErrorEvent e, CancellationToken cancellation )
                     {
@@ -68,13 +68,13 @@ public sealed class DefaultCommand : CancellableAsyncCommand<DefaultCommandSetti
                         }
 
                         AnsiConsole.WriteException( e.Exception );
-                        return ValueTask.CompletedTask;
+                        return default;
                     }
 
                     ValueTask onUrlStarted( CrawlUrlStartedEvent e, CancellationToken cancellation )
                     {
                         context.Status( $"Crawling '{e.Url}'" );
-                        return ValueTask.CompletedTask;
+                        return default;
                     }
 
                     ValueTask onUrlResult( CrawlUrlResultEvent e, CancellationToken cancellation )
@@ -82,7 +82,7 @@ public sealed class DefaultCommand : CancellableAsyncCommand<DefaultCommandSetti
                         AnsiConsole.MarkupLine( $"[green]✔[/] {e.Result.Url}" );
                         Interlocked.Increment( ref count );
 
-                        return ValueTask.CompletedTask;
+                        return default;
                     }
                 }
            );

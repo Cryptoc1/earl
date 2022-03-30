@@ -18,6 +18,7 @@ public abstract class CancellableAsyncCommand : CancellableAsyncCommand<EmptyCom
 }
 
 /// <summary> Base class for an asynchronous command with settings that supports cancellation. </summary>
+/// <typeparam name="TSettings"> The type of settings. </typeparam>
 public abstract class CancellableAsyncCommand<TSettings> : AsyncCommand<TSettings>
     where TSettings : CommandSettings
 {
@@ -38,12 +39,8 @@ public abstract class CancellableAsyncCommand<TSettings> : AsyncCommand<TSetting
         using var sigTerm = PosixSignalRegistration.Create( PosixSignal.SIGTERM, onSignal );
 
         var cancellable = ExecuteAsync( context, settings, cancellationSource.Token );
-        return await cancellable;
+        return await cancellable.ConfigureAwait( false );
 
-        void onSignal( PosixSignalContext context )
-        {
-            context.Cancel = true;
-            cancellationSource.Cancel();
-        }
+        void onSignal( PosixSignalContext context ) => cancellationSource.Cancel();
     }
 }
