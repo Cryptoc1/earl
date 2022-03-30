@@ -68,8 +68,9 @@ public sealed class CrawlUrlContextExtensionsTests
         var serviceProvider = new ServiceCollection()
             .BuildServiceProvider();
 
-        var result = new CrawlUrlResult( "Test", Guid.NewGuid(), default!, default! );
         bool handled = false;
+        var result = new CrawlUrlResult( "Test", Guid.Empty, default!, default! );
+
         var events = CrawlerEvents.For<CrawlUrlResultEvent>(
             ( e, _ ) =>
             {
@@ -84,9 +85,15 @@ public sealed class CrawlUrlContextExtensionsTests
         var context = new CrawlContext( default!, CancellationToken.None, options, serviceProvider, new(), new() );
 
         await using var scope = serviceProvider.CreateAsyncScope();
-        var urlContext = new CrawlUrlContext( context, default!, default!, scope.ServiceProvider, default! );
+        var urlContext = new CrawlUrlContext(
+            context,
+            default!,
+            new ResultBuilder( result ),
+            scope.ServiceProvider,
+            default!
+        );
 
-        await urlContext.OnResultAsync( result );
+        await urlContext.OnResultAsync();
         Assert.True( handled );
     }
 
@@ -116,5 +123,21 @@ public sealed class CrawlUrlContextExtensionsTests
 
         await urlContext.OnStartedAsync();
         Assert.True( handled );
+    }
+
+    private sealed class ResultBuilder : ICrawlUrlResultBuilder
+    {
+        public string? DisplayName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        public Guid Id => throw new NotImplementedException();
+
+        public IList<object> Metadata => throw new NotImplementedException();
+
+        public CrawlUrlResult Result { get; }
+
+        public ResultBuilder( CrawlUrlResult result )
+            => Result = result;
+
+        public CrawlUrlResult Build( ) => Result;
     }
 }

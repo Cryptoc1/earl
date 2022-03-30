@@ -11,7 +11,7 @@ public class EarlHttpMessageHandler : DelegatingHandler
     private static void EnsureEarlHeaders( HttpRequestMessage request )
     {
         request.Headers.UserAgent.Add( new( nameof( EarlHttpMessageHandler ), HandlerVersion!.ToString() ) );
-        request.Headers.UserAgent.Add( new( "(+https://www.github.com/cryptoc1/earl)" ) );
+        request.Headers.UserAgent.Add( new( "(+https://github.com/cryptoc1/earl)" ) );
     }
 
     /// <inheritdoc/>

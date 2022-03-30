@@ -37,11 +37,11 @@ public static class CrawlUrlContextExtensions
     /// <summary> Emits the <see cref="CrawlUrlResultEvent"/> for the current state of the given <paramref name="context"/> and given <paramref name="result"/>. </summary>
     /// <param name="context"> The context to emit the <see cref="CrawlUrlResultEvent"/> for. </param>
     /// <param name="result"> The <see cref="CrawlUrlResult"/> to emit the <see cref="CrawlUrlResultEvent"/> for. </param>
-    public static async ValueTask OnResultAsync( this CrawlUrlContext context, CrawlUrlResult result )
+    public static async ValueTask OnResultAsync( this CrawlUrlContext context )
     {
         ArgumentNullException.ThrowIfNull( context );
-        ArgumentNullException.ThrowIfNull( result );
 
+        var result = context.Result.Build();
         await using var scope = context.Services.CreateAsyncScope();
         await context.CrawlContext.Options.Events.OnUrlResultAsync( new( result, scope.ServiceProvider ), context.CrawlContext.CrawlCancelled );
     }

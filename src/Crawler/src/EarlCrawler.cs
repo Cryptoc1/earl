@@ -87,7 +87,7 @@ public sealed class EarlCrawler : IEarlCrawler
             batch[ url ] = processor.SendAsync( new( CrawlUrlAsync, url, context ), context.CrawlCancelled );
         }
 
-        await Task.WhenAll( batch.Values ).ConfigureAwait( false );
+        await Task.WhenAll( batch.Values );
 
         processor.Complete();
         await processor.Completion.ConfigureAwait( false );
@@ -100,19 +100,17 @@ public sealed class EarlCrawler : IEarlCrawler
 
     private static async Task CrawlUrlAsync( Uri url, CrawlContext context )
     {
-        var result = new CrawlUrlResultBuilder( url );
         await using var features = new CrawlerFeatureCollection();
         await using var scope = context.Services.CreateAsyncScope();
 
-        var middleware = scope.ServiceProvider.GetRequiredService<ICrawlerMiddlewareInvoker>();
-        var urlContext = new CrawlUrlContext( context, features, result, scope.ServiceProvider, url );
+        var urlContext = new CrawlUrlContext( context, features, new CrawlUrlResultBuilder( url ), scope.ServiceProvider, url );
+        var middleware = urlContext.Services.GetRequiredService<ICrawlerMiddlewareInvoker>();
 
         await urlContext.OnStartedAsync();
 
         try
         {
-            await middleware.InvokeAsync( urlContext )
-                .ConfigureAwait( false );
+            await middleware.InvokeAsync( urlContext );
         }
         catch( Exception exception )
         {
@@ -122,7 +120,7 @@ public sealed class EarlCrawler : IEarlCrawler
 
         if( context.TouchedUrls.Add( url ) )
         {
-            await urlContext.OnResultAsync( result.Build() );
+            await urlContext.OnResultAsync();
         }
     }
 
