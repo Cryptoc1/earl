@@ -131,7 +131,7 @@ jobs:
           dotnet-version: ${{ env.EARL_DOTNET_VERSION }}
 
       - name: Download artifact 'earl-packages'
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: earl-packages
       
